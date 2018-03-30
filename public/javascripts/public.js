@@ -28,11 +28,11 @@ var emailCheck = function(val){
 }
 //验证中文
 var chineseCheck = function(val){
-    return /^[\u4e00-\u9fa5]{2,255}$/u.test(val);
+    return /^[\u4e00-\u9fa5]{2,255}$/.test(val);
 }
 //验证昵称
 var nameCheck = function(val){
-    return /^[\w\-_\u4e00-\u9fa5]{2,255}$/u.test(val);
+    return /^[\w\-_\u4e00-\u9fa5]{2,255}$/.test(val);
 }
 
 //去空格
