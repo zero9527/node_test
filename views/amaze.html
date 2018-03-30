@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="X-UA-Compatable" content="text/html;utf-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>amaze_vue</title>
+  	<link rel="icon" type="image/png" href="amazeui/i/favicon.png">
+	<link rel="stylesheet" href="amazeui/css/amazeui.min.css">
+	<link rel="stylesheet" href="amazeui/css/amazeui.datetimepicker.css">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		.lightblue {
+			display: block;
+			margin-bottom: 10px;
+			background: lightblue;
+		}
+		.lightgreen {
+			display: block;
+			margin-bottom: 10px;
+			background: lightgreen;
+		}
+		.orange {
+			display: block;
+			margin-bottom: 10px;
+			background: orange;
+		}
+		/*时间选择*/
+		#timePicker {
+			width: 100vw;
+			height: 76vh;
+			position: fixed;
+			display: none;
+			bottom: 0;
+			box-shadow: 0 -4px 30px rgba(196,196,196,.5);
+			z-index: 100;
+		}
+		#timePicker>div {
+			width: 100vw;
+			height: 60%;
+			position: relative;
+			top: 0;
+			left: 0;
+			background: rgba(0,0,0,0);
+			z-index: 99;
+		}
+		#timePicker ul {
+			width: 100%;
+			list-style: none;
+			padding: 0;
+		}
+		#timePicker>ul li {
+			text-align: center;
+		}
+		#timePicker>ul {
+			height: 40%;
+			position: relative;
+			margin: 0;
+			background: aliceblue;
+			box-sizing: border-box;
+			overflow: hidden;
+		}
+		#selectMenu {
+			height: 30vh;
+			position: relative;
+			overflow-y: scroll;
+		}
+		#selectMenu>li {
+			height: 8vh;
+			line-height: 8vh;
+			vertical-align: middle;
+			transition: .3s ease;
+		}
+		/*选中的时间*/
+		.timeshadow {
+			width: 100%;
+			height: 6vh;
+			position: absolute;
+			top: 15vh;
+			margin-top: -3vh;
+			box-shadow: 0 0 20px rgba(156,156,156, .5) inset;
+		}
+		#timeok {
+			position: absolute;
+			right: 0;
+			z-index: 101;
+		}
+	</style>
+</head>
+<body>
+	<div id='vue'>
+		<h4 class='am-text-center'>amaze</h4>
+		<a href="#doc-oc-demo1" data-am-offcanvas><span class='am-icon-bars am-icon-md'></span></a>
+		<!-- 侧边栏内容 -->
+		<div id="doc-oc-demo1" class="am-offcanvas">
+		  <div class="am-offcanvas-bar">
+		    <div class="am-offcanvas-content">
+		      <p>
+		        我不愿让你一个人 <br/>
+		        承受这世界的残忍 <br/>
+		        我不愿眼泪陪你到 永恒
+		      </p>
+		    </div>
+		  </div>
+		</div>
+		<!-- 日期选择 -->
+		<div class="am-g">
+		  <div class="am-u-sm-4">
+		    请 选 择 日 期<br/>
+		    <p><input type="button" class="am-form-field" value="请选择日期" placeholder="" id="my-start-2"/></p>
+		  </div>
+		  <div class="am-u-sm-4">
+		    选择开始时间<br/>
+		    <p><input type="button" class="am-form-field choosetime starttime" value="开始时间" placeholder="" index='0'/></p>
+		  </div>
+		  <div class="am-u-sm-4">
+		    选择结束时间<br/>
+		    <p><input type="button" class="am-form-field choosetime endtime" value="结束时间" placeholder=""  index='1'/></p>
+		  </div>
+		</div>
+		<div id="timePicker">
+			<div></div>
+			<button id='timeok'>确定</button>
+			<ul>
+				<li class="timeshadow" value='这个是阴影'></li>
+				<ul id='selectMenu'>
+					<li></li>
+					<li></li>
+					<li value='8'>8:00</li>
+					<li value='9'>9:00</li>
+					<li value='10'>10:00</li>
+					<li value='11'>11:00</li>
+					<li value='12'>12:00</li>
+					<li value='13'>13:00</li>
+					<li value='14'>14:00</li>
+					<li value='15'>15:00</li>
+					<li value='16'>16:00</li>
+					<li value='17'>17:00</li>
+					<li value='18'>18:00</li>
+					<li value='19'>19:00</li>
+					<li></li>
+					<li></li>
+				</ul>
+			</ul>
+		</div>
+		<!-- 日期选择 -->
+		<ul class='text' v-for='d in list'>
+			<li @click='showFn($event)' class='textli'>标题：{{ d.title }}</li>
+			<ul :class='d.class' v-bind:style='isActive ? show : hide'>
+				<li>水电费：{{ d.elec }}</li>
+				<li>时间：{{ d.time }}</li>
+				<li>姓名：{{ d.name }}</li>
+			</ul>
+		</ul>
+		<div class="am-panel-group" id="accordion">
+			<div class="am-panel am-panel-default" v-for='(value, key) in data'>
+				<div class="am-panel-hd">
+				  <p><span class="am-icon-home"></span> <a href="#div">默认大小</a></p>
+				  <p><span class="am-icon-instagram am-icon-sm"></span> 放大150%</p>
+				  <a href="##" class="am-icon-btn am-secondary am-icon-drupal"></a>
+				  <i class="am-icon-spinner am-icon-pulse"></i>
+			      <h4 class="am-panel-title" :data-am-collapse='key.collapse'>{{key}}标题{{key}}标题{{key}}标题</h4>
+			   </div>
+			    <div :id="key.id" class="am-panel-collapse am-collapse">
+			      <div class="am-panel-bd">{{key}}哈哈{{key}}哈哈{{key}}哈哈{{key}}</div>
+			    </div>
+			  </div>
+		</div>
+	</div>
+	<script src="javascripts/jquery.min.js"></script>
+	<script src="javascripts/vue.min.js"></script>
+	<script src="amazeui/js/amazeui.min.js"></script>
+	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
+	<script>
+		var app = new Vue({
+			el: '#vue',
+			data() {
+				return {
+					isActive: false,
+					show: 'display:block;',
+					hide: 'display: none;',
+					list: [
+						{
+							'title': '标题一1111',
+							'elec': 10,
+							'time': '1522115135248',
+							'name': '张三',
+							'class': 'lightblue'
+						},{
+							'elec': 23,
+							'title': '标题二2222',
+							'time': '1522115132248',
+							'name': '李四',
+							'class': 'orange'
+						},{
+							'elec': 30,
+							'title': '标题三3333',
+							'time': '1522115035048',
+							'name': '王五',
+							'class': 'lightgreen'
+						}
+					],
+					data:[
+						{
+							id: 'do-not-say-1',
+							collapse: '{parent: "#accordion", target: "do-not-say-1"}'
+						},{
+							id: 'do-not-say-2',
+							collapse: '{parent: "#accordion", target: "do-not-say-2"}'
+						},{
+							id: 'do-not-say-3',
+							collapse: '{parent: "#accordion", target: "do-not-say-3"}'
+						},{
+							id: 'do-not-say-4',
+							collapse: '{parent: "#accordion", target: "do-not-say-4"}'
+						},{
+							id: 'do-not-say-5',
+							collapse: '{parent: "#accordion", target: "do-not-say-5"}'
+						},{
+							id: 'do-not-say-6',
+							collapse: '{parent: "#accordion", target: "do-not-say-6"}'
+						},{
+							id: 'do-not-say-7',
+							collapse: '{parent: "#accordion", target: "do-not-say-7"}'
+						},{
+							id: 'do-not-say-8',
+							collapse: '{parent: "#accordion", target: "do-not-say-8"}'
+						},{
+							id: 'do-not-say-9',
+							collapse: '{parent: "#accordion", target: "do-not-say-9"}'
+						},{
+							id: 'do-not-say-10',
+							collapse: '{parent: "#accordion", target: "do-not-say-10"}'
+						}
+					]
+				}
+			},
+			computed: {},
+			mounted() {
+				
+				var that = this;
+				for(var i=0; i<this.list.length; i++){
+					this.list[i].time = that.gettime(this.list[i].time)
+				}
+				for(var i=0; i<10; i++){
+					$('.am-panel-collapse').eq(i).collapse({toggle: false});
+
+					$('.am-panel-title').eq(i).click(function(){
+						for(var i=0; i<10; i++){
+							$('.am-panel-collapse').eq(i).collapse('close');
+						}
+						console.log($(this)[0])
+						// noticeFn('哈哈很少见哈' + $(this)[0].innerText);
+						// noticeFn('哈哈很少见哈' + $(this)[0].innerText, '#000', '#fff');
+
+						that.confirmFn('哈哈很少见哈<span style="color:#0076ff"> '+ $(this)[0].innerText +'</span>', function(res){
+							if(res){
+								console.log('确定');
+							}else{
+								console.log('取消');
+								that.noticeFn({text:'已取消！'});
+							}
+						})
+						// console.log($(this).parents('.am-panel').find('.am-panel-collapse')[0])
+						$(this).parents('.am-panel').find('.am-panel-collapse').collapse('toggle')
+					})
+				}
+			  	/****************** 时间滑动选择-开始 **********************/
+
+			  	var timeindex = null;	// 点击开始或结束时间
+			  	// 选择时间
+			  	$(".choosetime").click(function(){
+			  		$('html').css({height:'100vh',width:'100vw',position:'relative',overflow: 'hidden'});
+			  		$('body').css({height:'100vh',width:'100vw',position:'relative',overflow: 'hidden'});
+			  		$('#timePicker').css({display: 'block'});
+			  		timeindex = $(this).attr('index');
+			  	})
+
+			  	// 确定选择的时间
+			  	$("#timeok").click(function(){
+			  		$('.choosetime').eq(timeindex).val(selecttime);
+			  		// 开始时间、结束时间
+			  		var start = Number($('.starttime').val().substring(0,$('.starttime').val().indexOf(':')));
+			  		var end = Number($('.endtime').val().substring(0,$('.endtime').val().indexOf(':')));
+
+			  		// console.log('start: ',start);
+			  		// console.log('end: ',end);
+			  		// 判断范围，限制时间段
+			  		if(start && end && start >= end){
+			  			that.noticeFn( {text:'结束时间不能小于或等于开始时间！'} );
+			  			return
+			  		}
+
+			  		$('body').css({overflowY: 'scroll'});
+			  		$('#timePicker').css({display: 'none'});
+
+			  	})
+			  	var selecttime = null;	//选择的时间
+			  	// 滑动选择时间
+			  	$("#selectMenu").on('scroll', function(e){
+			  		event.preventDefault();
+			  		var scTop = e.currentTarget.scrollTop;	// 滚动距离
+			  		var cH = $('#selectMenu>li').eq(1)[0].clientHeight;		//每个选项的高度
+			  		var fTop = $('#selectMenu>li').eq(1)[0].offsetTop;	// 第一个的offsetTop
+			  		// 选中的时间
+			  		var nowLi = Math.round((scTop-fTop)/cH);
+			  		for(var i=0; i<$('#selectMenu>li').length; i++){
+			  			$('#selectMenu>li').eq(i).css({transform: 'scale(1)'});
+			  		}
+			  		// 头尾个两个空白占位元素，所以nowLi+2
+			  		selecttime = $('#selectMenu>li').eq(nowLi+2).css({transform: 'scale(1.6)'});
+			  		selecttime = $('#selectMenu>li').eq(nowLi+2)[0].innerText;
+			  		// console.log('selecttime: ', selecttime);
+			  	})
+
+			  	/****************** 时间滑动选择-结束 **********************/
+
+			    var nowTemp = new Date();
+			    var nowDay = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0).valueOf();
+			    var nowMoth = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), 1, 0, 0, 0, 0).valueOf();
+			    var nowYear = new Date(nowTemp.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+			    var $myStart2 = $('#my-start-2');
+
+			    var checkin = $myStart2.datepicker({
+			      onRender: function(date, viewMode) {
+			        // 默认 days 视图，与当前日期比较
+			        var viewDate = nowDay;
+
+			        switch (viewMode) {
+			          // moths 视图，与当前月份比较
+			          case 1:
+			            viewDate = nowMoth;
+			            break;
+			          // years 视图，与当前年份比较
+			          case 2:
+			            viewDate = nowYear;
+			            break;
+			        }
+
+			        return date.valueOf() < viewDate ? 'am-disabled' : '';
+			      }
+			    }).on('changeDate.datepicker.amui', function(ev) {
+			        
+			        checkin.close();
+			    }).data('amui.datepicker');
+
+			    !function(){
+			    	// 生成提示框元素
+					var notice = document.createElement('div');
+					notice.setAttribute('id', 'noticeDiv');
+					notice.setAttribute('style',
+						'width:80vw;max-width:400px;position:fixed;padding:10px 16px;top:50%;left:50%;'+
+						'text-align:center;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);'+
+						'margin-left:-40vw;margin-top:-50%;transition:.2s ease;'+
+						'z-index:999;transform:scale(0);z-index:9999'
+					); 
+
+					// 生成确认取消框元素
+					var confirm = document.createElement('div');
+					var contain = '<div id="confirmDiv" style="width:80vw;max-width:400px;position:fixed;padding:16px 0 0;top:40%;left:50%;text-align:center;border-radius:14px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff">'+
+						'<h3>提示</h3>'+
+						'<p style="padding:6px"></p>'+
+						'<div style="width:100%;border-top:1px solid #aaa;margin-top: 16px;">'+
+							'<span id="confirmfalse" style="width:48%;display:inline-block;padding:10px 16px;border-right:1px solid #aaa;color:#0076FF;">取消</span>'+
+							'<span id="confirmtrue" style="width:48%;display:inline-block;;padding:10px 16px;color:#0076FF;">确定</span>'+
+						'</div>'+
+					'</div>';
+					// 遮罩层
+					confirm.setAttribute('style','width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;');
+					confirm.innerHTML = contain;
+
+					// 添加到页面
+					document.body.appendChild(confirm);
+					document.body.appendChild(notice);
+
+				}()
+				
+			},
+			methods: {
+				showFn: function(e){
+					$(".textli").siblings().hide();
+					e.toElement.nextElementSibling.style.display = 'block';
+				},
+				gettime: function(str){
+					return new Date(Number(str)).toLocaleString();
+
+				},
+				noticeFn: function(obj){
+					/**
+					 * 提示框函数
+					 * @param {字符串} obj.text 提示的文字内容
+					 * @param {字符串} obj.fcolor 提示的文字颜色
+					 * @param {字符串} obj.bgcolor 提示框背景颜色
+					 * @param {字符串} obj.time 提示框消失的时间
+					 */
+					// {text:'哈哈很少见哈' + $(this)[0].innerText,fcolor:'',bgcolor:'',time:''}
+					/*
+						用法：
+						noticeFn({text:'哈哈很少见哈' + $(this)[0].innerText});
+					 */
+					//设置字体颜色
+					obj.fcolor = obj.fcolor || '#fff';
+					//设置背景颜色
+					obj.bgcolor = obj.bgcolor || 'rgba(90,90,90,.9)';
+					// 消失时间
+					obj.time = obj.time || 1500;
+					var notice = document.getElementById('noticeDiv');
+
+					notice.innerHTML = obj.text;
+					notice.style.color = obj.fcolor;
+					notice.style.background = obj.bgcolor;
+					notice.style.transform = 'scale(1)';
+
+					// console.log(notice.innerHTML)
+					// 多次点击,函数多次运行
+					if(!notice.innerHTML){
+						return
+					}
+					// 自动消失
+					setTimeout(function(){
+						notice.style.transform = 'scale(0)';
+						notice.innerHTML = '';
+					},obj.time);
+
+				},
+				confirmFn:function(text, callback){
+					/**
+					 * 确定/取消函数
+					 * @param {字符串} text 提示的内容
+					 * @param {callback} function 回调函数
+					 */
+					/**
+					 * 用法：
+					 * confirmFn('哈哈', function(res){
+							if(res){
+								console.log('确定');
+							}else{
+								console.log('取消');
+							}
+						})
+					 */
+					document.body.style.overflow = 'hidden';
+					var confirm = document.getElementById('confirmDiv');
+					confirm.parentNode.style.display = 'block';
+					confirm.getElementsByTagName('p')[0].innerHTML = text;
+					// 确定，取消按钮
+					var confirmtrue = document.getElementById('confirmtrue');
+					var confirmfalse = document.getElementById('confirmfalse');
+
+					// 点击确定
+					confirmtrue.onclick = function(){
+						callback(true);
+						document.body.style.overflow = 'auto';
+						//移除元素
+						setTimeout(function(){
+							confirm.parentNode.style.display = 'none';
+						}, 30);
+					}
+					// 点击取消
+					confirmfalse.onclick = function(){
+						callback(false);
+						document.body.style.overflow = 'auto';
+						//移除元素
+						setTimeout(function(){
+							confirm.parentNode.style.display = 'none';
+						}, 30);
+					}
+
+				}
+			}
+		})
+	</script>
+</body>
+</html> 

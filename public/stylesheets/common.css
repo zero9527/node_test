@@ -1,0 +1,52 @@
+﻿/**
+ * 这是公共css,
+ * amazeui中已有重置样式，不需要reset.css或normalize.css
+*/
+@charset "utf-8";
+ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form {
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	-webkit-appearance: none; 
+}
+
+/*placeholder颜色*/
+input::-webkit-input-placeholder{
+    color: rgba(128,128,128);
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+    color: rgba(128,128,128);
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+    color: rgba(128,128,128);
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+    color: rgba(128,128,128);
+}
+[class*=am-u-] {
+	padding: 0;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	min-height: 500px;
+	font-size: .7rem;
+	background: rgb(245,245,250);
+	transform: translate3d(0,0,0);
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+/*不换行*/
+.nowrap {
+	white-space: nowrap;
+}
+/*蓝色字体*/
+.fblue {
+	color: rgb(0,144,255);
+}
+/*蓝色背景*/
+.bgblue {
+	color: #fff;
+	background: rgb(0,144,255);
+}

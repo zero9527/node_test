@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>websocket</title>
+	<style>
+		#text {
+			position: relative;
+			margin: 0 auto;
+			padding: 5vh;
+		}
+		#sendMessage {
+			float: right;
+		}
+	</style>
+</head>
+<body>
+	<div id='text'>0</div>
+	<input type="button" value="发送数据" id="sendMessage" >
+	<script src="javascripts/websocket.js"></script>
+	<script>
+		window.onload = function(){
+			var text = document.getElementById('text');
+			var wsurl = "ws://localhost:8181";
+			
+			var msg = '这是来自网页的信息! '+new Date().toLocaleString();
+			var sendMessage = document.getElementById('sendMessage');
+
+			/*
+				调用封装的websocket函数
+				函数在 websocket.js中
+			*/ 
+			wsFun(wsurl, function(str, res){
+				// str: 数据类型（接收，关闭， 错误），
+				// 在websocket.js中给出，不需要传
+				console.log(str, res);
+				// 接收数据更新到页面
+				if(str == '接收：'){
+					text.innerHTML = res;
+				}
+			});
+			// 点击发送	
+			sendMessage.onclick = function(){
+				sendmsg('这是网页发送的数据 ' + new Date().toLocaleString());
+			}
+
+		}
+	</script>
+</body>
+</html>

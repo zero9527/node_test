@@ -1,0 +1,152 @@
+
+//设置字体自适应大小
+!function (doc, win) {
+	var docEl = doc.documentElement,
+	resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+	recalc = function () {
+	  var clientWidth = docEl.clientWidth;
+	  if (!clientWidth) return;
+	  docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+      // doc.body.style.height = doc.body.clientHeight;
+	};
+  	if (!doc.addEventListener) return;
+  	win.addEventListener(resizeEvt, recalc, false);
+  	doc.addEventListener('DOMContentLoaded', recalc, false);
+}(document, window);
+
+//验证特殊字符
+var specailCheck = function(val){
+    return /^[`~!@#$^&*()=|{}':;',\[\].<>/?~！@#￥……&*（）——|{}【】\s‘；：”“'。，、？]$/.test(val)
+}
+//验证手机号码
+var phoneCheck = function(val){
+    return /^1[3,4,5,6,7,8]\d{9}$/.test(val)
+}
+//验证email
+var emailCheck = function(val){
+    return /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(val)
+}
+//验证中文
+var chineseCheck = function(val){
+    return /^[\u4e00-\u9fa5]{2,255}$/u.test(val);
+}
+//验证昵称
+var nameCheck = function(val){
+    return /^[\w\-_\u4e00-\u9fa5]{2,255}$/u.test(val);
+}
+
+//去空格
+var trimFn = function(str){
+    return str.replace(/^(\s)|(\s*)/g,'');
+}
+
+!function(){
+    // 生成提示框元素
+    var notice = document.createElement('div');
+    notice.setAttribute('id', 'noticeDiv');
+    notice.setAttribute('style',
+        'width:80vw;max-width:400px;position:fixed;padding:10px 16px;top:50%;left:50%;'+
+        'text-align:center;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);'+
+        'margin-left:-40vw;margin-top:-50%;transition:.2s ease;'+
+        'z-index:999;transform:scale(0);z-index:9999'
+    ); 
+
+    // 生成确认取消框元素
+    var confirm = document.createElement('div');
+    var contain = '<div id="confirmDiv" style="width:80vw;max-width:400px;position:fixed;padding:16px 0 0;top:40%;left:50%;text-align:center;border-radius:14px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff">'+
+        '<h3>提示</h3>'+
+        '<p style="padding:6px"></p>'+
+        '<div style="width:100%;border-top:1px solid #aaa;margin-top: 16px;">'+
+            '<span id="confirmfalse" style="width:48%;display:inline-block;padding:10px 16px;border-right:1px solid #aaa;color:#0076FF;">取消</span>'+
+            '<span id="confirmtrue" style="width:48%;display:inline-block;;padding:10px 16px;color:#0076FF;">确定</span>'+
+        '</div>'+
+    '</div>';
+    // 遮罩层
+    confirm.setAttribute('style','width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;');
+    confirm.innerHTML = contain;
+
+    // 添加到页面
+    document.body.appendChild(confirm);
+    document.body.appendChild(notice);
+}()
+var noticeFn = function(obj){
+    /**
+     * 提示框函数
+     * @param {字符串} obj.text 提示的文字内容
+     * @param {字符串} obj.fcolor 提示的文字颜色
+     * @param {字符串} obj.bgcolor 提示框背景颜色
+     * @param {字符串} obj.time 提示框消失的时间
+     */
+    // {text:'哈哈很少见哈' + $(this)[0].innerText,fcolor:'',bgcolor:'',time:''}
+    /*
+        用法：
+        noticeFn({text:'哈哈很少见哈' + $(this)[0].innerText});
+     */
+    //设置字体颜色
+    obj.fcolor = obj.fcolor || '#fff';
+    //设置背景颜色
+    obj.bgcolor = obj.bgcolor || 'rgba(90,90,90,.9)';
+    // 消失时间
+    obj.time = obj.time || 1500;
+    var notice = document.getElementById('noticeDiv');
+
+    notice.innerHTML = obj.text;
+    notice.style.color = obj.fcolor;
+    notice.style.background = obj.bgcolor;
+    notice.style.transform = 'scale(1)';
+
+    // console.log(notice.innerHTML)
+    // 多次点击,函数多次运行
+    if(!notice.innerHTML){
+        return
+    }
+    // 自动消失
+    setTimeout(function(){
+        notice.style.transform = 'scale(0)';
+        notice.innerHTML = '';
+    },obj.time);
+}
+
+var confirmFn = function(text, callback){
+    /**
+     * 确定/取消函数
+     * @param {字符串} text 提示的内容
+     * @param {callback} function 回调函数
+     */
+    /**
+     * 用法：
+     * confirmFn('哈哈', function(res){
+            if(res){
+                console.log('确定');
+            }else{
+                console.log('取消');
+            }
+        })
+     */
+    document.body.style.overflow = 'hidden';
+    var confirm = document.getElementById('confirmDiv');
+    confirm.parentNode.style.display = 'block';
+    confirm.getElementsByTagName('p')[0].innerHTML = text;
+    // 确定，取消按钮
+    var confirmtrue = document.getElementById('confirmtrue');
+    var confirmfalse = document.getElementById('confirmfalse');
+
+    // 点击确定
+    confirmtrue.onclick = function(){
+        callback(true);
+        document.body.style.overflow = 'auto';
+        //移除元素
+        setTimeout(function(){
+            confirm.parentNode.style.display = 'none';
+        }, 30);
+    }
+    // 点击取消
+    confirmfalse.onclick = function(){
+        callback(false);
+        document.body.style.overflow = 'auto';
+        //移除元素
+        setTimeout(function(){
+            confirm.parentNode.style.display = 'none';
+        }, 30);
+    }
+}
