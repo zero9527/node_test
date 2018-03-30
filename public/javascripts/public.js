@@ -150,3 +150,20 @@ var confirmFn = function(text, callback){
         }, 30);
     }
 }
+
+!function(){
+    var loading = document.createElement('div');
+    loading.setAttribute('id', 'loadingid');
+    loading.setAttribute('style', 
+        'width:30vmin;height:30vmin;display:none;position:fixed;'+
+        'max-width:200px;max-height:200px;left:50%;top:50%;'+
+        'border-radius:4px;transform:translate(-50%,-50%);'+
+        'color:#eee;background:rgba(0,0,0,.8);'
+    );
+    loading.innerHTML = '<div style="width:100%;height:100%;'+
+    'display:flex;align-items:center;justify-content:center;flex-flow:column;">'+
+    '<i class="am-icon-spinner am-icon-pulse am-icon-lg"></i>'+
+    '<div class="am-text-center" style="margin-top:10px;">正在加载 ...</div></div>';
+
+    document.body.appendChild(loading);
+}()

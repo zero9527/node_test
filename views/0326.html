@@ -145,6 +145,8 @@
 	    <div class="confirm">
 		    <div class="am-u-sm-10 confirm bgblue">确定</div>
 		</div>
+		
+    	<div id='show'>显示</div>
 	</form>
 	<div id="areaChoose" class="citys">
 		<div class="areaChoosebg"></div>
@@ -179,8 +181,20 @@
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
 	<script src="javascripts/public.js"></script>
 	<script>
+		var num = 0;
+		$("#show").click(function(){
+			if(num == 0){
+				$('#loadingid').fadeIn();
+				num = 1;
+			}else{
+				$('#loadingid').fadeOut();
+				num = 0;
+			}
+			console.log(num);
+		})
 		// 提交
 		$('.confirm').click(function(){
+
 			var uname = trimFn($('.uname').val()),
 				uphone = trimFn($('.uphone').val()),
 				upwd = trimFn($('.upwd').val()),
@@ -236,7 +250,7 @@
 		$("#seepwd").click(function(){
 			if($(this).hasClass('am-icon-eye-slash')){
 				$(this).attr('class', 'am-u-sm-2 am-icon-eye');
-				console.log($(this).siblings('.upwd'))
+				// console.log($(this).siblings('.upwd'))
 				$(this).siblings('.upwd').attr('type','text');
 
 			}else{
