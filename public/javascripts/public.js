@@ -69,6 +69,7 @@ var trimFn = function(str){
     document.body.appendChild(confirm);
     document.body.appendChild(notice);
 }()
+var int;
 var noticeFn = function(obj){
     /**
      * 提示框函数
@@ -90,20 +91,38 @@ var noticeFn = function(obj){
     obj.time = obj.time || 1500;
     var notice = document.getElementById('noticeDiv');
 
+    // 防止多次点击, 弹框跳动
+    if(notice.innerHTML){
+        notice.style.transform = 'scale(1.2)';
+        notice.style.transform = 'scale(1)';
+        
+        // 防止多次点击, 弹框跳动
+        clearTimeout(int);
+        // 自动消失
+        int = setTimeout(function(){
+            notice.style.opacity = '.5';
+            notice.style.transform = 'scale(1.1)';
+            setTimeout(function(){
+                notice.style.transform = 'scale(0)';
+                notice.innerHTML = '';
+            },100);
+        },obj.time);
+        return
+    }
     notice.innerHTML = obj.text;
     notice.style.color = obj.fcolor;
     notice.style.background = obj.bgcolor;
     notice.style.transform = 'scale(1)';
+    notice.style.opacity = '1';
 
-    // console.log(notice.innerHTML)
-    // 多次点击,函数多次运行
-    if(!notice.innerHTML){
-        return
-    }
     // 自动消失
-    setTimeout(function(){
-        notice.style.transform = 'scale(0)';
-        notice.innerHTML = '';
+    int = setTimeout(function(){
+        notice.style.opacity = '.5';
+        notice.style.transform = 'scale(1.1)';
+        setTimeout(function(){
+            notice.style.transform = 'scale(0)';
+            notice.innerHTML = '';
+        },100);
     },obj.time);
 }
 

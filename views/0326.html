@@ -119,9 +119,7 @@
 <body> 
 	<form action='' id='form' method='POST' class='am-container'>
 		<div class='am-g am-text-middle'>
-			<label for="" class='am-u-sm-3 nowrap'>
-				收&nbsp;&nbsp;货&nbsp;&nbsp;人
-			</label>
+			<label for="" class='am-u-sm-3 nowrap'>收&nbsp;&nbsp;货&nbsp;&nbsp;人</label>
 			<input type="text" class='am-u-sm-9 uname' name='uname' placeholder="请输入收货人">
 		</div>
 		<div class='am-g am-text-middle'>
@@ -145,8 +143,6 @@
 	    <div class="confirm">
 		    <div class="am-u-sm-10 confirm bgblue">确定</div>
 		</div>
-		
-    	<div id='show'>显示</div>
 	</form>
 	<div id="areaChoose" class="citys">
 		<div class="areaChoosebg"></div>
@@ -174,6 +170,7 @@
     	<div id="confirmAreaChoose">
     		<div>确定</div>
     	</div>
+    	<div id='show'>显示</div>
 	</div>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="javascripts/jquery.citys.js"></script>
@@ -181,20 +178,8 @@
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
 	<script src="javascripts/public.js"></script>
 	<script>
-		var num = 0;
-		$("#show").click(function(){
-			if(num == 0){
-				$('#loadingid').fadeIn();
-				num = 1;
-			}else{
-				$('#loadingid').fadeOut();
-				num = 0;
-			}
-			console.log(num);
-		})
 		// 提交
 		$('.confirm').click(function(){
-
 			var uname = trimFn($('.uname').val()),
 				uphone = trimFn($('.uphone').val()),
 				upwd = trimFn($('.upwd').val()),
