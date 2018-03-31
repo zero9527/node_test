@@ -33,7 +33,7 @@ body {
 	height: 100vh;
 	min-height: 500px;
 	font-size: .7rem;
-	background: rgb(245,245,250);
+	background: #edeef2;
 	transform: translate3d(0,0,0);
 	overflow-x: hidden;
 	overflow-y: scroll;
@@ -91,11 +91,11 @@ label {
 
 /*蓝色字体*/
 .fblue {
-	color: rgb(0,144,255);
+	color: #0d94f3;
 }
 
 /*蓝色背景*/
 .bgblue {
 	color: #fff;
-	background: rgb(0,144,255);
+	background: #0d94f3;
 }
