@@ -190,7 +190,12 @@
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
 	<script>
-		
+		setInterval(function(){
+			$("#loadingid").fadeIn();
+			setTimeout(function(){
+				$("#loadingid").fadeOut();
+			},1000)
+		},2000);
 		// 提交
 		$('.confirm').click(function(){
 			var uname = trimFn($('.uname').val()),

@@ -83,6 +83,7 @@ var getLocaltime = function (_time) {
     return normal;
 }
 
+// 生成提示框和确认取消框的页面元素
 !function(){
     // 生成提示框元素
     var notice = document.createElement('div');
@@ -112,15 +113,16 @@ var getLocaltime = function (_time) {
     document.body.appendChild(confirm);
     document.body.appendChild(notice);
 }()
-var int;
+
+/**
+ * 提示框函数 noticeFn()
+ * @param {字符串} obj.text 提示的文字内容
+ * @param {字符串} obj.fcolor 提示的文字颜色
+ * @param {字符串} obj.bgcolor 提示框背景颜色
+ * @param {字符串} obj.time 提示框消失的时间
+ */
+var noticeint;
 var noticeFn = function(obj){
-    /**
-     * 提示框函数
-     * @param {字符串} obj.text 提示的文字内容
-     * @param {字符串} obj.fcolor 提示的文字颜色
-     * @param {字符串} obj.bgcolor 提示框背景颜色
-     * @param {字符串} obj.time 提示框消失的时间
-     */
     // {text:'哈哈很少见哈' + $(this)[0].innerText,fcolor:'',bgcolor:'',time:''}
     /*
         用法：
@@ -140,9 +142,9 @@ var noticeFn = function(obj){
         notice.style.transform = 'scale(1)';
         
         // 防止多次点击, 弹框跳动
-        clearTimeout(int);
+        clearTimeout(noticeint);
         // 自动消失
-        int = setTimeout(function(){
+        noticeint = setTimeout(function(){
             notice.style.opacity = '.5';
             notice.style.transform = 'scale(1.1)';
             setTimeout(function(){
@@ -159,7 +161,7 @@ var noticeFn = function(obj){
     notice.style.opacity = '1';
 
     // 自动消失
-    int = setTimeout(function(){
+    noticeint = setTimeout(function(){
         notice.style.opacity = '.5';
         notice.style.transform = 'scale(1.1)';
         setTimeout(function(){
@@ -169,12 +171,12 @@ var noticeFn = function(obj){
     },obj.time);
 }
 
+/**
+ * 确定/取消函数 confirmFn()
+ * @param {字符串} text 提示的内容
+ * @param {callback} function 回调函数
+ */
 var confirmFn = function(text, callback){
-    /**
-     * 确定/取消函数
-     * @param {字符串} text 提示的内容
-     * @param {callback} function 回调函数
-     */
     /**
      * 用法：
      * confirmFn('哈哈', function(res){
@@ -213,6 +215,12 @@ var confirmFn = function(text, callback){
     }
 }
 
+/**
+ * loading 加载模块
+ * 使用方法：JQ的faseIn和fadeOut
+ * $("#loadingid").fadeIn();
+ * $("#loadingid").fadeOut();
+ */
 !function(){
     var loading = document.createElement('div');
     loading.setAttribute('id', 'loadingid');
