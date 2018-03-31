@@ -21,7 +21,7 @@ var specailCheck = function(val){
 //验证手机号码
 var phoneCheck = function(val){
     return /^1[3,4,5,6,7,8]\d{9}$/.test(val)
-}
+} 
 //验证email
 var emailCheck = function(val){
     return /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(val)
