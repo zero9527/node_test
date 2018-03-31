@@ -6,6 +6,7 @@
 	<title>录入信息</title>
   	<link rel="icon" type="image/png" href="amazeui/i/favicon.png">
 	<link rel="stylesheet" href="amazeui/css/amazeui.min.css">
+	<link rel="stylesheet" href="iconfont/iconfont.css">
 	<link rel="stylesheet" href="stylesheets/common.css">
 	<link rel="stylesheet" href="amazeui/css/amazeui.datetimepicker.css">
 	<style>
@@ -13,7 +14,12 @@
 			padding-top: 2vh;
 			background: #fff;
 		}
+		label {
+			margin-bottom: 0;
+		}
 		.am-container>.am-g {
+			display: flex;
+			align-items: center;
 			position: relative;
 			padding: 14px 20px;
 			border-bottom: 1px solid #eee;
@@ -72,6 +78,10 @@
 		.areaDiv h2 {
 			margin: 0;
 		}
+		/*收货地址*/
+		.receive {
+			align-self: flex-start;
+		}
 		/*请选择*/
 		.choosebtn {
 			position: absolute;
@@ -114,9 +124,10 @@
 		#seepwd {
 			text-align: center;
 		}
+
 	</style>
 </head>
-<body> 
+<body>
 	<form action='' id='form' method='POST' class='am-container'>
 		<div class='am-g am-text-middle'>
 			<label for="" class='am-u-sm-3 nowrap'>收&nbsp;&nbsp;货&nbsp;&nbsp;人</label>
@@ -137,7 +148,7 @@
 			<span class='areabtn choosebtn' >请选择 ></span>
 		</div>
 		<div class='am-g am-text-middle'>
-	      	<label for="" class='am-u-sm-3'>收货地址</label>
+	      	<label for="" class='am-u-sm-3 receive'>收货地址</label>
 	      	<textarea class="am-u-sm-9 uaddrdetail" name='uaddrdetail' rows="5" placeholder="请输入详细地址信息、如道路、门牌号、小区、楼栋号、单元室等"></textarea>
 	    </div>
 	    <div class='time'></div>
@@ -173,11 +184,11 @@
     	</div>
     	<div id='show'>显示</div>
 	</div>
+	<script src="javascripts/public.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="javascripts/jquery.citys.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
-	<script src="javascripts/public.js"></script>
 	<script>
 		
 		// 提交

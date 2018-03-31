@@ -14,6 +14,17 @@
   	doc.addEventListener('DOMContentLoaded', recalc, false);
 }(document, window);
 
+// 顶部导航栏
+!function(){
+    var navbar = document.createElement('div');
+    navbar.setAttribute('id', 'navbar');
+    navbar.innerHTML = '<span class="iconfont icon-fanhui1" onclick="history.go(-1)">&emsp;</span>'+
+        '<h2>title</h2>'+
+        '<span class="back2home">首页</span>';
+    var fc = document.body.firstChild;
+    // 添加到页面body下最前面
+    document.body.insertBefore(navbar,fc);
+}()
 //验证特殊字符
 var specailCheck = function(val){
     return /^[`~!@#$^&*()=|{}':;',\[\].<>/?~！@#￥……&*（）——|{}【】\s‘；：”“'。，、？]$/.test(val)
