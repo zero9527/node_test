@@ -27,6 +27,10 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 	padding: 0;
 }
 
+ul, ol, li {
+	padding: 0;
+	list-style: none;
+}
 body {
 	width: 100vw;
 	height: 100vh;

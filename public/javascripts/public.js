@@ -40,6 +40,38 @@ var trimFn = function(str){
     return str.replace(/^(\s)|(\s*)/g,'');
 }
 
+//时间戳转换
+var getLocaltime = function (_time) {
+    /*
+        _time 时间戳（ms）,后台传来的单位是s，需要乘1000
+        个位数时加 '0', 统一位数
+     */ 
+    _time = Number(_time)*1000;
+    // console.log('_time: ',_time);
+    var localetime = new Date(_time);
+    var year = localetime.getFullYear(),
+        month = (localetime.getMonth()+'').length == 1 
+          ? '0' + localetime.getMonth() 
+          : localetime.getMonth(),
+        date = (localetime.getDate()+'').length == 1
+          ? '0' + localetime.getDate()
+          : localetime.getDate(),
+        hour = (localetime.getHours()+'').length == 1
+          ? '0' + localetime.getHours()
+          : localetime.getHours(),
+        minute = (localetime.getMinutes()+'').length == 1
+          ? '0' + localetime.getMinutes()
+          : localetime.getMinutes(),
+        second = (localetime.getSeconds()+'').length == 1
+          ? '0' + localetime.getSeconds()
+          : localetime.getSeconds();
+
+    var normal = year + '/' + month + '/'  + date + '\t'  + hour + ':'  + minute;
+    if(!_time) normal = '时间不见了';
+    // console.log('year + month + day + hour + minute: ', normal);
+    return normal;
+}
+
 !function(){
     // 生成提示框元素
     var notice = document.createElement('div');
