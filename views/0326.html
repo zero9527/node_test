@@ -61,11 +61,31 @@
 			position: relative;
 			background: #fff;
 		}
-		.areaDiv>div:nth-of-type(1) {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+		.areaDiv .fblue {
+			padding-bottom: 1vh;
+			border-bottom: 1px solid #0d94f3;
 		}
+		.atop {
+			height: 8vh;
+			display: block;
+			line-height: 8vh;
+		}
+		.atop>p,
+		.atop>h2,
+		.atop>button {
+			height: 100%;
+			display: inline-block;
+			float: left;
+		}
+		.atop>p,
+		.atop>button {
+			width: 20%;
+			text-align: center;
+		}
+		.atop>h2 {
+			width: 60%;
+		}
+
 		.areaDiv>div:nth-of-type(2) {
 			width: 100%;
     		display: flex;
@@ -79,7 +99,7 @@
 			margin: 0;
 		}
 		/*收货地址*/
-		.receive {
+		.label {
 			align-self: flex-start;
 		}
 		/*请选择*/
@@ -112,6 +132,9 @@
 		.area>p:nth-of-type(1) {
 			color: rgb(0,144,255);
 		}
+		.uaddrdetail {
+			padding: 4px;
+		}
 		.areabtn {
 			border: none;
 			background: transparent;
@@ -143,12 +166,13 @@
 			<span class='am-u-sm-2 am-icon-eye-slash' id='seepwd'></span>
 		</div>
 		<div class='am-g am-text-middle'>
-			<label for="" class='am-u-sm-3'>所在地区</label>
-			<span class='am-u-sm-9 areabtn am-text-left uaddress' name='uaddress'></span>
+			<label for="" class='am-u-sm-3 label'>所在地区</label>
+			<span class='am-u-sm-9 areabtn am-text-left uaddress'></span>
+			<input type="hidden" name='uaddress' value=''>
 			<span class='areabtn choosebtn' >请选择 ></span>
 		</div>
 		<div class='am-g am-text-middle'>
-	      	<label for="" class='am-u-sm-3 receive'>收货地址</label>
+	      	<label for="" class='am-u-sm-3 label'>收货地址</label>
 	      	<textarea class="am-u-sm-9 uaddrdetail" name='uaddrdetail' rows="5" placeholder="请输入详细地址信息、如道路、门牌号、小区、楼栋号、单元室等"></textarea>
 	    </div>
 	    <div class='time'></div>
@@ -159,8 +183,8 @@
 	<div id="areaChoose" class="citys">
 		<div class="areaChoosebg"></div>
         <div class="areaDiv">
-        	<div>
-        		<h1>&emsp;&emsp;</h1>
+        	<div class='atop'>
+        		<p>&emsp;</p>
 	        	<h2 class='am-h2 am-text-center'>所在地区</h2>
 	        	<button type="button" class="am-close close">&times;</button>
 			</div>
@@ -182,7 +206,6 @@
     	<div id="confirmAreaChoose">
     		<div>确定</div>
     	</div>
-    	<div id='show'>显示</div>
 	</div>
 	<script src="javascripts/public.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
@@ -190,12 +213,6 @@
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
 	<script>
-		setInterval(function(){
-			$("#loadingid").fadeIn();
-			setTimeout(function(){
-				$("#loadingid").fadeOut();
-			},1000)
-		},2000);
 		// 提交
 		$('.confirm').click(function(){
 			var uname = trimFn($('.uname').val()),
@@ -242,13 +259,14 @@
 				noticeFn({text:'详细地址只能是中文、英文和下划线组成！',time:1000});
 				return
 			}
-			
+			$('input[name="uaddress"]').val(uaddress);
 			// 验证通过则 提交
 			$("#form").submit();
 		})
 	</script>
 
 	<script>
+
 		// 密码可见不可见切换
 		$("#seepwd").click(function(){
 			if($(this).hasClass('am-icon-eye-slash')){
@@ -265,6 +283,7 @@
 		// 点击选择地区
 		$(".areabtn").click(function(){
 			$("#areaChoose").fadeIn('fast');
+			$('.atop>p').text('');	//确定按钮不显示
 			// 清空城市， 区县
 			$('.ctext').text('');
 			$('.atext').text('');
@@ -280,9 +299,31 @@
 		        // townFormat(info);
 		    });
 		})
+		// 选择城市的时候判断有没有区县
+		$('.city').on('click', 'p', function(){
+			// console.log($('.area>p').length)
+			setTimeout(function(){
+				// 没有区县可选
+				if($('.area>p').length <= 1){
+					$('.atop>p').text('确定');
 
+				}else{
+					$('.atop>p').text('');
+				}
+			},0)
+		})
+		// 地址面板点击确定(没有区县可选时候出现)
+		$('.atop>p').on('click',function(){
+			var province = $('.ptext').text(),
+					city = $('.ctext').text(),
+					area = $('.atext').text();
+
+			$('.uaddress').text(province + ' ' + city + ' ' + area);
+			$("#areaChoose").fadeOut('fast');	//关闭地区选择面板
+			$('.choosebtn').hide();	// 隐藏请选择
+		})
 		// 点击 xx 关闭地区选择面板
-		$(".close").click(function(){
+		$(".close").on('click',function(){
 			$("#areaChoose").fadeOut('fast');
 			
 			if(!$(".uaddress").text()){

@@ -18,6 +18,7 @@
 !function(){
     var navbar = document.createElement('div');
     navbar.setAttribute('id', 'navbar');
+    navbar.setAttribute('class','am-cf');
     navbar.innerHTML = '<span class="iconfont icon-fanhui1" onclick="history.go(-1)">&emsp;</span>'+
         '<h2>title</h2>'+
         '<span class="back2home">首页</span>';
