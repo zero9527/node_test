@@ -46,6 +46,8 @@ body {
 	border-bottom: 1px solid #eee;
     color: #000;
     background: #fff;
+    transition: .2s linear;
+    z-index: 999;
 }
 
 #navbar>h2,

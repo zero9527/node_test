@@ -180,6 +180,35 @@
 		    <div class="am-u-sm-10 confirm bgblue">确定</div>
 		</div>
 	</form>
+	<form action='' method='POST' class='am-container'>
+		<div class='am-g am-text-middle'>
+			<label for="" class='am-u-sm-3 nowrap'>收&nbsp;&nbsp;货&nbsp;&nbsp;人</label>
+			<input type="text" class='am-u-sm-9 uname' name='uname' placeholder="请输入收货人">
+		</div>
+		<div class='am-g am-text-middle'>
+			<label for="" class='am-u-sm-3'>手机号码</label>
+			<input type="text" class='am-u-sm-9 uphone' name='uphone' placeholder="请输入手机号">
+		</div>
+		<div class='am-g am-text-middle'>
+			<label for="" class='am-u-sm-3'>设置密码</label>
+			<input type="password" class='am-u-sm-7 upwd' name='upwd' placeholder="请输入密码">
+			<span class='am-u-sm-2 am-icon-eye-slash' id='seepwd'></span>
+		</div>
+		<div class='am-g am-text-middle'>
+			<label for="" class='am-u-sm-3 label'>所在地区</label>
+			<span class='am-u-sm-9 areabtn am-text-left uaddress'></span>
+			<input type="hidden" name='uaddress' value=''>
+			<span class='areabtn choosebtn' >请选择 ></span>
+		</div>
+		<div class='am-g am-text-middle'>
+	      	<label for="" class='am-u-sm-3 label'>收货地址</label>
+	      	<textarea class="am-u-sm-9 uaddrdetail" name='uaddrdetail' rows="5" placeholder="请输入详细地址信息、如道路、门牌号、小区、楼栋号、单元室等"></textarea>
+	    </div>
+	    <div class='time'></div>
+	    <div class="confirm">
+		    <div class="am-u-sm-10 confirm bgblue">确定</div>
+		</div>
+	</form>
 	<div id="areaChoose" class="citys">
 		<div class="areaChoosebg">&emsp;</div>
         <div class="areaDiv">
@@ -263,6 +292,8 @@
 			// 验证通过则 提交
 			$("#form").submit();
 		})
+	</script>
+	<script>
 	</script>
 
 	<script>
