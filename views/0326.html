@@ -38,7 +38,7 @@
 			margin-left: -40vw;
 			text-align: center;
 			border-radius: 4px;
-			font-size: 20px;
+			font-size: .8rem;
 		}
 		/*地区选择*/
 		#areaChoose {
@@ -48,7 +48,7 @@
 			display: none;
 			bottom: 0;
 			left: 0;
-			background: rgba(0,0,0,.5);
+			background: rgba(0,0,0,.2);
 			z-index: 999;
 		}
 		.areaChoosebg {
@@ -181,7 +181,7 @@
 		</div>
 	</form>
 	<div id="areaChoose" class="citys">
-		<div class="areaChoosebg"></div>
+		<div class="areaChoosebg">&emsp;</div>
         <div class="areaDiv">
         	<div class='atop'>
         		<p>&emsp;</p>
@@ -191,15 +191,15 @@
 			<div>
 				<div>
 					<p class='ptext ltext fblue'>请选择&nbsp;</p>
-					<div class='province' value="440000" data-code="440000"></div>
+					<div class='province areadiv' value="440000" data-code="440000"></div>
 				</div>
 				<div>
 					<p class='ctext ltext fblue'>&nbsp;</p>
-					<div class="city" value="440100" data-code="440100"></div>
+					<div class="city areadiv" value="440100" data-code="440100"></div>
 				</div>
 				<div>
 					<p class='atext ltext fblue'>&nbsp;</p>
-					<div class="area" value="440103" data-code="440103"></div>
+					<div class="area areadiv" value="440103" data-code="440103"></div>
 				</div>
 			</div>
     	</div>
@@ -318,6 +318,14 @@
 					city = $('.ctext').text(),
 					area = $('.atext').text();
 
+			if(city.indexOf('请选择') > -1){
+				noticeFn({text:'请选择一个有有效的地址！'});
+				return
+			}
+			if(area.indexOf('请选择') > -1){
+				noticeFn({text:'请选择一个有效的地址！'});
+				return
+			}
 			$('.uaddress').text(province + ' ' + city + ' ' + area);
 			$("#areaChoose").fadeOut('fast');	//关闭地区选择面板
 			$('.choosebtn').hide();	// 隐藏请选择
@@ -337,13 +345,20 @@
 				$('.province>p').removeClass('selected');
 			}
 			$(this).toggleClass('selected fblue');
+			
+		})
+		$('.areadiv').on('click','p', function(){
+			// console.log($(this).text())
+			if($(this).text().indexOf('请选择') > -1){
+				noticeFn({text:'请选择一个有有效的地址！'});
+			}
 		})
 		// 地区选择
 		var script = $("<script/>");
 		var scriptCode = `
 			// 选择地区
 			$(".areabtn").on("click", function(){
-					$("#areaChoose").fadeIn('fast');
+				$("#areaChoose").fadeIn('fast');
 			});
 
 			// 关闭地区选择，并显示到对应区域
@@ -354,11 +369,13 @@
 					area = $(this).text();
 				
 				$(".uaddress").text( (!province && !city && !area) ? '请选择' : province + ' ' + city + ' ' + area);
-
-				setTimeout(function(){
-					$("#areaChoose").fadeOut('fast');
-					$('.choosebtn').hide();
-				},300);
+				// console.log($(this).text().indexOf('请选择'));
+				if($(this).text().indexOf('请选择') == -1){
+					setTimeout(function(){
+						$("#areaChoose").fadeOut('fast');
+						$('.choosebtn').hide();
+					},300);
+				}
 
 			});`;
 		script.html(scriptCode);
