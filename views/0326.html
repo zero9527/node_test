@@ -147,40 +147,38 @@
 		#seepwd {
 			text-align: center;
 		}
+		#wrap {
+			width: 100vw;
+			height: 50vh;
+			position: relative;
+			margin: 10vh 0;
+			background: #fff;
+		}
+
+		#wrap>ul {
+			width: 500%;
+			height: 100%;
+			position: relative;
+			transition: .1s linear;
+			line-height: 50vh;
+		}
+		#wrap>ul::after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+		#wrap>ul>li {
+			width: 20%;
+			height: 100%;
+			float: left;
+			text-align: center;
+			vertical-align: baseline;
+		}
 
 	</style>
 </head>
 <body>
 	<form action='' id='form' method='POST' class='am-container'>
-		<div class='am-g am-text-middle'>
-			<label for="" class='am-u-sm-3 nowrap'>收&nbsp;&nbsp;货&nbsp;&nbsp;人</label>
-			<input type="text" class='am-u-sm-9 uname' name='uname' placeholder="请输入收货人">
-		</div>
-		<div class='am-g am-text-middle'>
-			<label for="" class='am-u-sm-3'>手机号码</label>
-			<input type="text" class='am-u-sm-9 uphone' name='uphone' placeholder="请输入手机号">
-		</div>
-		<div class='am-g am-text-middle'>
-			<label for="" class='am-u-sm-3'>设置密码</label>
-			<input type="password" class='am-u-sm-7 upwd' name='upwd' placeholder="请输入密码">
-			<span class='am-u-sm-2 am-icon-eye-slash' id='seepwd'></span>
-		</div>
-		<div class='am-g am-text-middle'>
-			<label for="" class='am-u-sm-3 label'>所在地区</label>
-			<span class='am-u-sm-9 areabtn am-text-left uaddress'></span>
-			<input type="hidden" name='uaddress' value=''>
-			<span class='areabtn choosebtn' >请选择 ></span>
-		</div>
-		<div class='am-g am-text-middle'>
-	      	<label for="" class='am-u-sm-3 label'>收货地址</label>
-	      	<textarea class="am-u-sm-9 uaddrdetail" name='uaddrdetail' rows="5" placeholder="请输入详细地址信息、如道路、门牌号、小区、楼栋号、单元室等"></textarea>
-	    </div>
-	    <div class='time'></div>
-	    <div class="confirm">
-		    <div class="am-u-sm-10 confirm bgblue">确定</div>
-		</div>
-	</form>
-	<form action='' method='POST' class='am-container'>
 		<div class='am-g am-text-middle'>
 			<label for="" class='am-u-sm-3 nowrap'>收&nbsp;&nbsp;货&nbsp;&nbsp;人</label>
 			<input type="text" class='am-u-sm-9 uname' name='uname' placeholder="请输入收货人">
@@ -236,11 +234,101 @@
     		<div>确定</div>
     	</div>
 	</div>
+	<div id='wrap'>
+		<ul>
+			<li>111111111111</li>
+			<li>222222222222</li>
+			<li>333333333333</li>
+			<li>444444444444</li>
+			<li>555555555555</li>
+		</ul>
+	</div>
 	<script src="javascripts/public.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="javascripts/jquery.citys.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
+	<script>
+		var ul = document.getElementById('wrap').getElementsByTagName('ul');
+		ul[0].addEventListener('touchstart',tstart);
+		ul[0].addEventListener('touchmove',tmove);
+		ul[0].addEventListener('touchend',tend);
+		// 起始位置
+		var startX = 0, startY = 0;
+		var nowX = 0, nowY = 0;		//move时的实时坐标
+		// 上次位置
+		var oldX = 0, oldY = 0;
+		var move = 1;	//移动的方向，1为右滑，-1为左滑
+		var offset;		//偏移距离
+		var oldLeft = 0;	//上次的left值
+		function tstart(e){
+			e = e || window.event;
+			e.preventDefault();
+
+			oldLeft = parseInt(ul[0].style.marginLeft) || 0;
+			console.log(e);
+			startX = e.changedTouches[0].pageX;
+			startY = e.changedTouches[0].pageY;
+
+			console.log('oldLeft: ', oldLeft);
+		}
+		function tmove(e){
+			e = e || window.event;
+			nowX = e.changedTouches[0].pageX;
+			nowY = e.changedTouches[0].pageY;
+			// console.log('nowX-oldX: ',nowX-oldX);
+			// console.log('nowY-oldY: ',nowY-oldY);
+
+			if(nowX - oldX > 0){
+				// console.log('手指向右>>滑');
+				offset = Number(nowX - startX);
+				move = 1;
+
+			}else if(nowX - oldX < 0){
+				// console.log('手指向左<<滑');
+				offset = Number(nowX - startX);
+				move = -1;
+			}
+			ul[0].style.marginLeft = oldLeft + offset + 'px';
+			
+			oldX = nowX;
+			oldY = nowY;
+
+		}
+		function tend(e){
+			var width = window.innerWidth;
+			// 是否超过1/4屏幕宽度
+			var offleft = Math.abs(nowX - startX) >= width/5 ? 1 : 0;
+			var remainLen = width - Math.abs(offset);		// 剩余位移量
+			var marginLeft = parseInt(ul[0].style.marginLeft);
+			console.log('offleft: ', offleft);
+			console.log('remainLen: ', remainLen);
+			console.log('marginLeft: ', marginLeft);
+			console.log('offset: ', offset);
+			if(offleft){
+				if(move > 0){
+					// console.log('手指向右>>滑');
+					if(marginLeft >= 0){		// 超出反弹
+						ul[0].style.marginLeft = '0';
+						return
+					}
+					ul[0].style.marginLeft = oldLeft + offset + remainLen + 'px';
+
+				}else if(move < 0){
+					// console.log('手指向左<<滑');
+					if(marginLeft <= -4*width){		// 超出反弹
+						ul[0].style.marginLeft = -4*width + 'px';
+						return
+					}
+					ul[0].style.marginLeft = oldLeft + offset - remainLen + 'px';
+
+				}
+			}else{
+				ul[0].style.marginLeft = oldLeft;
+			}
+		}
+
+	</script>
 	<script>
 		// 提交
 		$('.confirm').click(function(){
@@ -293,9 +381,6 @@
 			$("#form").submit();
 		})
 	</script>
-	<script>
-	</script>
-
 	<script>
 
 		// 密码可见不可见切换

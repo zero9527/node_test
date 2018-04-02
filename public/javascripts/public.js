@@ -66,8 +66,8 @@ var getLocaltime = function (_time) {
     var localetime = new Date(_time);
     var year = localetime.getFullYear(),
         month = (localetime.getMonth()+'').length == 1 
-          ? '0' + localetime.getMonth() 
-          : localetime.getMonth(),
+          ? +('0' + localetime.getMonth())+1
+          : localetime.getMonth()+1,
         date = (localetime.getDate()+'').length == 1
           ? '0' + localetime.getDate()
           : localetime.getDate(),
@@ -255,18 +255,21 @@ window.onscroll = function(){
     // 滑到顶部了
     if(scTop <= 6){
         navbar.setAttribute('style',
-            'position: relative;left:0;transform:translateY(0px)'
+            'position: relative;'
         );
         return
     }
     if(scrollTop - scTop > 0){
         // console.log('手指下滑');
         navbar.setAttribute('style',
-            'position: fixed;left:0;transform:translateY('+ scTop +'px)'
+            'position: fixed;'
         );
 
     }else if(scrollTop - scTop < 0){
         // console.log('手指上滑');
+        navbar.setAttribute('style',
+            'position: relative;'
+        );
 
     }
     // 初始化
