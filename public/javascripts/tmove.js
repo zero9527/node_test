@@ -118,15 +118,10 @@ tMove.prototype = {
 		获取 style
 	 */
 	getStyleFn: function(ele, attr){
-		if(window.getComputedStyle){
+		if(window.getComputedStyle){		//非IE
 			return window.getComputedStyle(ele, null)[attr];
 		}
+		// IE
 		return ele.currentStyle(attr);
-	},
-	/*
-		设置 style
-	 */
-	setStyleFn: function(){
-
 	}
 }
