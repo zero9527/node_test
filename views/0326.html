@@ -153,13 +153,14 @@
 			position: relative;
 			margin: 10vh 0;
 			background: #fff;
+			overflow: hidden;
 		}
 
 		#wrap>ul {
 			width: 500%;
 			height: 100%;
 			position: relative;
-			transition: .1s linear;
+			transition: .3s linear;
 			line-height: 50vh;
 		}
 		#wrap>ul::after {
@@ -173,6 +174,21 @@
 			float: left;
 			text-align: center;
 			vertical-align: baseline;
+		}
+		#wrap>ul>li:nth-of-type(1) {
+			background: lightblue;
+		}
+		#wrap>ul>li:nth-of-type(2) {
+			background: lightgreen;
+		}
+		#wrap>ul>li:nth-of-type(3) {
+			background: pink;
+		}
+		#wrap>ul>li:nth-of-type(4) {
+			background: aqua;
+		}
+		#wrap>ul>li:nth-of-type(5) {
+			background: greenyellow;
 		}
 
 	</style>
@@ -235,7 +251,7 @@
     	</div>
 	</div>
 	<div id='wrap'>
-		<ul>
+		<ul id='wrapul'>
 			<li>111111111111</li>
 			<li>222222222222</li>
 			<li>333333333333</li>
@@ -244,15 +260,23 @@
 		</ul>
 	</div>
 	<script src="javascripts/public.js"></script>
+	<script src="javascripts/tmove.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="javascripts/jquery.citys.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
 	<script>
-		var ul = document.getElementById('wrap').getElementsByTagName('ul');
-		ul[0].addEventListener('touchstart',tstart);
-		ul[0].addEventListener('touchmove',tmove);
-		ul[0].addEventListener('touchend',tend);
+		var wrapul = document.getElementById('wrapul');
+		// 实例化滑动
+		var move = new tMove(wrapul);
+
+		
+	</script>
+	<script>
+		// var ul = document.getElementById('wrap').getElementsByTagName('ul');
+		// ul[0].addEventListener('touchstart',tstart);
+		// ul[0].addEventListener('touchmove',tmove);
+		// ul[0].addEventListener('touchend',tend);
 		// 起始位置
 		var startX = 0, startY = 0;
 		var nowX = 0, nowY = 0;		//move时的实时坐标
@@ -296,8 +320,9 @@
 
 		}
 		function tend(e){
+			//oldLeft：上次marginleft
 			var width = window.innerWidth;
-			// 是否超过1/4屏幕宽度
+			// 是否超过1/5屏幕宽度
 			var offleft = Math.abs(nowX - startX) >= width/5 ? 1 : 0;
 			var remainLen = width - Math.abs(offset);		// 剩余位移量
 			var marginLeft = parseInt(ul[0].style.marginLeft);
@@ -305,29 +330,36 @@
 			console.log('remainLen: ', remainLen);
 			console.log('marginLeft: ', marginLeft);
 			console.log('offset: ', offset);
-			if(offleft){
-				if(move > 0){
-					// console.log('手指向右>>滑');
+			
+			if(move > 0){
+				// console.log('手指向右>>滑');
+				if(offleft){	//滑动距离超过屏幕1/5宽度
 					if(marginLeft >= 0){		// 超出反弹
 						ul[0].style.marginLeft = '0';
 						return
 					}
 					ul[0].style.marginLeft = oldLeft + offset + remainLen + 'px';
 
-				}else if(move < 0){
-					// console.log('手指向左<<滑');
+				}else{	//滑动距离小于屏幕1/5宽度
+
+					ul[0].style.marginLeft = oldLeft + 'px';
+				}
+			}else if(move < 0){
+				// console.log('手指向左<<滑');
+				if(offleft){	//滑动距离超过屏幕1/5宽度
 					if(marginLeft <= -4*width){		// 超出反弹
 						ul[0].style.marginLeft = -4*width + 'px';
 						return
 					}
 					ul[0].style.marginLeft = oldLeft + offset - remainLen + 'px';
 
+				}else{	//滑动距离小于屏幕1/5宽度
+					ul[0].style.marginLeft = oldLeft + 'px';
 				}
-			}else{
-				ul[0].style.marginLeft = oldLeft;
-			}
-		}
 
+			}
+			
+		}
 	</script>
 	<script>
 		// 提交
