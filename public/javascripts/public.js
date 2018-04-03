@@ -29,6 +29,7 @@
     var title = document.getElementById('navbar').getElementsByTagName('h2');
     title[0].innerText = document.getElementsByTagName('title')[0].innerText;
 }()
+
 //验证特殊字符
 var specailCheck = function(val){
     return /^[`~!@#$^&*()=|{}':;',\[\].<>/?~！@#￥……&*（）——|{}【】\s‘；：”“'。，、？]$/.test(val)
@@ -82,7 +83,7 @@ var getLocaltime = function (_time) {
           : localetime.getSeconds();
 
     var normal = year + '/' + month + '/'  + date + '\t'  + hour + ':'  + minute;
-    if(!_time) normal = '时间不见了';
+    if(!_time) normal = '--';
     // console.log('year + month + day + hour + minute: ', normal);
     return normal;
 }
@@ -101,16 +102,28 @@ var getLocaltime = function (_time) {
 
     // 生成确认取消框元素
     var confirm = document.createElement('div');
-    var contain = '<div id="confirmDiv" style="width:80vw;max-width:400px;position:fixed;padding:16px 0 0;top:40%;left:50%;text-align:center;border-radius:14px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff">'+
-        '<h3>提示</h3>'+
-        '<p style="padding:6px"></p>'+
-        '<div style="width:100%;border-top:1px solid #aaa;margin-top: 16px;">'+
-            '<span id="confirmfalse" style="width:48%;display:inline-block;padding:10px 16px;border-right:1px solid #aaa;color:#0076FF;">取消</span>'+
-            '<span id="confirmtrue" style="width:48%;display:inline-block;;padding:10px 16px;color:#0076FF;">确定</span>'+
+    var contain = '<div id="confirmDiv" style="width:80vw;max-width:400px;position:fixed;'+
+    'top:40%;left:50%;text-align:center;border-radius:2px;'+
+    'box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);'+
+    'z-index:999;background:#fff">'+
+        '<div style="padding:8px 16px;text-align:left;background:#f8f8f8;">温馨提示'+
+            '<span id="closebtn" class="iconfont icon-chacha1" style="width:10%;float:right;text-align:center;"></span>'+
+        '</div>'+
+        '<div style="padding:6px;margin: 16px 0;">'+
+            '<p><i class="am-icon-question-circle-o"></i>&nbsp;确定要&nbsp;'+
+            '<span class="text" style="color:#0d94f3;"></span>&nbsp;吗？</p>'+
+        '</div>'+
+        '<div style="width:100%;padding:3% 0;">'+
+            '<span style="width:30%;display:inline-block;">&emsp;</span>'+
+            '<span id="confirmtrue" style="width:24%;display:inline-block;padding:4px 0;'+
+            'margin-right:10px;color:#fff;background:#0d94f3;border-radius:2px;">确定</span>'+
+            '<span id="confirmfalse" style="width:24%;display:inline-block;padding:4px 0;'+
+            'color:#000;background:#eee;">取消</span>'+
         '</div>'+
     '</div>';
     // 遮罩层
-    confirm.setAttribute('style','width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;');
+    confirm.setAttribute('style','width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;'+
+        'background:rgba(0,0,0,.2);z-index:9999;');
     confirm.innerHTML = contain;
 
     // 添加到页面
@@ -194,11 +207,21 @@ var confirmFn = function(text, callback){
     document.body.style.overflow = 'hidden';
     var confirm = document.getElementById('confirmDiv');
     confirm.parentNode.style.display = 'block';
-    confirm.getElementsByTagName('p')[0].innerHTML = text;
+    confirm.getElementsByClassName('text')[0].innerHTML = text;
     // 确定，取消按钮
     var confirmtrue = document.getElementById('confirmtrue');
     var confirmfalse = document.getElementById('confirmfalse');
+    var closebtn = document.getElementById('closebtn');
 
+    // 点击 xx 关闭
+    closebtn.onclick = function(){
+
+        document.body.style.overflow = 'auto';
+        //移除元素
+        setTimeout(function(){
+            confirm.parentNode.style.display = 'none';
+        }, 30);
+    }
     // 点击确定
     confirmtrue.onclick = function(){
         callback(true);
