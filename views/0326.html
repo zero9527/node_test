@@ -266,6 +266,18 @@
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
 	<script>
+		// 试试 map
+		var arr0 = [];
+		var arr = [12,24,36,48,60];
+		for(var i=0; i<arr.length; i++){
+			
+			if(Math.abs(30 - arr[i]) <= (arr[2] - arr[1])/2){
+				console.log(21313);
+				arr0[0] = arr[i];
+			}
+			
+		}
+		console.log('arr0: ',arr0);
 		var wrapul = document.getElementById('wrapul');
 		// 实例化滑动
 		var move = new tMove(wrapul);

@@ -75,6 +75,7 @@ tMove.prototype = {
 		touchend 函数
 	 */ 
 	tendFn: function(e){
+		var uli = elem.getElementsByTagName('li');
 		var that = tMove.prototype;		// 方便获取其他方法
 		var width = window.innerWidth;
 		// 是否超过1/5屏幕宽度
@@ -96,9 +97,9 @@ tMove.prototype = {
 				elem.style.marginLeft = oldLeft + offset + remainLen + 'px';
 
 			}else{	//滑动距离小于屏幕1/5宽度
-
 				elem.style.marginLeft = oldLeft + 'px';
 			}
+
 		}else if(move < 0){
 			// console.log('手指向左<<滑');
 			if(offleft){	//滑动距离超过屏幕1/5宽度
@@ -113,6 +114,18 @@ tMove.prototype = {
 			}
 
 		}
+		// 消除抖动
+		// 防止上次滑动未结束,再次滑动造成的bug
+		setTimeout(function(){
+			for(var i=0; i<uli.length; i++){
+				
+				// console.log(Math.abs(oldLeft + i*width), width/2);
+				if(Math.abs(oldLeft + i*width) <= width/2){
+					// console.log('i*width: ',-i*width);
+					elem.style.marginLeft = -i*width + 'px';
+				}
+			}
+		},500)
 	},
 	/*
 		获取 style
