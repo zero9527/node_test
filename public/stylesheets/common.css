@@ -30,6 +30,7 @@ body {
 	min-height: 500px;
 	font-size: .7rem;
 	background: #edeef2;
+	transform: translate3d(0,0,0);
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
