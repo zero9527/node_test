@@ -334,7 +334,17 @@
 		})
 	</script>
 	<script>
+		$('.uaddrdetail').click(function(){
+			var scHeight = document.documentElement.scrollHeight;
+			var clHieght = document.documentElement.clientHeight;
+			var scTop = document.body.scrollTop || document.documentElement.scrollTop;
+			console.log(scHeight , clHieght)
+			console.log(scTop)
+			// 滚动到底部
+			scTop = scHeight - clHieght;
+			console.log(scTop)
 
+		})
 		// 密码可见不可见切换
 		$("#seepwd").click(function(){
 			if($(this).hasClass('am-icon-eye-slash')){

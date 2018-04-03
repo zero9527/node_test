@@ -285,7 +285,7 @@ window.onscroll = function(){
     if(scrollTop - scTop > 0){
         // console.log('手指下滑');
         navbar.setAttribute('style',
-            'position: fixed;transform:translateY(' + scTop + 'px)'
+            'position: fixed;'
         );
 
     }else if(scrollTop - scTop < 0){
