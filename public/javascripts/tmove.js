@@ -117,15 +117,16 @@ tMove.prototype = {
 		// 消除抖动
 		// 防止上次滑动未结束,再次滑动造成的bug
 		setTimeout(function(){
+			marginLeft = parseInt(that.getStyleFn(elem, 'margin-left'));
 			for(var i=0; i<uli.length; i++){
 				
-				// console.log(Math.abs(oldLeft + i*width), width/2);
-				if(Math.abs(oldLeft + i*width) <= width/2){
+				// console.log(Math.abs(marginLeft + i*width), width/2);
+				if(Math.abs(marginLeft + i*width) <= width/2){
 					// console.log('i*width: ',-i*width);
 					elem.style.marginLeft = -i*width + 'px';
 				}
 			}
-		},500)
+		},600)
 	},
 	/*
 		获取 style
