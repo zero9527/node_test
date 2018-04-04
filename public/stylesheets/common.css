@@ -61,7 +61,7 @@ body {
 	height: 100%;
 	display: inline-block;
 	position: relative;
-	top: 0;
+	top: -1px;
 	text-align: center;
 	float: left;
 }
@@ -75,6 +75,41 @@ body {
 }
 #navbar>span:nth-of-type(1){
 	font-size: 1.2rem;
+}
+body .nav-move {
+	position: fixed !important;
+	-webkit-animation: navmove .3s linear forwards;
+	        animation: navmove .3s linear forwards;
+}
+@-webkit-keyframes navmove {
+	from {
+		-webkit-transform: translateY(-100%);
+		        transform: translateY(-100%);
+	}
+	to {
+		-webkit-transform: translateY(0);
+		        transform: translateY(0);
+	}
+}
+@keyframes navmove {
+	from {
+		-webkit-transform: translateY(-100%);
+		        transform: translateY(-100%);
+	}
+	to {
+		-webkit-transform: translateY(0);
+		        transform: translateY(0);
+	}
+}
+@keyframes navmove {
+	from {
+		-webkit-transform: translateY(-100%);
+		        transform: translateY(-100%);
+	}
+	to {
+		-webkit-transform: translateY(0);
+		        transform: translateY(0);
+	}
 }
 /* 导航栏--结束 */
 

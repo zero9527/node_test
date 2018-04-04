@@ -261,22 +261,16 @@ window.onscroll = function(){
     // console.log('scrollTop-scTop: ',scrollTop-scTop);
     // 滑到顶部了
     if(scTop <= 6){
-        navbar.setAttribute('style',
-            'position: relative;'
-        );
+        navbar.setAttribute('class','');
         return
     }
     if(scrollTop - scTop > 0){
         // console.log('手指下滑');
-        navbar.setAttribute('style',
-            'position: fixed;'
-        );
+        navbar.setAttribute('class','nav-move');
 
     }else if(scrollTop - scTop < 0){
         // console.log('手指上滑');
-        navbar.setAttribute('style',
-            'position: relative;'
-        );
+        navbar.setAttribute('class','');
 
     }
     // 初始化
