@@ -101,16 +101,6 @@ body .nav-move {
 		        transform: translateY(0);
 	}
 }
-@keyframes navmove {
-	from {
-		-webkit-transform: translateY(-100%);
-		        transform: translateY(-100%);
-	}
-	to {
-		-webkit-transform: translateY(0);
-		        transform: translateY(0);
-	}
-}
 /* 导航栏--结束 */
 
 /* 去除amazeui样式--开始 */
