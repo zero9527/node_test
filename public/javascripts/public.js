@@ -93,37 +93,28 @@ var getLocaltime = function (_time) {
     // 生成提示框元素
     var notice = document.createElement('div');
     notice.setAttribute('id', 'noticeDiv');
-    notice.setAttribute('style',
-        'width:80vw;max-width:400px;position:fixed;padding:10px 16px;top:50%;left:50%;'+
-        'text-align:center;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);'+
-        'margin-left:-40vw;margin-top:-50%;transition:.2s ease;'+
-        'z-index:999;transform:scale(0);z-index:9999'
-    ); 
-
+    notice.innerHTML = '<span></span>';
+    var style = document.createElement('style');
+    style.innerHTML = '#loadingid {width:30vmin;height:30vmin;display:none;position:fixed;max-width:200px;max-height:200px;left:50%;top:50%;border-radius:4px;transform:translate(-50%,-50%);color:#eee;background:rgba(0,0,0,.8);}#loadingid>div {width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-flow:column;}#noticeDiv {width:100vw;max-width:400px;position:fixed;padding: 0 4%;top:50%;left:50%;text-align:center;margin-left:-50%;margin-top:-50%;transition:.2s ease;z-index:999;transform:scale(0);z-index:9999;}#noticeDiv>span {display:inline-block;padding:10px;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);}#confirmDiv {width:90vw;max-width:400px;position:fixed;top:40%;left:50%;text-align:center;border-radius:2px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff}#confirmDiv>div {padding:8px 16px;text-align:left;}#confirmDiv>div:nth-of-type(1) {background:#f8f8f8;}#closebtn {width:10%;float:right;text-align:center;}#confirmdiv3 {width:100%;padding:3% 0;}#confirmdiv3>span {display:inline-block;}#confirmdiv3>span:nth-of-type(1){width:30%;}#confirmfalse,#confirmtrue {width:24%;padding:4px 0;color:#fff;background:#0d94f3;border-radius:2px;text-align:center;}#confirmtrue {margin-right:10px;color:#fff;background:#0d94f3;}#confirmfalse {color:#000;background:#eee;}#confirmPar {width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;}';
+    document.head.appendChild(style);
     // 生成确认取消框元素
     var confirm = document.createElement('div');
-    var contain = '<div id="confirmDiv" style="width:80vw;max-width:400px;position:fixed;'+
-    'top:40%;left:50%;text-align:center;border-radius:2px;'+
-    'box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);'+
-    'z-index:999;background:#fff">'+
-        '<div style="padding:8px 16px;text-align:left;background:#f8f8f8;">温馨提示'+
-            '<span id="closebtn" class="iconfont icon-chacha1" style="width:10%;float:right;text-align:center;"></span>'+
+    // 遮罩层
+    confirm.setAttribute('id','confirmPar');
+    var contain = '<div id="confirmDiv">'+
+        '<div >温馨提示'+
+            '<span id="closebtn" class="iconfont icon-chacha1" ></span>'+
         '</div>'+
-        '<div style="padding:6px;margin: 16px 0;">'+
+        '<div style="margin: 16px 0;">'+
             '<p><i class="am-icon-question-circle-o"></i>&nbsp;确定要&nbsp;'+
             '<span class="text" style="color:#0d94f3;"></span>&nbsp;吗？</p>'+
         '</div>'+
-        '<div style="width:100%;padding:3% 0;">'+
-            '<span style="width:30%;display:inline-block;">&emsp;</span>'+
-            '<span id="confirmtrue" style="width:24%;display:inline-block;padding:4px 0;'+
-            'margin-right:10px;color:#fff;background:#0d94f3;border-radius:2px;">确定</span>'+
-            '<span id="confirmfalse" style="width:24%;display:inline-block;padding:4px 0;'+
-            'color:#000;background:#eee;">取消</span>'+
+        '<div id="confirmdiv3">'+
+            '<span>&emsp;</span>'+
+            '<span id="confirmtrue" >确定</span>'+
+            '<span id="confirmfalse" >取消</span>'+
         '</div>'+
     '</div>';
-    // 遮罩层
-    confirm.setAttribute('style','width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;'+
-        'background:rgba(0,0,0,.2);z-index:9999;');
     confirm.innerHTML = contain;
 
     // 添加到页面
@@ -150,11 +141,11 @@ var noticeFn = function(obj){
     //设置背景颜色
     obj.bgcolor = obj.bgcolor || 'rgba(90,90,90,.9)';
     // 消失时间
-    obj.time = obj.time || 1500;
+    obj.time = obj.time || 1800;
     var notice = document.getElementById('noticeDiv');
-
+    var noticeSpan = notice.getElementsByTagName('span')[0];
     // 防止多次点击, 弹框跳动
-    if(notice.innerHTML){
+    if(noticeSpan.innerHTML){
         notice.style.transform = 'scale(1.2)';
         notice.style.transform = 'scale(1)';
         
@@ -166,14 +157,14 @@ var noticeFn = function(obj){
             notice.style.transform = 'scale(1.1)';
             setTimeout(function(){
                 notice.style.transform = 'scale(0)';
-                notice.innerHTML = '';
+                noticeSpan.innerHTML = '';
             },100);
         },obj.time);
         return
     }
-    notice.innerHTML = obj.text;
-    notice.style.color = obj.fcolor;
-    notice.style.background = obj.bgcolor;
+    noticeSpan.innerHTML = obj.text;
+    noticeSpan.style.color = obj.fcolor;
+    noticeSpan.style.background = obj.bgcolor;
     notice.style.transform = 'scale(1)';
     notice.style.opacity = '1';
 
@@ -183,7 +174,7 @@ var noticeFn = function(obj){
         notice.style.transform = 'scale(1.1)';
         setTimeout(function(){
             notice.style.transform = 'scale(0)';
-            notice.innerHTML = '';
+            noticeSpan.innerHTML = '';
         },100);
     },obj.time);
 }
@@ -251,14 +242,7 @@ var confirmFn = function(text, callback){
 !function(){
     var loading = document.createElement('div');
     loading.setAttribute('id', 'loadingid');
-    loading.setAttribute('style', 
-        'width:30vmin;height:30vmin;display:none;position:fixed;'+
-        'max-width:200px;max-height:200px;left:50%;top:50%;'+
-        'border-radius:4px;transform:translate(-50%,-50%);'+
-        'color:#eee;background:rgba(0,0,0,.8);'
-    );
-    loading.innerHTML = '<div style="width:100%;height:100%;'+
-    'display:flex;align-items:center;justify-content:center;flex-flow:column;">'+
+    loading.innerHTML = '<div>'+
     '<i class="am-icon-spinner am-icon-pulse am-icon-lg"></i>'+
     '<div class="am-text-center" style="margin-top:10px;">正在加载 ...</div></div>';
 

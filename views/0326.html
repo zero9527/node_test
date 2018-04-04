@@ -192,6 +192,7 @@
 		}
 		
 	</style>
+
 </head>
 <body>
 	<form action='' id='form' method='POST' class='am-container'>
@@ -260,12 +261,12 @@
 		</ul>
 	</div> -->
 	
-	<script src="javascripts/public.js"></script>
 	<script src="javascripts/tmove.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="javascripts/jquery.citys.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
+	<script src="javascripts/public.js"></script>
 	<script>
 		// 试试 map
 		var arr0 = [];
@@ -292,7 +293,7 @@
 
 			//验证收货人
 			if(!uname){
-				noticeFn({text:'请输入收货人！',time:1000});
+				noticeFn({text:'请输入收货人！'});
 				return
 			}else if(!nameCheck(uname)){
 				noticeFn({text:'收货人只能是中文,英文,下划线组成',time:1000});

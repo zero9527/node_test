@@ -49,6 +49,13 @@ body {
     z-index: 999;
 }
 
+#navbar::after {
+	content: '';
+	display: block;
+	visibility: hidden;
+	clear: both;
+	zoom: 1;
+}
 #navbar>h2,
 #navbar>span {
 	height: 100%;
@@ -72,35 +79,32 @@ body {
 /* 导航栏--结束 */
 
 /* 去除amazeui样式--开始 */
-label {
-	margin-bottom: 0;
+.am-datepicker tr.am-datepicker-header {font-size: .7rem;
 }
+.am-datepicker td {font-size: .7rem;}
+label {margin-bottom: 0;}
 
-[class*=am-u-] {
-	padding: 0;
-}
+[class*=am-u-] {padding: 0;}
 
-ul, ol, li {
-	padding: 0;
-	list-style: none;
-}
-p {
-	margin: 0;
-}
+ul, ol, li {padding: 0;list-style: none;}
+p {margin: 0;}
 /* 去除amazeui样式--结束 */
 
+/* 一些自定义方法类 -- 开始 */
+
+/*左浮动*/
+.fleft {float: left;}
+/*右浮动*/
+.fright {float: right;}
+
+/*清除浮动*/
+.cfix::after {content: '';display: block;visibility: hidden;clear: both;zoom: 1;}
+
 /*不换行*/
-.nowrap {
-	white-space: nowrap;
-}
+.nowrap {white-space: nowrap;}
+/* 一些自定义方法类 -- 结束 */
 
 /*蓝色字体*/
-.fblue {
-	color: #0d94f3;
-}
-
+.fblue {color: #0d94f3;}
 /*蓝色背景*/
-.bgblue {
-	color: #fff;
-	background: #0d94f3;
-}
+.bgblue {color: #fff;background: #0d94f3;}

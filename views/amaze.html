@@ -95,6 +95,8 @@
 			right: 0;
 			z-index: 101;
 		}
+
+
 	</style>
 </head>
 <body>
@@ -298,7 +300,7 @@
 			  		// console.log('end: ',end);
 			  		// 判断范围，限制时间段
 			  		if(start && end && start >= end){
-			  			that.noticeFn( {text:'结束时间不能小于或等于开始时间！'} );
+			  			noticeFn( {text:'结束时间不能小于或等于开始时间！'} );
 			  			return
 			  		}
 
