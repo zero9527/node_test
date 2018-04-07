@@ -12,11 +12,39 @@ var oldY = 0;
 var move = 1;	//移动的方向，1为右滑，-1为左滑
 var offset = 0;		//偏移距离
 var oldLeft = 0;	//上次的left值
+var lilen = 0;		// li的数量
 
-function tMove(_elem){
-	this.elem = _elem;
+/* +++++++++++ 推荐的HTML结构
+ 	<div id='wrap'>
+		<ul id='wrapul'>
+			<li>111111111111</li>
+			<li>222222222222</li>
+			<li>333333333333</li>
+			<li>444444444444</li>
+			<li>555555555555</li>
+			<li>666666666666</li>
+			<li>777777777777</li>
+		</ul>
+	</div>
+
+	+++++++++ 调用：
+	var wrapul = document.getElementById('wrapul');
+	var lilen = wrapul.getElementsByTagName('li').length;
+	// 实例化滑动
+	var move = new tMove(wrapul, lilen);
+
+	+++++++++ CSS:
+	#wrap {width: 100vw;height: 50vh;position: relative;margin: 10vh 0;background: #fff;overflow: hidden;}
+	#wrap>ul {width: 700%;height: 100%;position: relative;transition: .3s linear;line-height: 50vh;}
+	#wrap>ul::after {content: '';display: block;clear: both;}
+	#wrap>ul>li {width: 14.28%;height: 100%;float: left;text-align: center;vertical-align: baseline;}
+*/
+function tMove(_elem, _lilen){
+	this.elem = _elem;		// 滑动的元素 ul
+	this.lilen = _lilen;	// 滑动元素儿子 li 的数量
+
 	elem = this.elem;
-
+	lilen = this.lilen;
 	// 初始化函数
 	this.init();
 }
@@ -39,6 +67,7 @@ tMove.prototype = {
 		e = e || window.event;
 		e.preventDefault();
 		console.log(e);
+		// 记录开始的位置
 		oldLeft = parseInt(that.getStyleFn(elem, 'margin-left')) || 0;
 		startX = e.changedTouches[0].pageX;
 		startY = e.changedTouches[0].pageY;
@@ -103,8 +132,8 @@ tMove.prototype = {
 		}else if(move < 0){
 			// console.log('手指向左<<滑');
 			if(offleft){	//滑动距离超过屏幕1/5宽度
-				if(marginLeft <= -4*width){		// 超出反弹
-					elem.style.marginLeft = -4*width + 'px';
+				if(marginLeft <= -(lilen-1)*width){		// 超出反弹
+					elem.style.marginLeft = -(lilen-1)*width + 'px';
 					return
 				}
 				elem.style.marginLeft = oldLeft + offset - remainLen + 'px';
@@ -124,8 +153,8 @@ tMove.prototype = {
 					elem.style.marginLeft = '0';
 					return
 				}
-				if(marginLeft <= -4*width){		// 超出反弹
-					elem.style.marginLeft = -4*width + 'px';
+				if(marginLeft <= -(lilen-1)*width){		// 超出反弹
+					elem.style.marginLeft = -(lilen-1)*width + 'px';
 					return
 				}
 				// console.log(Math.abs(marginLeft + i*width), width/2);

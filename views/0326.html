@@ -157,7 +157,7 @@
 		}
 
 		#wrap>ul {
-			width: 500%;
+			width: 700%;
 			height: 100%;
 			position: relative;
 			transition: .3s linear;
@@ -169,7 +169,7 @@
 			clear: both;
 		}
 		#wrap>ul>li {
-			width: 20%;
+			width: 14.28%;
 			height: 100%;
 			float: left;
 			text-align: center;
@@ -258,6 +258,8 @@
 			<li>333333333333</li>
 			<li>444444444444</li>
 			<li>555555555555</li>
+			<li>666666666666</li>
+			<li>777777777777</li>
 		</ul>
 	</div>
 	
@@ -278,8 +280,9 @@
 		
 		console.log(arr0)
 		var wrapul = document.getElementById('wrapul');
+		var lilen = wrapul.getElementsByTagName('li').length;
 		// 实例化滑动
-		var move = new tMove(wrapul);
+		var move = new tMove(wrapul, lilen);
 
 	</script>
 	<script>
