@@ -73,6 +73,8 @@
 		#selectMenu {
 			height: 30vh;
 			position: relative;
+			border-top: 1px solid #eee;
+			background: aliceblue;
 			overflow-y: scroll;
 		}
 		#selectMenu>li {
@@ -80,23 +82,32 @@
 			line-height: 8vh;
 			vertical-align: middle;
 			transition: .3s ease;
+			color: #666;
 		}
 		/*选中的时间*/
 		.timeshadow {
-			width: 100%;
+			width: 30%;
 			height: 6vh;
 			position: absolute;
-			top: 15vh;
-			margin-top: -3vh;
-			box-shadow: 0 0 20px rgba(156,156,156, .5) inset;
+			top: 50%;
+			left: 50%;
+			margin-top: 0;
+		    margin-left: -15%;
+		    border-style: solid;
+		    border-color: #5eb95e transparent #5eb95e transparent;
+		    z-index: 10;
 		}
 		#timeok {
 			position: absolute;
+			padding: 2px 6px;
 			right: 0;
 			z-index: 101;
 		}
-
-
+		
+		#selectMenu>.slideNow {
+			color: #333;
+			transform: scale(1.6);
+		}
 	</style>
 </head>
 <body>
@@ -318,10 +329,10 @@
 			  		// 选中的时间
 			  		var nowLi = Math.round((scTop-fTop)/cH);
 			  		for(var i=0; i<$('#selectMenu>li').length; i++){
-			  			$('#selectMenu>li').eq(i).css({transform: 'scale(1)'});
+			  			$('#selectMenu>li').eq(i).removeClass('slideNow');
 			  		}
 			  		// 头尾个两个空白占位元素，所以nowLi+2
-			  		selecttime = $('#selectMenu>li').eq(nowLi+2).css({transform: 'scale(1.6)'});
+			  		selecttime = $('#selectMenu>li').eq(nowLi+2).addClass('slideNow');
 			  		selecttime = $('#selectMenu>li').eq(nowLi+2)[0].innerText;
 			  		// console.log('selecttime: ', selecttime);
 			  	})
