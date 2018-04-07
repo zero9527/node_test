@@ -251,7 +251,7 @@
     		<div>确定</div>
     	</div>
 	</div>
-	<div id='wrap'>
+	<!-- <div id='wrap'>
 		<ul id='wrapul'>
 			<li>111111111111</li>
 			<li>222222222222</li>
@@ -261,7 +261,7 @@
 			<li>666666666666</li>
 			<li>777777777777</li>
 		</ul>
-	</div>
+	</div> -->
 	
 	<script src="javascripts/tmove.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
@@ -279,10 +279,10 @@
 		},0)
 		
 		console.log(arr0)
-		var wrapul = document.getElementById('wrapul');
-		var lilen = wrapul.getElementsByTagName('li').length;
-		// 实例化滑动
-		var move = new tMove(wrapul, lilen);
+		// var wrapul = document.getElementById('wrapul');
+		// var lilen = wrapul.getElementsByTagName('li').length;
+		// // 实例化滑动
+		// var move = new tMove(wrapul, lilen);
 
 	</script>
 	<script>
@@ -299,37 +299,37 @@
 				noticeFn({text:'请输入收货人！'});
 				return
 			}else if(!nameCheck(uname)){
-				noticeFn({text:'收货人只能是中文,英文,下划线组成',time:1000});
+				noticeFn({text:'收货人只能是中文,英文,下划线组成'});
 				return
 			}
 
 			//验证手机号码
 			if(!uphone){
-				noticeFn({text:'请输入手机号码！',time:1000});
+				noticeFn({text:'请输入手机号码！'});
 				return
 			}else if(!phoneCheck(uphone)){
-				noticeFn({text:'请输入正确的手机号码！',time:1000});
+				noticeFn({text:'请输入正确的手机号码！'});
 				return
 			}
 
 			//验证密码
 			if(!upwd){
-				noticeFn({text:'请输入密码！',time:1000});
+				noticeFn({text:'请输入密码！'});
 				return
 			}
 
 			//验证地区
 			if(!uaddress){
-				noticeFn({text:'请选择收货地区！',time:1000});
+				noticeFn({text:'请选择收货地区！'});
 				return
 			}
 
 			//验证详细地址
 			if(!uaddrdetail){
-				noticeFn({text:'请输入详细地址！',time:1000});
+				noticeFn({text:'请输入详细地址！'});
 				return
 			}else if(!nameCheck(uaddrdetail)){
-				noticeFn({text:'详细地址只能是中文、英文和下划线组成！',time:1000});
+				noticeFn({text:'详细地址只能是中文、英文和下划线组成！'});
 				return
 			}
 			$('input[name="uaddress"]').val(uaddress);

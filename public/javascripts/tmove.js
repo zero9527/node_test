@@ -108,7 +108,7 @@ tMove.prototype = {
 		var that = tMove.prototype;		// 方便获取其他方法
 		var width = window.innerWidth;
 		// 是否超过1/5屏幕宽度
-		var offleft = Math.abs(nowX - startX) >= width/5 ? 1 : 0;
+		var offleft = Math.abs(nowX - startX) >= width/6 ? 1 : 0;
 		var remainLen = width - Math.abs(offset);		// 剩余位移量
 		var marginLeft = parseInt(that.getStyleFn(elem, 'margin-left'));
 		// console.log('offleft: ', offleft);
@@ -118,27 +118,27 @@ tMove.prototype = {
 		
 		if(move > 0){
 			// console.log('手指向右>>滑');
-			if(offleft){	//滑动距离超过屏幕1/5宽度
+			if(offleft){	//滑动距离超过屏幕1/6宽度
 				if(marginLeft >= 0){		// 超出反弹
 					elem.style.marginLeft = '0';
 					return
 				}
 				elem.style.marginLeft = oldLeft + offset + remainLen + 'px';
 
-			}else{	//滑动距离小于屏幕1/5宽度
+			}else{	//滑动距离小于屏幕1/6宽度
 				elem.style.marginLeft = oldLeft + 'px';
 			}
 
 		}else if(move < 0){
 			// console.log('手指向左<<滑');
-			if(offleft){	//滑动距离超过屏幕1/5宽度
+			if(offleft){	//滑动距离超过屏幕1/6宽度
 				if(marginLeft <= -(lilen-1)*width){		// 超出反弹
 					elem.style.marginLeft = -(lilen-1)*width + 'px';
 					return
 				}
 				elem.style.marginLeft = oldLeft + offset - remainLen + 'px';
 
-			}else{	//滑动距离小于屏幕1/5宽度
+			}else{	//滑动距离小于屏幕1/6宽度
 				elem.style.marginLeft = oldLeft + 'px';
 			}
  
