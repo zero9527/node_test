@@ -112,7 +112,7 @@ tMove.prototype = {
 			}else{	//滑动距离小于屏幕1/5宽度
 				elem.style.marginLeft = oldLeft + 'px';
 			}
-
+ 
 		}
 		// 消除抖动
 		// 防止上次滑动未结束,再次滑动造成的bug
@@ -120,6 +120,14 @@ tMove.prototype = {
 			marginLeft = parseInt(that.getStyleFn(elem, 'margin-left'));
 			for(var i=0; i<uli.length; i++){
 				
+				if(marginLeft >= 0){		// 超出反弹
+					elem.style.marginLeft = '0';
+					return
+				}
+				if(marginLeft <= -4*width){		// 超出反弹
+					elem.style.marginLeft = -4*width + 'px';
+					return
+				}
 				// console.log(Math.abs(marginLeft + i*width), width/2);
 				if(Math.abs(marginLeft + i*width) <= width/2){
 					// console.log('i*width: ',-i*width);
