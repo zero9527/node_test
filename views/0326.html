@@ -157,7 +157,7 @@
 		}
 
 		#wrap>ul {
-			width: 700%;
+			width: 500%;
 			height: 100%;
 			position: relative;
 			transition: .3s linear;
@@ -169,7 +169,7 @@
 			clear: both;
 		}
 		#wrap>ul>li {
-			width: 14.28%;
+			width: 20%;
 			height: 100%;
 			float: left;
 			text-align: center;
@@ -251,17 +251,15 @@
     		<div>确定</div>
     	</div>
 	</div>
-	<!-- <div id='wrap'>
+	<div id='wrap'>
 		<ul id='wrapul'>
 			<li>111111111111</li>
 			<li>222222222222</li>
 			<li>333333333333</li>
 			<li>444444444444</li>
 			<li>555555555555</li>
-			<li>666666666666</li>
-			<li>777777777777</li>
 		</ul>
-	</div> -->
+	</div>
 	
 	<script src="javascripts/tmove.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
@@ -279,10 +277,9 @@
 		},0)
 		
 		console.log(arr0)
-		// var wrapul = document.getElementById('wrapul');
-		// var lilen = wrapul.getElementsByTagName('li').length;
-		// // 实例化滑动
-		// var move = new tMove(wrapul, lilen);
+		var wrapul = document.getElementById('wrapul');
+		// 实例化滑动
+		var move = new tMove(wrapul);
 
 	</script>
 	<script>
@@ -299,37 +296,37 @@
 				noticeFn({text:'请输入收货人！'});
 				return
 			}else if(!nameCheck(uname)){
-				noticeFn({text:'收货人只能是中文,英文,下划线组成'});
+				noticeFn({text:'收货人只能是中文,英文,下划线组成',time:1000});
 				return
 			}
 
 			//验证手机号码
 			if(!uphone){
-				noticeFn({text:'请输入手机号码！'});
+				noticeFn({text:'请输入手机号码！',time:1000});
 				return
 			}else if(!phoneCheck(uphone)){
-				noticeFn({text:'请输入正确的手机号码！'});
+				noticeFn({text:'请输入正确的手机号码！',time:1000});
 				return
 			}
 
 			//验证密码
 			if(!upwd){
-				noticeFn({text:'请输入密码！'});
+				noticeFn({text:'请输入密码！',time:1000});
 				return
 			}
 
 			//验证地区
 			if(!uaddress){
-				noticeFn({text:'请选择收货地区！'});
+				noticeFn({text:'请选择收货地区！',time:1000});
 				return
 			}
 
 			//验证详细地址
 			if(!uaddrdetail){
-				noticeFn({text:'请输入详细地址！'});
+				noticeFn({text:'请输入详细地址！',time:1000});
 				return
 			}else if(!nameCheck(uaddrdetail)){
-				noticeFn({text:'详细地址只能是中文、英文和下划线组成！'});
+				noticeFn({text:'详细地址只能是中文、英文和下划线组成！',time:1000});
 				return
 			}
 			$('input[name="uaddress"]').val(uaddress);
