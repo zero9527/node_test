@@ -278,8 +278,9 @@
 		
 		console.log(arr0)
 		var wrapul = document.getElementById('wrapul');
+		var len = wrapul.getElementsByTagName('li').length;
 		// 实例化滑动
-		var move = new tMove(wrapul);
+		var move = new tMove(wrapul,len);
 
 	</script>
 	<script>
