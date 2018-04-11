@@ -125,7 +125,7 @@ var getLocaltime = function (_time) {
     '</div>';
     confirm.innerHTML = contain;
 
-    // loading 加载模块
+    // loading 加载等待
     var loading = document.createElement('div');
     loading.setAttribute('class', 'loadingdiv');
     loading.innerHTML = '<div>'+
@@ -139,7 +139,7 @@ var getLocaltime = function (_time) {
 }()
 
 /**
- * loading 加载模块
+ * loading 加载等待
  * 调用方法：
  * 显示: loadShow()
  * 隐藏: loadHide()
