@@ -139,7 +139,7 @@ var getLocaltime = function (_time) {
 }()
 
 /**
- * 加载loading模块 loadingFn()
+ * loading 加载模块
  * 调用方法：
  * 显示: loadShow()
  * 隐藏: loadHide()
