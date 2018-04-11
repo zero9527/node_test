@@ -262,6 +262,13 @@
 			},
 			computed: {},
 			mounted() {
+				var home = document.getElementsByClassName('back2home');
+				home[0].onclick = function(){
+					loadShow();
+					setTimeout(function(){
+						loadHide();
+					},2000);
+				}
 				
 				var that = this;
 				for(var i=0; i<this.list.length; i++){

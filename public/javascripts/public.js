@@ -96,7 +96,7 @@ var getLocaltime = function (_time) {
 
     // 提示框，确认取消框，loading框的样式
     var style = document.createElement('style');
-    var stylecode = '#loadingid {width:30vmin;height:30vmin;display:none;position:fixed;max-width:140px;max-height:140px;left:50%;top:50%;border-radius:4px;transform:translate(-50%,-50%);color:#eee;background:rgba(0,0,0,.8);}#loadingid>div {width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-flow:column;}#noticeDiv {width:100vw;position:fixed;padding: 0 4%;top:30%;left:50%;text-align:center;margin-left:-50%;transition:.2s ease;z-index:999;transform:scale(0);z-index:9999;}#noticeDiv>span {display:inline-block;padding:10px;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);}#confirmDiv {width:90vw;max-width:400px;position:fixed;top:40%;left:50%;text-align:center;border-radius:2px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff;}#confirmDiv>div {padding:8px 16px;text-align:left;}#confirmDiv>div:nth-of-type(1) {background:#f8f8f8;}#closebtn {width:10%;float:right;text-align:center;}#confirmdiv3 {width:100%;padding:3% 0;}#confirmdiv3>span {display:inline-block;}#confirmdiv3>span:nth-of-type(1){width:44%;}#confirmfalse,#confirmtrue {width:24%;padding:4px 0;color:#fff;background:#0d94f3;border-radius:2px;text-align:center;}#confirmtrue {margin-right:10px;color:#fff;background:#0d94f3;}#confirmfalse {color:#000;background:#eee;}#confirmPar {width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;}@media screen and (max-width: 379px){#noticeDiv,#confirmDiv {font-size: .7rem;}}@media screen and (min-width: 380px){#noticeDiv,#confirmDiv {font-size: 18px;}}';
+    var stylecode = '.loadingdiv {width:30vmin;height:30vmin;display:none;position:fixed;max-width:140px;max-height:140px;left:50%;top:50%;border-radius:4px;transform:translate(-50%,-50%);color:#eee;background:rgba(0,0,0,.8);}.loadingdiv>div {width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-flow:column;}#noticeDiv {width:100vw;position:fixed;padding: 0 4%;top:30%;left:50%;text-align:center;margin-left:-50%;transition:.2s ease;z-index:999;transform:scale(0);z-index:9999;}#noticeDiv>span {display:inline-block;padding:10px;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);}#confirmDiv {width:90vw;max-width:400px;position:fixed;top:40%;left:50%;text-align:center;border-radius:2px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff;}#confirmDiv>div {padding:8px 16px;text-align:left;}#confirmDiv>div:nth-of-type(1) {background:#f8f8f8;}#closebtn {width:10%;float:right;text-align:center;}#confirmdiv3 {width:100%;padding:3% 0;}#confirmdiv3>span {display:inline-block;}#confirmdiv3>span:nth-of-type(1){width:44%;}#confirmfalse,#confirmtrue {width:24%;padding:4px 0;color:#fff;background:#0d94f3;border-radius:2px;text-align:center;}#confirmtrue {margin-right:10px;color:#fff;background:#0d94f3;}#confirmfalse {color:#000;background:#eee;}#confirmPar {width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;}@media screen and (max-width: 379px){#noticeDiv,#confirmDiv {font-size: .7rem;}}@media screen and (min-width: 380px){#noticeDiv,#confirmDiv {font-size: 18px;}}#loadshow {display: block;-webkit-animation: showload .5s forwards;animation: showload .5s forwards;}#loadhide {display: block;-webkit-animation: hideload .5s forwards;animation: hideload .5s forwards;}@-webkit-keyframes showload {from {opacity: 0;}to {opacity: 1;}}@keyframes showload {from {opacity: 0;}to {opacity: 1;}}@-webkit-keyframes hideload {from {opacity: 1;}to {opacity: 0;}}@keyframes hideload {from {opacity: 1;}to {opacity: 0;}}';
     style.innerHTML = stylecode;
     document.head.appendChild(style);
 
@@ -125,14 +125,9 @@ var getLocaltime = function (_time) {
     '</div>';
     confirm.innerHTML = contain;
 
-    /**
-     * loading 加载模块
-     * 使用方法：JQ的faseIn和fadeOut
-     * $("#loadingid").fadeIn();
-     * $("#loadingid").fadeOut();
-     */
+    // loading 加载模块
     var loading = document.createElement('div');
-    loading.setAttribute('id', 'loadingid');
+    loading.setAttribute('class', 'loadingdiv');
     loading.innerHTML = '<div>'+
     '<i class="am-icon-spinner am-icon-pulse am-icon-lg"></i>'+
     '<div class="am-text-center" style="margin-top:10px;">正在加载 ...</div></div>';
@@ -143,6 +138,24 @@ var getLocaltime = function (_time) {
     document.body.appendChild(notice);
 }()
 
+/**
+ * 加载loading模块 loadingFn()
+ * 调用方法：
+ * 显示: loadShow()
+ * 隐藏: loadHide()
+ */
+var loadShow = function(){
+    var loadingdiv = document.getElementsByClassName('loadingdiv');
+    loadingdiv[0].setAttribute('id', 'loadshow');
+}
+var loadHide = function(){
+    var loadingdiv = document.getElementsByClassName('loadingdiv');
+    loadingdiv[0].setAttribute('id', 'loadhide');
+    // 延时隐藏
+    setTimeout(function(){
+        loadingdiv[0].setAttribute('id', '');
+    },500);
+}
 /**
  * 提示框函数 noticeFn()
  * @param {字符串} obj.text 提示的文字内容
