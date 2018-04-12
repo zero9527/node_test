@@ -111,7 +111,7 @@ label {margin-bottom: 0;}
 
 [class*=am-u-] {padding: 0;}
 
-ul, ol, li {padding: 0;list-style: none;}
+ul, ol, li {margin: 0;padding: 0;list-style: none;}
 p {margin: 0;}
 /* 去除amazeui样式--结束 */
 
