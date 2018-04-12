@@ -24,7 +24,7 @@
 						<img class='userPic' src="images/icon.jpg" alt="">
 					</p>
 					<p>
-						<span v-text='uname'></span> 
+						<span v-text='uname'>&emsp;</span> 
 						<span class="infoedit">编辑</span></p>
 					<p class='oldmoney'>余额: &emsp;<span v-text='umoney'></span> </p>
 				</div>
@@ -101,7 +101,7 @@
 								<i class="iconfont icon-device fleft" style='color:#308BE8;'></i>
 								<span class='fleft'> 设备管理</span>
 								<i class="iconfont icon-xiangyou1 fright"></i>
-								<span class='fright' style='color:#999;font-size:.6rem;'>当前设备: {{ device_now }}&nbsp;</span>
+								<span class='fright' style='color:#999;font-size:.6rem;'>当前设备: <span v-text='device_now'></span>&nbsp;</span>
 							</a>
 						</li>
 						<li class="am-g">
@@ -141,15 +141,6 @@
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="javascripts/public.js"></script>
-	<script>
-		if(window.name != 'hasload'){
-			location.reload();
-			window.name = 'hasload';
-		}else{
-			window.name = '';
-		}
-
-	</script>
 	<script>
 		var mine = new Vue({
 			el: '#mine',
