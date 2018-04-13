@@ -26,16 +26,16 @@
 					<p>
 						<span v-text='uname'>&emsp;</span> 
 						<span class="infoedit">编辑</span></p>
-					<p class='oldmoney'>余额: &emsp;<span v-text='umoney'></span> </p>
+					<p class='oldmoney'>余额: <span v-text='umoney'></span> </p>
 				</div>
 				<div class="mDetail">
-			 		<p>余&emsp;&emsp;额: &emsp;<span class="umoney" v-text='umoney'></span> </p>
-			 		<p>设备编码: &emsp;<span class="device_code" v-text='device_code'></span> </p>
+			 		<p>余&emsp;&emsp;额: <span class="umoney" v-text='umoney'></span> </p>
+			 		<p>设备编码: <span class="device_code" v-text='device_code'></span> </p>
 			 		<p class="cfix">
 			 			<span>地&emsp;&emsp;址: </span>
 			 			<span class='uAddr' v-text='uAddress'></span>
 			 		</p>
-			 		<p>手机号码: &emsp;<span class="uPhone" v-text='uPhone'></span> </p>
+			 		<p>手机号码: <span class="uPhone" v-text='uPhone'></span> </p>
 				</div>
 				<div class="arrow" @click='showInfo($event)'>
 					<i class="iconfont icon-downdown" :index='arrowindex' id='arrowIcon' style='color:#276F99;'></i>
@@ -138,6 +138,23 @@
 		</div>
 		
 	</div>
+	<script>
+		// 下拉刷新
+		var body = document.body || document.documentElement;
+		body.addEventListener('touchstart', bodytstart);
+		body.addEventListener('touchmove', bodytmove);
+		body.addEventListener('touchend', bodytend);
+
+		var startY, endY;
+		var offset;
+		function bodytstart(e){
+			e = e || window.events;
+			console.log(e);
+			startY = e.changedTouches[0].pageY;
+		}
+		function bodytmove(e){}
+		function bodytend(e){}
+	</script>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="javascripts/public.js"></script>
