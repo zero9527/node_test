@@ -71,11 +71,13 @@
 			overflow: hidden;
 		}
 		#selectMenu {
-			height: 30vh;
-			position: relative;
-			border-top: 1px solid #eee;
-			background: aliceblue;
-			overflow-y: scroll;
+			height: 80%;
+		    bottom: 0;
+		    position: absolute;
+		    border-top: 1px solid #eee;
+		    background: aliceblue;
+		    overflow-y: scroll;
+		    overflow-x: hidden;
 		}
 		#selectMenu>li {
 			height: 8vh;
@@ -263,10 +265,11 @@
 			computed: {},
 			mounted() {
 				var home = document.getElementsByClassName('back2home');
+				var loaddiv = document.getElementsByClassName('loadingdiv');
 				home[0].onclick = function(){
-					loadShow();
+					fadeFn({elem: loaddiv[0]});
 					setTimeout(function(){
-						loadHide();
+						fadeFn({elem: loaddiv[0], handle: 'hide'});
 					},2000);
 				}
 				

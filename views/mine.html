@@ -10,6 +10,28 @@
 	<link rel="stylesheet" href="stylesheets/common.css">
 	<link rel="stylesheet" href="stylesheets/mine.css">
 	<script src="javascripts/vue.min.js"></script>
+	<style>
+		#refresh {
+			width: 100vw;
+			height: 90px;
+			line-height: 90px;
+			position: absolute;
+			top: 0;
+			text-align: center;
+			transition: .5s linear;
+			transform: translateY(-100%);
+			z-index: 9999;
+		}
+		#refresh>span {
+			width: 56px;
+			height: 56px;
+			display: inline-block;
+			position: relative;
+			margin: 0 auto;
+			line-height: 56px;
+			background: #fff;
+		}
+	</style>
 </head>
 <body>
 	<div id="mine" class="mine-first-all bgTop" >
@@ -136,7 +158,9 @@
 				</div>
 			</div>
 		</div>
-		
+		<div id='refresh'>
+			<span><i class="am-icon-spinner am-icon-pulse am-icon-lg"></i></span>
+		</div>
 	</div>
 	<script>
 		// 下拉刷新
@@ -145,15 +169,35 @@
 		body.addEventListener('touchmove', bodytmove);
 		body.addEventListener('touchend', bodytend);
 
-		var startY, endY;
+		var startY = 0;
+		var nowY = 0;
 		var offset;
 		function bodytstart(e){
 			e = e || window.events;
 			console.log(e);
 			startY = e.changedTouches[0].pageY;
 		}
-		function bodytmove(e){}
-		function bodytend(e){}
+		function bodytmove(e){
+
+			nowY = e.changedTouches[0].pageY;
+			nowY = nowY > 600 ? 600 : nowY;
+			console.log(nowY);
+			body.setAttribute('style',
+				'transition: .5s linear;'+
+				'transform:translateY('+ nowY/5 +'px);'
+			);
+
+		}
+		function bodytend(e){
+			setTimeout(function(){
+				$("#refresh").css({
+					transform: 'translateY(-100%)',
+				})
+				body.setAttribute('style',
+					'transition: .5s linear;transform:translateY(0px);'
+				);
+			},1000);
+		}
 	</script>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
