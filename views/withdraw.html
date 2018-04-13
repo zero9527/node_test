@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" >
+	<title>提现</title>
+	<link rel="stylesheet" href="amazeui/css/amazeui.min.css">
+	<link rel="stylesheet" href="iconfont/iconfont.css">
+	<link rel="stylesheet" href="stylesheets/common.css">
+	<link rel="stylesheet" href="stylesheets/withdraw.css">
+	<style>
+		
+	</style>
+</head>
+<body>
+	<div class='am-container' id='withdraw'>
+		<div class='item'>
+			<span class='fblue'>&nbsp;&nbsp;提现方式</span>
+			<ul>
+				<li class='cfix typeitem'>&emsp;提现到微信
+					<i class='iconfont fleft'></i>
+					<i class='iconfont fright'></i>
+				</li>
+				<li class='cfix typeitem'>&emsp;提现到支付宝
+					<i class='iconfont fleft'></i>
+					<i class='iconfont fright'></i>
+				</li>
+				<li class='cfix typeitem'>&emsp;提现到银行卡
+					<i class='iconfont fleft'></i>
+					<i class='iconfont fright'></i>
+				</li>
+			</ul>
+		</div>
+		<div class='item'>
+			<span class='fblue'>&nbsp;&nbsp;提现金额</span>
+			<ul>
+				<li>
+					<i class='iconfont'></i>
+					<input class='money' type="text">
+				</li>
+				<li>
+					可提现 <span v-text='enmoney'></span>元,
+					<a href="javascript:;" @click='withall' class='fblue'>全部提现</a>
+				</li>
+			</ul>
+			<p class='desc fblue'><i></i>提现说明&nbsp;&nbsp;</p>
+		</div>
+		<button id='sure'>确定</button>
+	</div>
+	<script src="javascripts/vue.min.js"></script>
+	<script src="javascripts/jquery.min.js"></script>
+	<script src="amazeui/js/amazeui.min.js"></script>
+	<script src="javascripts/public.js"></script>
+	<script>
+		var withdraw = new Vue({
+			el: '#withdraw',
+			data() {
+				return {
+					enmoney: '--'
+				}
+			},
+			mounted() {
+				this.enmoney = '510.00';
+			},
+			methods: {
+				withall: function(){
+					$('.money').val(this.enmoney);
+				}
+			},
+			watch: {}
+		})
+	</script>
+</body>
+</html>

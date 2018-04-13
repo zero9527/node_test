@@ -68,6 +68,9 @@ app.get('/0326', function(req, res){
 app.get('/mine', function(req, res){
 	res.sendFile(path.resolve('./') + '/views/mine.html');
 })
+app.get('/withdraw', function(req, res){
+	res.sendFile(path.resolve('./') + '/views/withdraw.html');
+})
 // app.use('/', index);
 app.use('/users', users);
 

@@ -1,0 +1,29 @@
+
+a {
+	color: #333;
+}
+#withdraw {
+	padding: 0 4vw;
+}
+.item {
+	margin: 2vh 0;
+}
+.item>ul {
+	margin: 4px 0;
+	padding: 1vh 2vw;
+	border-radius: 4px;
+	background: #fff;
+}
+.typeitem {
+	height: 8vh;
+	line-height: 8vh;
+	vertical-align: middle;
+}
+
+.typeitem:not(:last-child) {
+	border-bottom: 1px solid #eee;
+}
+.desc {
+	width: auto;
+	text-align: right;
+}
