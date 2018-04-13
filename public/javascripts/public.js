@@ -143,6 +143,8 @@ var getLocaltime = function (_time) {
  * @param {对象} obj.elem 作用的元素
  *               obj.handle 隐藏(hide)或显示(show)
  * 调用方法：
+ * 建议元素（obj.elem）使用 class ，因为后面用id的样式去覆盖（实现过渡），
+ * 如果elem 使用 id, 那被替换后原来的样式将 丢 失！
  * var loaddiv = document.getElementsByClassName('loadingdiv');
  * fadeFn({elem: loaddiv[0], handle: 'show'});
  */
@@ -157,7 +159,6 @@ var fadeFn = function(obj){
     }else if(obj.handle == 'hide'){
         // 设置显示的id
         obj.elem.setAttribute('id', 'fadehide');
-
         // 延时隐藏（恢复隐藏状态）
         setTimeout(function(){
             obj.elem.setAttribute('id', '');
