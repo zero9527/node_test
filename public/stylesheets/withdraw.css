@@ -40,6 +40,7 @@ a {
 .f6 {
 	font-size: .6rem;
 }
+
 #sure {
 	width: 100%;
 	height: 12vmin;
@@ -159,6 +160,7 @@ a {
 }
 /*银行卡提现*/
 #unionpay {
+	position: relative;
 	display: none;
 }
 
@@ -169,10 +171,11 @@ a {
 	border-radius: 2px;
 	background: #fff;
 }
-.filter {
+#filter {
 	width: 100%;
-	height: 100%;
-	display: block;
+	height: 12vmin;
+	line-height: 12vmin;
+	display: none;
 	position: absolute;
 	top: 0;
 	left: 0;

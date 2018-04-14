@@ -72,36 +72,40 @@
 				</div>
 			</div>
 			<div id='unionpay'>
-				<p class='uniontitle cfix'>
+				<div id='filter' :style='filterstyle'></div>
+				<p class='uniontitle cfix' @click='selectunion' index='0'>
 					<b>使用旧账号:</b>
 					<span class='fright cfix'>
-						<a style='color:#888;'>无历史账号记录&nbsp;</a>
+						<a style='color:#888;'>
+							<span v-text='oldcard'></span>
+							<span v-if='!oldcard' class='f6'>无历史账号记录</span>&nbsp;
+						</a>
 						<i class='iconfont icon-empty fright'></i>
 					</span>
-					<span class='filter'></span>
 				</p>
 				<ul>
-					<li class='uniontitle cfix'>
+					<li class='uniontitle cfix' @click='selectunion' index='1'>
 						<b>添加新账号:</b>
-						<i class='iconfont icon-empty fright'></i>
+						<i v-if='oldcard' class='iconfont icon-empty fright'></i>
+						<i v-if='!oldcard' class='iconfont icon-select fright'></i>
 					</li>
 					<li class='unionitem cfix'>
 						<span>开户名:</span>
-						<input class='fright' type="text" placeholder="请输入开户名">
+						<input class='fright' type="text" placeholder="请输入开户名" v-model='uName'>
 					</li>
 					<li class='unionitem cfix'>
 						<a>选择银行:</a>
-						<i class='iconfont icon-xiangyou1 fright'></i>
-						<span></span>
+						<span class='iconfont icon-xiangyou1 fright'></span>
+						<span class='bankName'></span>
 					</li>
 					<li class='unionitem cfix'>
 						<a>开户支行:</a>
-						<i class='iconfont icon-xiangyou1 fright'></i>
-						<span></span>
+						<span class='iconfont icon-xiangyou1 fright'></span>
+						<span class='subBranch'></span>
 					</li>
 					<li class='unionitem cfix'>
 						<span>银行卡号:</span>
-						<input class='fright' type="text" placeholder="请输入银行卡号">
+						<input class='fright' type="text" placeholder="请输入银行卡号" v-model='cardNumber'>
 					</li>
 				</ul>
 			</div>
@@ -122,11 +126,22 @@
 					payclass: '--',
 					paycolor: '--',
 					paytext1: '--',
-					paytext2: '--'
+					paytext2: '--',
+					hasPic: '--',			// 上传图片标志
+					selectCard: '--',		// 选择银行卡标志
+					filterstyle: '--',
+					oldcard: null,			// 旧银行卡号
+					uName: '',
+					cardNumber: ''
 				}
 			},
-			mounted() {
+			mounted() {	
 				this.enmoney = '510.00';
+				// this.oldcard = '3453463546456487';
+				if(!this.oldcard){
+					// 无旧银行卡时候使用
+					this.filterstyle = 'display:block;';	
+				}
 				// 获取提现方式，提现金额
 				var href = location.href;
 				var payway = '';
@@ -139,6 +154,7 @@
 
 					if(payway.indexOf('weixin') > -1){
 						// 微信提现
+						this.payway = 'weixin';
 						this.payclass = 'iconfont icon-weixin';
 						this.paycolor = 'fgreen';
 						this.paytext1 = '\n微信';
@@ -149,6 +165,7 @@
 
 					}else if(payway.indexOf('alipay') > -1){
 						// 支付宝提现
+						this.payway = 'alipay';
 						this.payclass = 'iconfont icon-alipay';
 						this.paycolor = 'fblue';
 						this.paytext1 = '\n支付宝';
@@ -159,6 +176,7 @@
 
 					}else if(payway.indexOf('unionpay') > -1){
 						// 银行卡提现
+						this.payway = 'unionpay';
 						this.payclass = 'ylpng';
 						$('.withNext>p>i').html('<img src="images/yl.png" alt="">');
 						document.title = '银行卡提现';
@@ -218,7 +236,7 @@
 						noticeFn({text: '提现金额超出最大值！'});
 						return
 					}
-					// 跳转到下一个页面
+					// 跳转到下一个页面 (弹出相关方式)
 					var locahref = location.href;
 					//清除url查询字
 					if(locahref.indexOf('?') > -1){
@@ -226,10 +244,56 @@
 					}
 					var href = locahref + '?payway=' + this.payway + '&money=' + money;
 					location.href = href;
-					console.log(this.payway, money);
+					// console.log(this.payway, money);
+				},
+				// 选择旧账号或添加银行卡
+				selectunion: function(e){
+					var index = e.currentTarget.getAttribute('index');
+					var card = $('.uniontitle').find('i');
+					var check = e.currentTarget.getElementsByTagName('i');
+					check[0].setAttribute('class','iconfont icon-select fright');
+
+					if(index == 0){
+						// 旧账号
+						this.selectCard = 'old';
+						card[1].setAttribute('class','iconfont icon-empty fright');
+
+					}else if(index == 1){
+						// 添加新账号
+						this.selectCard = 'new';
+						card[0].setAttribute('class','iconfont icon-empty fright');
+						
+					}
 				},
 				// 点击提交
-				nextSure: function(){}
+				nextSure: function(){
+					switch(this.payway){
+						case 'weixin':
+							// 微信支付
+							break;
+
+						case 'alipay':
+							// 支付宝
+							break;
+
+						case 'unionpay':
+							// 银行卡
+							if(this.selectCard == 'new'){
+								//添加新银行卡
+								
+							}else if(this.selectCard == 'old'){
+								// 使用旧账户
+								
+							}
+							break;
+
+						default:
+							console.log('错误');
+							break;
+					}
+					console.log(this.uName, this.cardNumber);
+
+				}
 			},
 			watch: {}
 		})
