@@ -10,43 +10,43 @@
 	<link rel="stylesheet" href="stylesheets/common.css">
 	<link rel="stylesheet" href="stylesheets/withdraw.css">
 	<style>
-		
+
 	</style>
 </head>
 <body>
 	<div class='am-container' id='withdraw'>
 		<div class='item'>
-			<span class='fblue'>&nbsp;&nbsp;提现方式</span>
+			<span class='fblue f6'>&nbsp;&nbsp;提现方式</span>
 			<ul>
-				<li class='cfix typeitem'>&emsp;提现到微信
-					<i class='iconfont fleft'></i>
-					<i class='iconfont fright'></i>
+				<li class='cfix typeitem' @click='chooseway($event)' index='0'>&emsp;提现到微信
+					<i class='iconfont icon-weixin fleft' style='color:#149E23;'></i>
+					<span class='iconfont icon-empty fright'></span>
 				</li>
-				<li class='cfix typeitem'>&emsp;提现到支付宝
-					<i class='iconfont fleft'></i>
-					<i class='iconfont fright'></i>
+				<li class='cfix typeitem' @click='chooseway($event)' index='1'>&emsp;提现到支付宝
+					<i class='iconfont icon-alipay fleft' style='color:#22A8FF;'></i>
+					<span class='iconfont icon-empty fright'></span>
 				</li>
-				<li class='cfix typeitem'>&emsp;提现到银行卡
-					<i class='iconfont fleft'></i>
-					<i class='iconfont fright'></i>
+				<li class='cfix typeitem' @click='chooseway($event)' index='2'>&emsp;提现到银行卡
+					<i class='ylpng fleft'><img src="images/yl.png" alt=""></i>
+					<span class='iconfont icon-empty fright'></span>
 				</li>
 			</ul>
 		</div>
 		<div class='item'>
-			<span class='fblue'>&nbsp;&nbsp;提现金额</span>
+			<span class='fblue f6'>&nbsp;&nbsp;提现金额</span>
 			<ul>
-				<li>
-					<i class='iconfont'></i>
+				<li class='inmoney'>
+					<i class='iconfont icon-rmb'></i>
 					<input class='money' type="text">
 				</li>
-				<li>
+				<li class='f6'>
 					可提现 <span v-text='enmoney'></span>元,
 					<a href="javascript:;" @click='withall' class='fblue'>全部提现</a>
 				</li>
 			</ul>
-			<p class='desc fblue'><i></i>提现说明&nbsp;&nbsp;</p>
+			<p class='desc fblue'><i class="am-icon-question-circle-o"></i>&nbsp;提现说明&nbsp;&nbsp;</p>
 		</div>
-		<button id='sure'>确定</button>
+		<button id='sure' @click='sure'>确定</button>
 	</div>
 	<script src="javascripts/vue.min.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
@@ -57,15 +57,79 @@
 			el: '#withdraw',
 			data() {
 				return {
-					enmoney: '--'
+					enmoney: '--',
+					payway: '--'
 				}
 			},
 			mounted() {
 				this.enmoney = '510.00';
+				// 获取提现方式，提现金额（下个页面获取）
+				var href = location.href;
+				var payway = '';
+				var money = 0;
+				if(href.indexOf('payway') > -1){
+					payway = href.substring(href.indexOf('payway')+7, href.indexOf('&money'));
+					money = href.substring(href.indexOf('&money=')+7);
+				}
+				console.log(payway, money);
 			},
 			methods: {
+				// 点击全部提现
 				withall: function(){
 					$('.money').val(this.enmoney);
+				},
+				// 点击选择提现方式
+				chooseway: function(e){
+					for(var i=0; i<$('.typeitem').length; i++){
+						$('.typeitem').eq(i)
+						.find('span').attr('class','iconfont icon-empty fright');
+					}
+					this.payway = e.currentTarget.getAttribute('index');	//保存当前选择方式
+					if(this.payway == 0){
+						this.payway = 'weixin';	// 微信
+
+					}else if(this.payway == 1){
+						this.payway = 'alipay';	// 支付宝
+
+					}else if(this.payway == 2){
+						this.payway = 'unionpay';	// 银联
+					}
+					var span = e.currentTarget.getElementsByTagName('span');
+					var _class = 'iconfont icon-select fright';
+
+					span[0].setAttribute('class',_class);
+				},
+				// 点击确定
+				sure: function(){
+					var chooseway = $('.icon-select');
+					var money = $('.money').val();
+					var numReg = /[0-9\.]/;
+
+					if(!chooseway.length){
+						noticeFn({text: '请选择提现方式！'});
+						return 
+					}
+					if(!trimFn(money)){
+						noticeFn({text: '请输入提现金额！'});
+						return
+
+					}else if(!numReg.test(trimFn(money))){
+						noticeFn({text: '请输入阿拉伯数字（0-9）金额！'});
+						return
+
+					}else if(Number(trimFn(money)) > this.enmoney){
+						noticeFn({text: '提现金额超出最大值！'});
+						return
+					}
+					// 跳转到下一个页面
+					var locahref = location.href;
+					//清除url查询字
+					if(locahref.indexOf('?') > -1){
+						locahref = locahref.substring(0, locahref.indexOf('?'))
+					}
+					var href = locahref + '?payway=' + this.payway + '&money=' + money;
+					location.href = href;
+					console.log(this.payway, money);
 				}
 			},
 			watch: {}

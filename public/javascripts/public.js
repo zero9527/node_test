@@ -196,6 +196,7 @@ var noticeFn = function(obj){
         
         // 防止多次点击, 弹框跳动
         clearTimeout(noticeint);
+        noticeSpan.innerHTML = obj.text;
         // 自动消失
         noticeint = setTimeout(function(){
             notice.style.opacity = '.5';
