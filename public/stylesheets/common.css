@@ -37,11 +37,11 @@ body {
 /* 导航栏--开始 */
 #navbar {
 	width: 100vw;
-	height: 7vh;
+	height: 12vmin;
 	display: block;
 	position: relative;
 	top: 0;
-	line-height: 7vh;
+	line-height: 12vmin;
 	border-bottom: 1px solid #eee;
     color: #000;
     background: #fff;
@@ -116,7 +116,9 @@ p {margin: 0;}
 /* 去除amazeui样式--结束 */
 
 /* 一些自定义方法类 -- 开始 */
-
+.tcenter {
+	text-align: center;
+}
 /*左浮动*/
 .fleft {float: left;}
 /*右浮动*/

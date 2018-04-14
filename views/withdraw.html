@@ -17,12 +17,12 @@
 			<ul>
 				<li class='cfix typeitem' @click='chooseway($event)' index='0'>
 					<a>&emsp;提现到微信</a>
-					<i class='iconfont icon-weixin fleft' style='color:#149E23;'></i>
+					<i class='iconfont icon-weixin fleft'></i>
 					<span class='iconfont icon-empty fright'></span>
 				</li>
 				<li class='cfix typeitem' @click='chooseway($event)' index='1'>
 					<a>&emsp;提现到支付宝</a>
-					<i class='iconfont icon-alipay fleft' style='color:#22A8FF;'></i>
+					<i class='iconfont icon-alipay fleft'></i>
 					<span class='iconfont icon-empty fright'></span>
 				</li>
 				<li class='cfix typeitem' @click='chooseway($event)' index='2'>
@@ -47,7 +47,66 @@
 			<p class='desc fblue'><i class="am-icon-question-circle-o"></i>&nbsp;提现说明&nbsp;&nbsp;</p>
 		</div>
 		<button id='sure' @click='sure'>确定</button>
-		<div id='withnext'></div>
+		<div class='withNext'>
+			<p class='tcenter pTop'><i :class='payclass'></i></p>
+			<div id='wxali'>
+				<ul class='withpic'>
+					<li>请上传&nbsp;<span style='color:#ff6666;'>收款二维码图片</span></li>
+					<li>
+						<i class='iconfont icon-add picadd'><span class='fblue'>添加</span></i>
+					</li>
+				</ul>
+				<div>
+					<p>如何添加，收款二维码？</p>
+					<div class='f6'>
+						<p>1、首先打开
+							<span :class='paycolor' v-text='paytext1'></span>，存储二维码图片
+						</p>
+						<p>2、首页点击
+							<span :class='paycolor' v-text='paytext2'></span>
+						</p>
+						<p>3、点击
+							<span class='fblue'>"+"</span>，在相册中选取保存的二维码图片上传
+						</p>
+					</div>
+				</div>
+			</div>
+			<div id='unionpay'>
+				<p class='uniontitle cfix'>
+					<b>使用旧账号:</b>
+					<span class='fright cfix'>
+						<a style='color:#888;'>无历史账号记录&nbsp;</a>
+						<i class='iconfont icon-empty fright'></i>
+					</span>
+					<span class='filter'></span>
+				</p>
+				<ul>
+					<li class='uniontitle cfix'>
+						<b>添加新账号:</b>
+						<i class='iconfont icon-empty fright'></i>
+					</li>
+					<li class='unionitem cfix'>
+						<span>开户名:</span>
+						<input class='fright' type="text" placeholder="请输入开户名">
+					</li>
+					<li class='unionitem cfix'>
+						<a>选择银行:</a>
+						<i class='iconfont icon-xiangyou1 fright'></i>
+						<span></span>
+					</li>
+					<li class='unionitem cfix'>
+						<a>开户支行:</a>
+						<i class='iconfont icon-xiangyou1 fright'></i>
+						<span></span>
+					</li>
+					<li class='unionitem cfix'>
+						<span>银行卡号:</span>
+						<input class='fright' type="text" placeholder="请输入银行卡号">
+					</li>
+				</ul>
+			</div>
+			<button id='nextSure' @click='nextSure'>提交</button>
+		</div>
 	</div>
 	<script src="javascripts/vue.min.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
@@ -59,20 +118,56 @@
 			data() {
 				return {
 					enmoney: '--',
-					payway: '--'
+					payway: '--',
+					payclass: '--',
+					paycolor: '--',
+					paytext1: '--',
+					paytext2: '--'
 				}
 			},
 			mounted() {
 				this.enmoney = '510.00';
-				// 获取提现方式，提现金额（下个页面获取）
+				// 获取提现方式，提现金额
 				var href = location.href;
 				var payway = '';
 				var money = 0;
 				if(href.indexOf('payway') > -1){
 					payway = href.substring(href.indexOf('payway')+7, href.indexOf('&money'));
 					money = href.substring(href.indexOf('&money=')+7);
+					// 显示具体提现页面
+					fadeFn({elem: $('.withNext')[0]});
+
+					if(payway.indexOf('weixin') > -1){
+						// 微信提现
+						this.payclass = 'iconfont icon-weixin';
+						this.paycolor = 'fgreen';
+						this.paytext1 = '\n微信';
+						this.paytext2 = '"+" -- 收付款 -- 二维码收款 -- 保存收款码';
+						document.title = '微信提现';
+						$('#navbar>h2').text('微信提现');
+						$('#wxali').show();
+
+					}else if(payway.indexOf('alipay') > -1){
+						// 支付宝提现
+						this.payclass = 'iconfont icon-alipay';
+						this.paycolor = 'fblue';
+						this.paytext1 = '\n支付宝';
+						this.paytext2 = '"+" -- 收钱 -- 保存图片';
+						document.title = '支付宝提现';
+						$('#navbar>h2').text('支付宝提现');
+						$('#wxali').show();
+
+					}else if(payway.indexOf('unionpay') > -1){
+						// 银行卡提现
+						this.payclass = 'ylpng';
+						$('.withNext>p>i').html('<img src="images/yl.png" alt="">');
+						document.title = '银行卡提现';
+						$('#navbar>h2').text('银行卡提现');
+						$('#unionpay').show();
+					}
+
 				}
-				console.log(payway, money);
+				// console.log(payway, money);
 			},
 			methods: {
 				// 点击全部提现
@@ -94,6 +189,7 @@
 
 					}else if(this.payway == 2){
 						this.payway = 'unionpay';	// 银联
+						
 					}
 					var span = e.currentTarget.getElementsByTagName('span');
 					var _class = 'iconfont icon-select fright';
@@ -126,12 +222,14 @@
 					var locahref = location.href;
 					//清除url查询字
 					if(locahref.indexOf('?') > -1){
-						locahref = locahref.substring(0, locahref.indexOf('?'))
+						locahref = locahref.substring(0, locahref.indexOf('?'));
 					}
 					var href = locahref + '?payway=' + this.payway + '&money=' + money;
 					location.href = href;
 					console.log(this.payway, money);
-				}
+				},
+				// 点击提交
+				nextSure: function(){}
 			},
 			watch: {}
 		})
