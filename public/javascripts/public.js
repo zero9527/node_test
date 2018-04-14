@@ -50,7 +50,14 @@ var chineseCheck = function(val){
 var nameCheck = function(val){
     return /^[\w\-_\u4e00-\u9fa5]{2,255}$/.test(val);
 }
-
+//验证银行卡号
+var bankCheck = function(val){
+    return /^([1-9]{1})(\d{14}|\d{18})$/.test(val);
+}
+//身份证验证
+var idCheck = function(val){
+    return /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(val);
+}
 //去空格
 var trimFn = function(str){
     return str.replace(/^(\s)|(\s*)/g,'');
