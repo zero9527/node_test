@@ -3,6 +3,7 @@ a {
 	color: #333;
 }
 #withdraw {
+	min-height: 600px;
 	padding: 0 4vw;
 }
 .item {
@@ -15,8 +16,8 @@ a {
 	background: #fff;
 }
 .typeitem {
-	height: 8vh;
-	line-height: 8vh;
+	height: 16vmin;
+	line-height: 16vmin;
 	vertical-align: middle;
 }
 
@@ -41,9 +42,9 @@ a {
 }
 #sure {
 	width: 100%;
-	height: 7vh;
+	height: 12vmin;
 	position: relative;
-	line-height: 7vh;
+	line-height: 12vmin;
 	margin: 12vh 0;
 	color: #fff;
 	font-size: .8rem;
@@ -52,8 +53,8 @@ a {
 	background: rgba(3,156,233,.6);
 }
 .inmoney {
-	height: 7vh;
-	line-height: 7vh;
+	height: 12vmin;
+	line-height: 12vmin;
 	margin-bottom: 1vh;
 	border-bottom: 1px solid #eee;
 }

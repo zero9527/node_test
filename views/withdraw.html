@@ -9,24 +9,24 @@
 	<link rel="stylesheet" href="iconfont/iconfont.css">
 	<link rel="stylesheet" href="stylesheets/common.css">
 	<link rel="stylesheet" href="stylesheets/withdraw.css">
-	<style>
-
-	</style>
 </head>
 <body>
 	<div class='am-container' id='withdraw'>
 		<div class='item'>
 			<span class='fblue f6'>&nbsp;&nbsp;提现方式</span>
 			<ul>
-				<li class='cfix typeitem' @click='chooseway($event)' index='0'>&emsp;提现到微信
+				<li class='cfix typeitem' @click='chooseway($event)' index='0'>
+					<a>&emsp;提现到微信</a>
 					<i class='iconfont icon-weixin fleft' style='color:#149E23;'></i>
 					<span class='iconfont icon-empty fright'></span>
 				</li>
-				<li class='cfix typeitem' @click='chooseway($event)' index='1'>&emsp;提现到支付宝
+				<li class='cfix typeitem' @click='chooseway($event)' index='1'>
+					<a>&emsp;提现到支付宝</a>
 					<i class='iconfont icon-alipay fleft' style='color:#22A8FF;'></i>
 					<span class='iconfont icon-empty fright'></span>
 				</li>
-				<li class='cfix typeitem' @click='chooseway($event)' index='2'>&emsp;提现到银行卡
+				<li class='cfix typeitem' @click='chooseway($event)' index='2'>
+					<a>&emsp;提现到银行卡</a>
 					<i class='ylpng fleft'><img src="images/yl.png" alt=""></i>
 					<span class='iconfont icon-empty fright'></span>
 				</li>
@@ -47,6 +47,7 @@
 			<p class='desc fblue'><i class="am-icon-question-circle-o"></i>&nbsp;提现说明&nbsp;&nbsp;</p>
 		</div>
 		<button id='sure' @click='sure'>确定</button>
+		<div id='withnext'></div>
 	</div>
 	<script src="javascripts/vue.min.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
