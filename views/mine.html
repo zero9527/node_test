@@ -162,43 +162,6 @@
 			<span><i class="am-icon-spinner am-icon-pulse am-icon-lg"></i></span>
 		</div>
 	</div>
-	<script>
-		// 下拉刷新
-		var body = document.body || document.documentElement;
-		body.addEventListener('touchstart', bodytstart);
-		body.addEventListener('touchmove', bodytmove);
-		body.addEventListener('touchend', bodytend);
-
-		var startY = 0;
-		var nowY = 0;
-		var offset;
-		function bodytstart(e){
-			e = e || window.events;
-			console.log(e);
-			startY = e.changedTouches[0].pageY;
-		}
-		function bodytmove(e){
-
-			nowY = e.changedTouches[0].pageY;
-			nowY = nowY > 600 ? 600 : nowY;
-			console.log(nowY);
-			body.setAttribute('style',
-				'transition: .5s linear;'+
-				'transform:translateY('+ nowY/5 +'px);'
-			);
-
-		}
-		function bodytend(e){
-			setTimeout(function(){
-				$("#refresh").css({
-					transform: 'translateY(-100%)',
-				})
-				body.setAttribute('style',
-					'transition: .5s linear;transform:translateY(0px);'
-				);
-			},1000);
-		}
-	</script>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="javascripts/public.js"></script>
