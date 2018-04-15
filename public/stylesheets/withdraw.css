@@ -2,8 +2,10 @@
 a {
 	color: #333;
 }
+
 #withdraw {
-	min-height: 600px;
+	position: relative;
+	min-height: 500px;
 	padding: 0 4vw;
 }
 .item {
@@ -42,11 +44,13 @@ a {
 }
 
 #sure {
-	width: 100%;
+	width: 92%;
 	height: 12vmin;
-	position: relative;
+	position: absolute;
 	line-height: 12vmin;
-	margin: 12vh 0;
+	left: 50%;
+	bottom: 2vmin;
+	margin-left: -46%;
 	color: #fff;
 	font-size: .8rem;
 	border: none;
@@ -93,13 +97,14 @@ a {
 /*选择支付方式后跳转*/
 .withNext {
 	width: 100vw;
-	height: 100vh;
+	height: auto;
 	display: none;
 	position: absolute;
-	padding: 12vmin 4vw 0;
+	padding: 0 4vw;
 	top: 0;
 	left: 0;
 	background: #edeef2;
+	overflow: hidden;
 	z-index: 100;
 }
 .pTop {
@@ -147,7 +152,7 @@ a {
 	height: 12vmin;
 	position: relative;
 	line-height: 12vmin;
-	margin: 12vh 0;
+	margin: 12vmin 0 10vmin;
 	color: #fff;
 	font-size: .8rem;
 	border: none;
@@ -201,6 +206,7 @@ a {
 }
 .unionitem>input {
 	width: 76%;
+	padding-right: 4px;
 	text-align: right;
 	border: none;
 }
