@@ -289,8 +289,7 @@
 			methods: {
 				// 点击全部提现
 				withall: function(){
-					$('.money').val(this.enmoney);
-					this.inmoney = $('.money').val();
+					this.inmoney = this.enmoney;
 				},
 				// 点击选择提现方式
 				chooseway: function(e){
@@ -321,20 +320,19 @@
 				// 点击确定
 				sure: function(){
 					var chooseway = $('.item .icon-select');
-					var money = $('.money').val();
 					if(!chooseway.length){
 						noticeFn({text: '请选择提现方式！'});
 						return 
 					}
-					if(!trimFn(money)){
+					if(!trimFn(this.inmoney)){
 						noticeFn({text: '请输入提现金额！'});
 						return
 
-					}else if(!moneyCheck(trimFn(money))){
+					}else if(!moneyCheck(trimFn(this.inmoney))){
 						noticeFn({text: '请输入阿拉伯数字（0-9）金额！'});
 						return
 
-					}else if(Number(trimFn(money)) > this.enmoney){
+					}else if(Number(trimFn(this.inmoney)) > this.enmoney){
 						noticeFn({text: '提现金额超出最大值！'});
 						return
 					}
@@ -344,7 +342,7 @@
 					if(locahref.indexOf('?') > -1){
 						locahref = locahref.substring(0, locahref.indexOf('?'));
 					}
-					var href = locahref + '?payway=' + this.payway + '&money=' + money;
+					var href = locahref + '?payway=' + this.payway + '&money=' + this.inmoney;
 					location.href = href;
 					// console.log(this.payway, money);
 				},

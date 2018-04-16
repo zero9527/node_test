@@ -57,6 +57,7 @@ body {
 	zoom: 1;
 }
 #navbar>h2,
+#navbar>a,
 #navbar>span {
 	height: 100%;
 	display: inline-block;
@@ -70,10 +71,12 @@ body {
 	margin: 0;
 	font-weight: 400;
 }
-#navbar>span {
+#navbar>span,
+#navbar>a {
 	width: 25%;
+	color: #000;
 }
-#navbar>span:nth-of-type(1){
+#navbar>span{
 	font-size: 1.2rem;
 }
 body .nav-move {
