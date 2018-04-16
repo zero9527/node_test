@@ -50,26 +50,40 @@
 		<div class='withNext'>
 			<p class='tcenter pTop'><i :class='payclass'></i></p>
 			<div id='wxali'>
-				<ul class='withpic'>
-					<li>请上传&nbsp;<span style='color:#ff6666;'>收款二维码图片</span></li>
-					<li>
-						<i class='iconfont icon-add picadd'><span class='fblue'>添加</span></i>
-					</li>
-				</ul>
-				<div>
-					<p>如何添加，收款二维码？</p>
-					<div class='f6'>
-						<p>1、首先打开
-							<span :class='paycolor' v-text='paytext1'></span>，存储二维码图片
-						</p>
-						<p>2、首页点击
-							<span :class='paycolor' v-text='paytext2'></span>
-						</p>
-						<p>3、点击
-							<span class='fblue'>"+"</span>，在相册中选取保存的二维码图片上传
-						</p>
+				<form action="" id='form'>
+					<ul class='withpic'>
+						<li>请上传&nbsp;<span style='color:#ff6666;'>收款二维码图片</span></li>
+						<li>
+							<i class='iconfont icon-add picadd'><span class='fblue'>添加</span></i>
+							<div class="picUpload">
+							    <div id="fileList" class="uploader-list"></div>
+							    <div id="filePicker">
+							    	<i class='iconfont icon-add picadd'>
+							    	<span class='fblue'>添加</span></i>
+							    </div>
+							</div>
+							<div id='picShow'>
+								<div>
+									<img class='codeimg' alt="">
+								</div>
+							</div>
+						</li>
+					</ul>
+					<div>
+						<p>如何添加，收款二维码？</p>
+						<div class='f6'>
+							<p>1、首先打开
+								<span :class='paycolor' v-text='paytext1'></span>，存储二维码图片
+							</p>
+							<p>2、首页点击
+								<span :class='paycolor' v-text='paytext2'></span>
+							</p>
+							<p>3、点击
+								<span class='fblue'>"+"</span>，在相册中选取保存的二维码图片上传
+							</p>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 			<div id='unionpay'>
 				<div id='filter' :style='filterstyle'></div>
@@ -157,7 +171,10 @@
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="javascripts/public.js"></script>
+	<script src="javascripts/webuploader.js"></script>
 	<script>
+		// 实例化一个formdata对象
+		var formData = new FormData($("#form")[0]);
 		var withdraw = new Vue({
 			el: '#withdraw',
 			data() {
@@ -220,8 +237,39 @@
 				}
 			},
 			mounted() {	
+				// 初始化Web Uploader
+				var uploader = WebUploader.create({
+
+				    // 选择文件的按钮。可选。
+				    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+				    pick: '#filePicker',
+
+				    // 只允许选择图片文件。
+				    accept: {
+				        title: 'Images',
+				        extensions: 'gif,jpg,jpeg,bmp,png,webp',
+				        mimeTypes: 'image/*'
+				    }
+				});
+				// 当有文件添加进来的时候
+				uploader.on( 'fileQueued', function( file ) {
+					console.log(file);
+
+				    // 创建缩略图
+				    // 如果为非图片文件，可以不用调用此方法。
+				    // thumbnailWidth x thumbnailHeight 为 100 x 100
+				    uploader.makeThumb( file, function( error, src ) {
+				        if ( error ) {
+				            $img.replaceWith('<span>不能预览</span>');
+				            return;
+				        }
+				        withdraw.hasPic = true;		// 图片已添加
+				        // $('.codeimg').attr( 'src', src ).show();
+				        $('.codeimg').attr( 'src', '/images/icon.jpg' ).show();
+				    }, 'auto', '100%' );
+				});
 				this.enmoney = '510.00';
-				this.oldcard = '3453463546456487';
+				// this.oldcard = '3453463546456487';
 				if(!this.oldcard){
 					// 无旧银行卡时候使用
 					this.filterstyle = 'display:block;';
@@ -347,6 +395,8 @@
 					location.href = href;
 					// console.log(this.payway, money);
 				},
+				// 点击上传图片
+				picadd: function(){},
 				// 选择旧账号或添加银行卡
 				selectunion: function(e){
 					var index = e.currentTarget.getAttribute('index');
@@ -385,13 +435,22 @@
 				},
 				// 点击提交
 				nextSure: function(){
+					console.log(this.hasPic);
 					switch(this.payway){
 						case 'weixin':
 							// 微信支付
+							if(!this.hasPic){
+								noticeFn({text:'请添加微信收款二维码!'})
+								return
+							}
 							break;
 
 						case 'alipay':
 							// 支付宝
+							if(!this.hasPic){
+								noticeFn({text:'请添加支付宝收款二维码!'})
+								return
+							}
 							break;
 
 						case 'unionpay':
