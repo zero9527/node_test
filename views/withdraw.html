@@ -146,7 +146,7 @@
 					</li>
 					<li class='unionitem cfix'>
 						<span>银行卡号:</span>
-						<input class='fright' type="text" placeholder="请输入银行卡号" v-model='cardNumber'>
+						<input class='fright' type="text" placeholder="请输入银行卡号" v-model='cardNumber' @keyup='cardkeyup'>
 					</li>
 				</ul>
 			</div>
@@ -275,13 +275,6 @@
 				
 			},
 			watch: {
-				// 银行卡号每四个加空格
-				cardNumber: function(e){
-					// 删除有问题
-					this.cardNumber = this.cardNumber.replace(/(\d{3})+(\d)$/g, '$1$2 ');
-					console.log(this.cardNumber);
-					
-				},
 				// 提现金额
 				inmoney: function(val){
 					if(this.payway && moneyCheck(trimFn(val))){
@@ -383,6 +376,12 @@
 					console.log(e);
 					this.bankName = e.currentTarget.innerText;
 					fadeFn({elem: $('.bankList')[0], handle: 'hide',time: 10});
+				},
+				// 银行卡号每四个加空格
+				cardkeyup: function(e){
+					if(e.keyCode != 8){
+						this.cardNumber = this.cardNumber.replace(/(\d{3})+(\d)$/g, '$1$2 ');
+					}
 				},
 				// 点击提交
 				nextSure: function(){
