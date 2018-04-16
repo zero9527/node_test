@@ -30,6 +30,11 @@
     title[0].innerText = document.getElementsByTagName('title')[0].innerText;
 }()
 
+// 验证价格
+var moneyCheck = function(val){
+    return /^\d+([\.]{1}[0-9]+){0,1}$/.test(val);
+}
+
 //验证特殊字符
 var specailCheck = function(val){
     return /^[`~!@#$^&*()=|{}':;',\[\].<>/?~！@#￥……&*（）——|{}【】\s‘；：”“'。，、？]$/.test(val)

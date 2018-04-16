@@ -159,6 +159,7 @@ a {
 	border-radius: 4px;
 	background: #039CE9;
 }
+
 /*微信支付宝提现*/
 #wxali {
 	display: none;
@@ -199,6 +200,7 @@ a {
 	margin: 2vmin 0;
 }
 .unionitem {
+	position: relative;
 	padding: 3vmin 0;
 }
 .unionitem>a {
@@ -213,4 +215,31 @@ a {
 
 .unionitem:not(:last-child) {
 	border-bottom: 1px solid #eee;
+}
+.bankName {
+	width: 70%;
+	display: inline-block;
+	text-align: center;
+}
+.bankList {
+	width: 60%;
+	height: 60vmin;
+	display: none;
+	position: absolute;
+	padding: 0 2%;
+	top: 50%;
+	right: 0;
+	border: 1px solid #aaa;
+	background: #fff;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	z-index: 999;
+}
+
+.bankList>li {
+	margin: 6vmin 0;
+}
+
+.bankList>li:active {
+	background: #eee;
 }

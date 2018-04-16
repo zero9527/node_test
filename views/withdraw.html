@@ -37,7 +37,7 @@
 			<ul>
 				<li class='inmoney'>
 					<i class='iconfont icon-rmb'></i>
-					<input class='money' type="text">
+					<input class='money' type="text" v-model='inmoney'>
 				</li>
 				<li class='f6'>
 					可提现 <span v-text='enmoney'></span>元,
@@ -93,15 +93,56 @@
 						<span>开户名:</span>
 						<input class='fright' type="text" placeholder="请输入开户名" v-model='uName'>
 					</li>
-					<li class='unionitem cfix'>
+					<li class='unionitem cfix' @click='showbank'>
 						<a>选择银行:</a>
+						<span class='bankName' v-text='bankName'></span>
 						<span class='iconfont icon-xiangyou1 fright'></span>
-						<span class='bankName'></span>
+						<ul class="bankList fright" >
+							<li v-for='value,index in bankList' @click='selectBank'>{{ value }}</li>
+							<!-- <li>国家开发银行</li>
+							<li>中国进出口银行</li>
+							<li>中国农业发展银行</li>
+							<li>中国银行</li>
+							<li>中国工商银行</li>
+							<li>中国建设银行</li>
+							<li>中国农业银行</li>
+							<li>中国光大银行</li>
+							<li>中国民生银行</li>
+							<li>中信银行</li>
+							<li>交通银行</li>
+							<li>华夏银行</li>
+							<li>招商银行</li>
+							<li>兴业银行</li>
+							<li>广发银行</li>
+							<li>平安银行</li>
+							<li>上海浦东发展银行</li>
+							<li>恒丰银行</li>
+							<li>浙商银行</li>
+							<li>渤海银行</li>
+							<li>中国邮政储蓄银行</li>
+							<li>城市商业银行</li>
+							<li>北京银行</li>
+							<li>天津银行</li>
+							<li>河北银行</li>
+							<li>沧州银行</li>
+							<li>唐山市商业银行</li>
+							<li>承德银行</li>
+							<li>张家口市商业银行</li>
+							<li>秦皇岛银行</li>
+							<li>邢台银行</li>
+							<li>廊坊银行</li>
+							<li>保定银行</li>
+							<li>邯郸银行</li>
+							<li>衡水银行</li>
+							<li>晋商银行</li>
+							<li>大同市商业银行</li>
+							<li>长治银行</li>
+							<li>其他</li> -->
+						</ul>
 					</li>
 					<li class='unionitem cfix'>
 						<a>开户支行:</a>
-						<span class='iconfont icon-xiangyou1 fright'></span>
-						<span class='subBranch'></span>
+						<input class='fright' type="text" placeholder="请输入开户支行" v-model='subBranch'>
 					</li>
 					<li class='unionitem cfix'>
 						<span>银行卡号:</span>
@@ -121,19 +162,61 @@
 			el: '#withdraw',
 			data() {
 				return {
-					enmoney: '--',
-					withNext: '',
-					payway: '--',
-					payclass: '--',
-					paycolor: '--',
-					paytext1: '--',
-					paytext2: '--',
-					hasPic: '--',			// 上传图片标志
-					selectCard: '--',		// 选择银行卡标志
-					filterstyle: '--',
+					inmoney: '',			// 提现的金额
+					enmoney: '',			// 全部提现的金额
+					withNext: '',		
+					payway: '',				// 支付方式
+					payclass: '',
+					paycolor: '',
+					paytext1: '',
+					paytext2: '',
+					hasPic: '',				// 上传图片标志
+					selectCard: '',			// 选择银行卡标志
+					filterstyle: '',		// 是否禁用旧账号
 					oldcard: null,			// 旧银行卡号
-					uName: '',
-					cardNumber: ''
+					uName: '',				// 开户名
+					bankName: '',			// 银行
+					bankList: ['国家开发银行',
+							'中国进出口银行',
+							'中国农业发展银行',
+							'中国银行',
+							'中国工商银行',
+							'中国建设银行',
+							'中国农业银行',
+							'中国光大银行',
+							'中国民生银行',
+							'中信银行',
+							'交通银行',
+							'华夏银行',
+							'招商银行',
+							'兴业银行',
+							'广发银行',
+							'平安银行',
+							'上海浦东发展银行',
+							'恒丰银行',
+							'浙商银行',
+							'渤海银行',
+							'中国邮政储蓄银行',
+							'城市商业银行',
+							'北京银行',
+							'天津银行',
+							'河北银行',
+							'沧州银行',
+							'唐山市商业银行',
+							'承德银行',
+							'张家口市商业银行',
+							'秦皇岛银行',
+							'邢台银行',
+							'廊坊银行',
+							'保定银行',
+							'邯郸银行',
+							'衡水银行',
+							'晋商银行',
+							'大同市商业银行',
+							'长治银行',
+							'其他'],			
+					subBranch: '',			// 开户支行
+					cardNumber: ''			// 银行卡号
 				}
 			},
 			mounted() {	
@@ -193,17 +276,28 @@
 			},
 			watch: {
 				// 银行卡号每四个加空格
-				cardNumber: function(){
-					if(this.cardNumber.length%5 === 1 && this.cardNumber.length > 0){
-						this.cardNumber = this.cardNumber.replace(/(\d)(?=(?:\d{4})+$)/g, '$1 ');
-						console.log(this.cardNumber);
+				cardNumber: function(e){
+					// 删除有问题
+					this.cardNumber = this.cardNumber.replace(/(\d{3})+(\d)$/g, '$1$2 ');
+					console.log(this.cardNumber);
+					
+				},
+				// 提现金额
+				inmoney: function(val){
+					if(this.payway && moneyCheck(trimFn(val))){
+						$('#sure').css({background: '#039CE9'});
+
+					}else{
+						$('#sure').css({background: 'rgba(3,156,233,.6)'});
 					}
+					
 				}
 			},
 			methods: {
 				// 点击全部提现
 				withall: function(){
 					$('.money').val(this.enmoney);
+					this.inmoney = $('.money').val();
 				},
 				// 点击选择提现方式
 				chooseway: function(e){
@@ -226,12 +320,15 @@
 					var _class = 'iconfont icon-select fright';
 
 					span[0].setAttribute('class',_class);
+					if(moneyCheck(trimFn(this.inmoney))){
+						$('#sure').css({background: '#039CE9'});
+					}
+
 				},
 				// 点击确定
 				sure: function(){
 					var chooseway = $('.item .icon-select');
 					var money = $('.money').val();
-					var numReg = /[0-9\.]/;
 					if(!chooseway.length){
 						noticeFn({text: '请选择提现方式！'});
 						return 
@@ -240,7 +337,7 @@
 						noticeFn({text: '请输入提现金额！'});
 						return
 
-					}else if(!numReg.test(trimFn(money))){
+					}else if(!moneyCheck(trimFn(money))){
 						noticeFn({text: '请输入阿拉伯数字（0-9）金额！'});
 						return
 
@@ -277,6 +374,16 @@
 						
 					}
 				},
+				// 显示银行列表
+				showbank: function(){
+					fadeFn({elem: $('.bankList')[0]});
+				},
+				// 选择银行
+				selectBank: function(e){
+					console.log(e);
+					this.bankName = e.currentTarget.innerText;
+					fadeFn({elem: $('.bankList')[0], handle: 'hide',time: 10});
+				},
 				// 点击提交
 				nextSure: function(){
 					switch(this.payway){
@@ -301,9 +408,21 @@
 									noticeFn({text:'请输入中文姓名!'});
 									return
 								}
+								if(!this.bankName){
+									noticeFn({text:'请选择银行!'});
+									return
+								}
+								if(!this.subBranch){
+									noticeFn({text:'请输入开户支行!'});
+									return
 
+								}else if(!chineseCheck(trimFn(this.subBranch))){
+									noticeFn({text:'请输入中文名开户支行!'});
+									return
+
+								}
 								if(!this.cardNumber){
-									noticeFn({text:'请输入银行卡号!'})
+									noticeFn({text:'请输入银行卡号!'});
 									return
 
 								}else if(!bankCheck(trimFn(this.cardNumber))){

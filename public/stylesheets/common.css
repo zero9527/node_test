@@ -116,8 +116,15 @@ p {margin: 0;}
 /* 去除amazeui样式--结束 */
 
 /* 一些自定义方法类 -- 开始 */
+/*文字对齐*/
 .tcenter {
 	text-align: center;
+}
+.tleft {
+	text-align: left;
+}
+.tright {
+	text-align: right;
 }
 /*左浮动*/
 .fleft {float: left;}
