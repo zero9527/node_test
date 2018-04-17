@@ -167,10 +167,10 @@
 			<button id='nextSure' @click='nextSure'>提交</button>
 		</div>
 		<!-- 提现说明 -->
-		<div id='withdesc' v-if='showDesc'>
+		<div id='withdesc' :style='showDesc'>
 			<h3>提现说明:</h3>
-			<p class='f6' v-for='(value,index) in wDesc' v-text='value'></p>
-			<a class='fblue' :href="tel">{{ returnTel }}</a>
+			<p class='f6' v-for='(value,index) in wDesc' v-html='value'></p>
+			<a class='fblue' :href="tel"><span v-text='returnTel'></span></a>
 		</div>
 	</div>
 	<script src="javascripts/vue.min.js"></script>
@@ -185,9 +185,12 @@
 				return {
 					inmoney: '',			// 提现的金额
 					enmoney: '',			// 全部提现的金额
-					wDesc: ['1、如果提现银行卡信息有误将会导致提现不成功；提现不成功后提现金额将立即返回店铺转让账户（若提现申请时已收取服务费，提现不成功退回资金时服务费不予退回）。', '2、提现限额：单笔提现金额大于2元，单笔提现最大金额50000元，单日提现金额上限为150000元。每日最多三笔。', '3、不支持提现信用卡。', '4、提现预计到账时间\r\t\t快速到账：正常时间提现可快速到账。但夜间快速提现到账支持的银行由于系统维护，到账时间会有延迟。详情可查看帮助中心。\r\t\t当日或次日（工作日）：提现提交后当日或下午1工作日内到账，节假日顺延1-3个工作日；提现提交后的1-3个工作日之内到账。节假日顺延以上时间为提现银行处理无任何意外的预计时间。若您的提现超过时间未到账，请致电店铺转让客服'],
+					wDesc: ['1、如果提现银行卡信息有误将会导致提现不成功；提现不成功后提现金额将立即返回店铺转让账户（若提现申请时已收取服务费，提现不成功退回资金时服务费不予退回）。', 
+					'2、提现限额：单笔提现金额大于2元，单笔提现最大金额50000元，单日提现金额上限为150000元。每日最多三笔。', 
+					'3、不支持提现信用卡。', 
+					'4、提现预计到账时间<br />&emsp;&emsp;快速到账：正常时间提现可快速到账。但夜间快速提现到账支持的银行由于系统维护，到账时间会有延迟。详情可查看帮助中心。<br />&emsp;&emsp;当日或次日（工作日）：提现提交后当日或下午1工作日内到账，节假日顺延1-3个工作日；提现提交后的1-3个工作日之内到账。节假日顺延以上时间为提现银行处理无任何意外的预计时间。若您的提现超过时间未到账，请致电店铺转让客服'],
 					tel: '',	// 客服电话
-					showDesc: false,
+					showDesc: '',
 					withNext: '',		
 					payway: '',				// 支付方式
 					payclass: '',
@@ -333,11 +336,11 @@
 
 				}
 				if(href.indexOf('showDesc') > -1){
-					this.showDesc = true;
+					this.showDesc = 'display:block;';
 					document.title = '提现说明';
 					$('#navbar>h2').text('提现说明');
 				}else{
-					this.showDesc = false;
+					this.showDesc = 'display:none;';
 				}
 				// console.log(payway, money);
 				

@@ -290,6 +290,7 @@ h3 {
 #withdesc {
 	width: 100vw;
 	height: 92vh;
+	display: none;
 	position: absolute;
 	padding: 0 4vmin;
 	top: 0;
@@ -303,5 +304,6 @@ h3 {
 	color: #333;
 }
 #withdesc>p {
+	margin-bottom: 2vh;
 	color: rgb(136, 136, 136);
 }
