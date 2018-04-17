@@ -94,7 +94,7 @@ var getLocaltime = function (_time) {
           ? '0' + localetime.getSeconds()
           : localetime.getSeconds();
 
-    var normal = year + '/' + month + '/'  + date + '\t'  + hour + ':'  + minute;
+    var normal = year +'/'+ month +'/'+ date + '\t' + hour +':'+ minute +':'+ second;
     if(!_time) normal = '--';
     // console.log('year + month + day + hour + minute: ', normal);
     return normal;

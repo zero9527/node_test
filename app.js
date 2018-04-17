@@ -71,6 +71,12 @@ app.get('/mine', function(req, res){
 app.get('/withdraw', function(req, res){
 	res.sendFile(path.resolve('./') + '/views/withdraw.html');
 })
+app.get('/myearnings', function(req, res){
+	res.sendFile(path.resolve('./') + '/views/myearnings.html');
+})
+app.get('/team', function(req, res){
+	res.sendFile(path.resolve('./') + '/views/team.html');
+})
 // app.use('/', index);
 app.use('/users', users);
 

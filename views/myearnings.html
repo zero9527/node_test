@@ -12,17 +12,25 @@
 	<script src="javascripts/vue.min.js"></script>
 </head>
 <body>
-	<div id="earnings" class="am-container" >
-		<h3><i class='iconfont icon-account'></i>我的账户: <span v-text='account'></span></h3>
-		<p>
+	<div id="earnings" >
+		<h3 class='account tcenter'>
+			<p>
+				<i class='iconfont icon-account'></i>
+				<span>&emsp;&emsp;我的账户:</span> 
+				<span v-text='account'></span>
+			</p>
+		</h3>
+		<div class='head'>
 			<span>来源</span>
 			<span>收入</span>
 			<span>渠道</span>
-		</p>
-		<ul id='main' v-for='e in eList'>
-			<li>e.name</li>
-			<li>e.inmoney</li>
-			<li>e.way</li>
+		</div>
+		<ul id='main'>
+			<li v-for='e in eList'>
+				<span>{{e.name}}</span>
+				<span>{{e.inmoney}}</span>
+				<span>{{e.way}}</span>
+			</li>
 		</ul>
 		<ul id='footer'>
 			<li>甲级成员：<span v-text='levelJ'></span></li>
@@ -40,6 +48,15 @@
 				return {	
 					account: '--',		// 账户名
 					eList: [
+						{name: '雷神',inmoney: '100元现金',way: '推广'},
+						{name: '猪八戒',inmoney: '100天租赁',way: '推广'},
+						{name: '钢铁侠',inmoney: '100天租赁',way: '推广'},
+						{name: '一拳超人',inmoney: '100元现金',way: '推广'},
+						{name: '孙悟饭',inmoney: '100天租赁',way: '推广'},
+						{name: '杰诺斯',inmoney: '100天租赁',way: '推广'},
+						{name: '第一',inmoney: '100元现金',way: '推广'},
+						{name: '风云雄霸天下',inmoney: '100天租赁',way: '推广'},
+						{name: '电饭锅',inmoney: '100天租赁',way: '推广'},
 						{name: '小花',inmoney: '100元现金',way: '推广'},
 						{name: '小名',inmoney: '100天租赁',way: '推广'},
 						{name: '虾条',inmoney: '100天租赁',way: '推广'},
