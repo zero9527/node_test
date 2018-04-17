@@ -27,6 +27,7 @@ ul, li, dl, dt, dd, form, h1, h2, h3, h4, p, input, form {
 }
 body {
 	font-size: .7rem;
+	/*filter: grayscale(100%);*/
 }
 .fwhite {
 	color: #fff;
@@ -37,39 +38,69 @@ body {
 /*总内容*/
 .content {
 	height: 100vh;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	display: -webkit-flex;
 	display: -moz-flex;
-	flex-direction: column;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
 }
 /*顶部*/
 .indexTop {
-	flex: 2;
+	-webkit-box-flex: 2;
+	    -ms-flex: 2;
+	        flex: 2;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-direction: column;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
 	background: url("../images/yun_01.jpg") no-repeat 100% 100%;
 	background-size:cover;
 }
 /*底部*/
 .indexBottom {
-	flex: 1;
+	-webkit-box-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-direction: column;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
 	background-color:#A8E2FF;
 }
 .indexBottom > ul {
-	flex: 1;
+	-webkit-box-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+	display:-webkit-box;
+	display:-ms-flexbox;
 	display:flex;
-	flex-direction:row;
-	justify-content:space-around;
-	align-items:center;
+	-webkit-box-orient:horizontal;
+	-webkit-box-direction:normal;
+	    -ms-flex-direction:row;
+	        flex-direction:row;
+	-ms-flex-pack:distribute;
+	    justify-content:space-around;
+	-webkit-box-align:center;
+	    -ms-flex-align:center;
+	        align-items:center;
 	text-align:center;
 
 }
-.indexBottom > ul:first-child > li > a > p{
-	font-size:1.1rem;
-
+.indexBottom > ul > li {
+	-webkit-box-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
 }
+
 .indexBottom > ul:first-child > li:nth-child(1) > a > p {
 	color:#217D64;
 }
@@ -88,15 +119,11 @@ body {
 .indexBottom > ul:last-child > li:nth-child(3) > a > p {
 	color:#217D64;
 }
-.indexBottom > ul:first-child > li > a > span{
-	font-size:.4rem;
+
+.indexBottom p.iconfont{
+	font-size:1.6rem;
 }
-.indexBottom > ul:last-child > li > a > p{
-	font-size:1.1rem;
-}
-.indexBottom > ul:last-child > li > a > span{
-	font-size:.4rem;
-}
+
 .statusZhishui > p > i {
 	font-size:1.6rem;
 	color:#039CE9!important;
@@ -111,9 +138,15 @@ body {
 }
 /*水球*/
 .waterQiu {
-	flex: 2;
+	-webkit-box-flex: 2;
+	    -ms-flex: 2;
+	        flex: 2;
+	display:-webkit-box;
+	display:-ms-flexbox;
 	display:flex;
-	justify-content:center;
+	-webkit-box-pack:center;
+	    -ms-flex-pack:center;
+	        justify-content:center;
 }
 .waterQius {
 	width: 64vw;
@@ -193,29 +226,41 @@ body {
 /*纯水和原水1*/
 .waterPure {
 	height:54%;
+	display:-webkit-box;
+	display:-ms-flexbox;
 	display:flex;
-	display:-webkit-flex;
 	display:-moz-flex;
 	display:-ms-flex;
-	flex-direction:column;
+	-webkit-box-orient:vertical;
+	-webkit-box-direction:normal;
+	    -ms-flex-direction:column;
+	        flex-direction:column;
 	position:relative;
 	padding-top: 5%;
 	z-index:100;
 }
 .waterRaw {
 	height:40%;
+	display:-webkit-box;
+	display:-ms-flexbox;
 	display:flex;
-	display:-webkit-flex;
 	display:-moz-flex;
 	display:-ms-flex;
-	flex-direction:column;
+	-webkit-box-orient:vertical;
+	-webkit-box-direction:normal;
+	    -ms-flex-direction:column;
+	        flex-direction:column;
 	position:relative;
 	z-index:100;
 }
 .waterPure > p {
 	position:relative;
-	align-self:center;
-	flex:3;
+	-ms-flex-item-align:center;
+	    -ms-grid-row-align:center;
+	    align-self:center;
+	-webkit-box-flex:3;
+	    -ms-flex:3;
+	        flex:3;
 	top:.5rem;
 }
 .waterPure > p > a {
@@ -232,12 +277,18 @@ body {
 	bottom: 25%;
 }
 .waterPure > span, .waterRaw > span {
-	flex:1;
+	-webkit-box-flex:1;
+	    -ms-flex:1;
+	        flex:1;
 }
 .waterRaw > p {
 	position:relative;
-	align-self:center;
-	flex:1;
+	-ms-flex-item-align:center;
+	    -ms-grid-row-align:center;
+	    align-self:center;
+	-webkit-box-flex:1;
+	    -ms-flex:1;
+	        flex:1;
 	top:0;
 }
 .waterRaw > p > a {
@@ -263,9 +314,16 @@ body {
 }
 /*流水*/
 .waterLiu {
-	flex: 1;
+	-webkit-box-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
+	display:-webkit-box;
+	display:-ms-flexbox;
 	display:flex;
-	flex-direction:column;
+	-webkit-box-orient:vertical;
+	-webkit-box-direction:normal;
+	    -ms-flex-direction:column;
+	        flex-direction:column;
 	position:relative;
 }
 .waterLiu:after, .waterLiu:before {
@@ -280,20 +338,33 @@ body {
 	z-index:1;
 }
 .waterLiu:after {
-	animation: shuibolang 3s linear infinite;
+	-webkit-animation: shuibolang 3s linear infinite;
+	        animation: shuibolang 3s linear infinite;
 }
 .waterLiu:before {
-	animation: shuibolangs 3s linear infinite;
+	-webkit-animation: shuibolangs 3s linear infinite;
+	        animation: shuibolangs 3s linear infinite;
 }
 .waterLiu > div{
-	flex:1;
+	-webkit-box-flex:1;
+	    -ms-flex:1;
+	        flex:1;
 	z-index:100;
 }
 .waterLiu > div:last-child {
+	display:-webkit-box;
+	display:-ms-flexbox;
 	display:flex;
-	flex-direction:row;
-	justify-content:space-between;
-	align-items:center;
+	-webkit-box-orient:horizontal;
+	-webkit-box-direction:normal;
+	    -ms-flex-direction:row;
+	        flex-direction:row;
+	-webkit-box-pack:justify;
+	    -ms-flex-pack:justify;
+	        justify-content:space-between;
+	-webkit-box-align:center;
+	    -ms-flex-align:center;
+	        align-items:center;
 	padding:0 .5rem;
 }
 @keyframes shuibolang {
@@ -348,34 +419,59 @@ body {
 	bottom: 0;
 	height: 30%;
 	background-color: white;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 }
 .shareContents > li {
 	width: 100%;
+	display:-webkit-box;
+	display:-ms-flexbox;
 	display:flex;
-	align-items: center;
-	justify-content: space-around;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-ms-flex-pack: distribute;
+	    justify-content: space-around;
 
 }
 .shareContents > li:nth-child(1) {
-	flex: 2;
+	-webkit-box-flex: 2;
+	    -ms-flex: 2;
+	        flex: 2;
 	border-bottom: 1px solid rgb(228,228,228);
 }
 .shareContents > li:nth-child(2) {
-	flex: 2;
+	-webkit-box-flex: 2;
+	    -ms-flex: 2;
+	        flex: 2;
 	border-bottom: 1px solid rgb(228,228,228);
 }
 
 .shareContents > li:nth-child(3) {
-	flex: 1;
+	-webkit-box-flex: 1;
+	    -ms-flex: 1;
+	        flex: 1;
 }
 
 .shareContents > li > div {
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	    -ms-flex-direction: column;
+	        flex-direction: column;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	
 }
 .shareContents > li > div > span:first-child {

@@ -81,22 +81,38 @@
 					</div> -->
 				</div>
 				<div class='fwhite'>
-					<div>剩余天数<span>40</span>天</div>
-					<div>已用天数<span>200</span>天</div>
+					<div v-if='leasingmode == 0'>剩余天数<span>40</span>天</div>
+					<div v-if='leasingmode == 0'>已用天数<span>200</span>天</div>
+					<div v-if='leasingmode == 1'>剩余流量<span>40</span>L</div>
+					<div v-if='leasingmode == 1'>已用流量<span>200</span>L</div>
+					<div v-if='leasingmode == 2'>剩余流量<span>40</span>L</div>
+					<div v-if='leasingmode == 2'>已用流量<span>200</span>L</div>
 				</div>
 			</div>
 		</div>
 		<!-- 底部 -->
 		<div class="indexBottom">
 			<ul>
-				<li><a href="{{:U('Home/Index/filter')}}"><p class="iconfont icon-lvxin1"></p><span>滤芯</span></a></li>
-				<li><a href="javascript:;" class="clickBtn"><p class="iconfont icon-kaiguan"></p><span class="switchText">开机</span></a></li>
-				<li><a href="javascript:;" class="washBtn"><p class="iconfont icon-chongxi1"></p><span class="washText">冲洗</span></a></li>
+				<li>
+					<a href="javascript:;"><p class="iconfont icon-filter"></p><span>滤芯</span></a>
+				</li>
+				<li>
+					<a href="javascript:;" @click='power'><p class="iconfont icon-power"></p><span class="switchText" v-text='powerStatus'></span></a>
+				</li>
+				<li>
+					<a href="javascript:;" @click='wash'><p class="iconfont icon-wash"></p><span class="washText">冲洗</span></a>
+				</li>
 			</ul>
 			<ul>
-				<li><a class="charge" href="{{:U('Home/Shop/index')}}" class=""><p class="iconfont icon-chongzhi1"></p><span>充值</span></a></li>
-				<li><a href="{{:U('Home/Users/mine')}}"><p class="iconfont icon-wode1"></p><span>我的</span></a></li>
-				<li><a class="mall" href="{{:U('Home/Shop/index')}}"><p class="iconfont icon-chongzhi"></p><span>商城</span></a></li>
+				<li>
+					<a class="buy" href="javascript:;"><p class="iconfont icon-buy"></p><span>购买</span></a>
+				</li>
+				<li>
+					<a href="javascript:;"><p class="iconfont icon-user"></p><span>我的</span></a>
+				</li>
+				<li>
+					<a class="repair" href="javascript:;"><p class="iconfont icon-repair"></p><span>报修</span></a>
+				</li>
 			</ul>
 		</div>
 		<!-- 分享 -->
@@ -126,55 +142,85 @@
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="javascripts/public.js"></script>
 	<script src="javascripts/websocket.js"></script>
+	<script src="javascripts/home.js"></script>
 </body>
 <script>
-	var home = new Vue({
-		el: '#home',
-		data() {
-			return {
-				tdsPure: '',		// 纯水tds
-				tdsRaw: '',			// 原水tds
-				statusText: '',									// 水机状态
-				statusIconName: '',								// 状态图标
-				statusIconClass: {
-					makeWater: 'iconfont icon-makeWater',			// 制水
-					waterFull: 'iconfont icon-waterFull',			// 水满
-					checking: 'iconfont icon-checking',			// 检修
-					lacking: 'iconfont icon-lacking',				// 缺水
-					washing: 'iconfont icon-washing',			// 冲洗
-					leaking: 'iconfont icon-leaking',			// 漏水
-					poweroff: 'iconfont icon-poweroff',			// 已关机
-					arrears: 'iconfont icon-arrears',			// 已欠费
-					offline: 'iconfont icon-offline'			// 已离线
-				},
-				statusList: ['制水','水满','检修','缺水','冲洗','漏水','已关机','已欠费','已离线']
-			}
-		},
-		computed: {},
-		mounted() {
-			var that = this;
-			this.tdsPure = 100;
-			this.tdsRaw = 99;
-			this.statusText = this.statusList[0];
-			this.statusIconName = this.statusIconClass.makeWater;
-			var wsurl = "ws://localhost:8181";
-			wsFun(wsurl, function(str, res){
-				// str: 数据类型（接收，关闭， 错误），
-				// 在websocket.js中给出，不需要传
-				console.log(str, res);
-				// 接收数据更新到页面
-				if(str == '接收：'){
-					that.tdsPure = res;
-					that.tdsRaw = (res/2);
-				}
-			});
-		},
-		methods: {
-			// websocket发送数据
-			sendMessage: function(){
-				sendmsg('这是网页发送的数据 ' + new Date().toLocaleString());
-			}
-		}
-	})
+	// var home = new Vue({
+	// 	el: '#home',
+	// 	data() {
+	// 		return {
+	// 			tdsPure: '',		// 纯水tds
+	// 			tdsRaw: '',			// 原水tds
+	// 			leasingmode: '',	// 滤芯模式
+	// 			statusText: '',									// 水机状态
+	// 			statusIconName: '',								// 状态图标
+	// 			statusIconClass: {
+	// 				makeWater: 'iconfont icon-makeWater',			// 制水
+	// 				waterFull: 'iconfont icon-waterFull',			// 水满
+	// 				checking: 'iconfont icon-checking',			// 检修
+	// 				lacking: 'iconfont icon-lacking',				// 缺水
+	// 				washing: 'iconfont icon-washing',			// 冲洗
+	// 				leaking: 'iconfont icon-leaking',			// 漏水
+	// 				poweroff: 'iconfont icon-poweroff',			// 已关机
+	// 				arrears: 'iconfont icon-arrears',			// 已欠费
+	// 				offline: 'iconfont icon-offline'			// 已离线
+	// 			},
+	// 			statusList: ['制水','水满','检修','缺水','冲洗','漏水','已关机','已欠费','已离线'],
+	// 			powerStatus: '开机',							// 开关机状态
+	// 		}
+	// 	},
+	// 	computed: {},
+	// 	mounted() {
+	// 		var that = this;
+	// 		this.tdsPure = 100;
+	// 		this.tdsRaw = 99;
+	// 		this.statusText = this.statusList[0];
+	// 		this.statusIconName = this.statusIconClass.makeWater;
+	// 		var wsurl = "ws://localhost:8181";
+	// 		// wsFun(wsurl, function(str, res){
+	// 		// 	// str: 数据类型（接收，关闭， 错误），
+	// 		// 	// 在websocket.js中给出，不需要传
+	// 		// 	console.log(str, res);
+	// 		// 	// 接收数据更新到页面
+	// 		// 	if(str == '接收：'){
+	// 		// 		that.tdsPure = res;
+	// 		// 		that.tdsRaw = (res/2);
+	// 		// 	}
+	// 		// });
+			
+	// 	},
+	// 	methods: {
+	// 		// websocket发送数据
+	// 		sendMessage: function(){
+	// 			sendmsg('这是网页发送的数据 ' + new Date().toLocaleString());
+	// 		},
+	// 		// 开关机
+	// 		power: function(){
+	// 			var text = '';
+	// 			if(this.powerStatus == '开机'){
+	// 				console.log('关机');
+	// 				text = '关机';
+	// 				this.powerStatus = '关机';
+
+	// 			}else if(this.powerStatus == '关机'){
+	// 				console.log('开机');
+	// 				text = '开机';
+	// 				this.powerStatus = '开机';
+	// 			}
+
+	// 			// 确认取消框
+	// 			confirmFn(text, function(res){
+	// 				if(res){
+	// 					// 点击确定
+	// 				}else{
+	// 					// 点击取消
+	// 					noticeFn({text:'取消！'});
+	// 				}
+	// 			})
+	// 		},
+	// 		// 冲洗
+	// 		wash: function(){}
+	// 	}
+	// })
 </script>
 </html>
