@@ -44,7 +44,7 @@
 					<a href="javascript:;" @click='withall' class='fblue'>全部提现</a>
 				</li>
 			</ul>
-			<p class='desc fblue'><i class="am-icon-question-circle-o"></i>&nbsp;提现说明&nbsp;&nbsp;</p>
+			<p class='desc fblue' @click='showdesc'><i class="am-icon-question-circle-o"></i>&nbsp;提现说明&nbsp;&nbsp;</p>
 		</div>
 		<button id='sure' @click='sure' v-if='!withNext'>确定</button>
 		<div class='withNext'>
@@ -166,6 +166,12 @@
 			</div>
 			<button id='nextSure' @click='nextSure'>提交</button>
 		</div>
+		<!-- 提现说明 -->
+		<div id='withdesc' v-if='showDesc'>
+			<h3>提现说明:</h3>
+			<p class='f6' v-for='(value,index) in wDesc' v-text='value'></p>
+			<a class='fblue' :href="tel">{{ returnTel }}</a>
+		</div>
 	</div>
 	<script src="javascripts/vue.min.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
@@ -173,14 +179,15 @@
 	<script src="javascripts/public.js"></script>
 	<script src="javascripts/webuploader.js"></script>
 	<script>
-		// 实例化一个formdata对象
-		var formData = new FormData($("#form")[0]);
 		var withdraw = new Vue({
 			el: '#withdraw',
 			data() {
 				return {
 					inmoney: '',			// 提现的金额
 					enmoney: '',			// 全部提现的金额
+					wDesc: ['1、如果提现银行卡信息有误将会导致提现不成功；提现不成功后提现金额将立即返回店铺转让账户（若提现申请时已收取服务费，提现不成功退回资金时服务费不予退回）。', '2、提现限额：单笔提现金额大于2元，单笔提现最大金额50000元，单日提现金额上限为150000元。每日最多三笔。', '3、不支持提现信用卡。', '4、提现预计到账时间\r\t\t快速到账：正常时间提现可快速到账。但夜间快速提现到账支持的银行由于系统维护，到账时间会有延迟。详情可查看帮助中心。\r\t\t当日或次日（工作日）：提现提交后当日或下午1工作日内到账，节假日顺延1-3个工作日；提现提交后的1-3个工作日之内到账。节假日顺延以上时间为提现银行处理无任何意外的预计时间。若您的提现超过时间未到账，请致电店铺转让客服'],
+					tel: '',	// 客服电话
+					showDesc: false,
 					withNext: '',		
 					payway: '',				// 支付方式
 					payclass: '',
@@ -236,7 +243,13 @@
 					cardNumber: ''			// 银行卡号
 				}
 			},
-			mounted() {	
+			computed: {
+				returnTel: function(){
+					return this.tel.substr(this.tel.indexOf(':')+1);
+				}
+			},
+			mounted() {
+				this.tel = 'tel:400-888-1139';
 				// 初始化Web Uploader
 				var uploader = WebUploader.create({
 
@@ -319,6 +332,13 @@
 					}
 
 				}
+				if(href.indexOf('showDesc') > -1){
+					this.showDesc = true;
+					document.title = '提现说明';
+					$('#navbar>h2').text('提现说明');
+				}else{
+					this.showDesc = false;
+				}
 				// console.log(payway, money);
 				
 			},
@@ -366,6 +386,11 @@
 					}
 
 				},
+				// 显示提现说明
+				showdesc: function(){
+					var href = location.href + '?showDesc=true';
+					location.href = href;
+				},
 				// 点击确定
 				sure: function(){
 					var chooseway = $('.item .icon-select');
@@ -381,8 +406,16 @@
 						noticeFn({text: '请输入阿拉伯数字（0-9）金额！'});
 						return
 
+					}else if(Number(trimFn(this.inmoney)) < 2){
+						noticeFn({text: '提现金额最小2元！'});
+						return
+						
 					}else if(Number(trimFn(this.inmoney)) > this.enmoney){
 						noticeFn({text: '提现金额超出最大值！'});
+						return
+
+					}else if(Number(trimFn(this.inmoney)) > 50000){
+						noticeFn({text: '提现金额超出单笔最大限额！'});
 						return
 					}
 					// 跳转到下一个页面 (弹出相关方式)

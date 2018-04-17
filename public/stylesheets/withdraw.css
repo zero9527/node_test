@@ -2,7 +2,9 @@
 a {
 	color: #333;
 }
-
+h3 {
+	margin: 0;
+}
 #withdraw {
 	position: relative;
 	min-height: 500px;
@@ -284,4 +286,22 @@ a {
 
 .bankList>li:active {
 	background: #eee;
+}
+#withdesc {
+	width: 100vw;
+	height: 92vh;
+	position: absolute;
+	padding: 0 4vmin;
+	top: 0;
+	left: 0;
+	background: #fff;
+	overflow: hidden;
+	z-index: 9999;
+}
+#withdesc>h3 {
+	margin: 4vmin 0;
+	color: #333;
+}
+#withdesc>p {
+	color: rgb(136, 136, 136);
 }
