@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>首页</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no minimal-ui">
+	<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/common.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
+	<script src="javascripts/vue.min.js"></script>
+</head>
+<body><!--设备状态数据-->
+	<div class="content" id='home'>
+		<!-- 顶部 -->
+		<div class="indexTop">
+			<!-- 水球 -->
+			<div class="waterQiu">
+				<div class="waterQius"> 
+					<div class="picKuan"></div>
+					<div class="waterPure">
+						<p>
+							<a v-text='tdsPure'>0</a>
+							<span class='fwhite'>ppm</span>
+						</p>
+						<span class='fwhite'>纯水TDS</span>
+					</div>
+					<div class="waterRaw">
+						<p>
+							<a v-text='tdsRaw'>0</a>
+							<span class='fwhite'>ppm</span>
+						</p>
+						<span class='fwhite'>原水TDS</span>
+					</div>
+					<!-- 水波浪 -->
+					<div class='wave -one'></div>
+					<div class='wave -two'></div>
+					<div class='wave -three'></div>
+				</div>
+			</div>
+			<!-- 水波浪 -->
+			<div class="waterLiu">
+				<div id="statusBox" class="allStatus">
+					<div class="status addwater left">
+						<p><i :class="statusIconName"></i></p>
+						<span v-text='statusText'></span>
+					</div>
+					<!-- <div class="statusZhishui addwater left">
+						<p><i class="iconfont icon-zhishui"></i></p><span>制水</span>
+					</div>
+					<div class="fullWaters left">
+						<p><i class="iconfont icon-shuiman"></i></p>
+						<span>水满</span>
+					</div>
+					<div class="statusShuiman service right">
+						<p><i class="iconfont icon-jianxiu"></i></p>
+						<span>检修</span>
+					</div>
+					<div class="statusShuiman lessWaters right">
+						<p><i class="iconfont icon-queshui"></i></p>
+						<span>缺水</span>
+					</div>
+					<div class="statusShuiman wash right">
+						<p><i class="iconfont icon-chongxi"></i></p>
+						<span>冲洗</span>
+					</div>
+					<div class="statusShuiman showDown right">
+						<p><i class="iconfont "></i></p>
+						<span>已关机</span>
+					</div>
+					<div class="statusShuiman arrearage right">
+						<p><i class="iconfont "></i></p>
+						<span>已欠费</span>
+					</div>
+					<div class="statusShuiman outLine right">
+						<p><i class="iconfont "></i></p>
+						<span>已离线</span>
+					</div>
+					<div class="statusShuiman leaking right">
+						<p><i class="iconfont icon-leaking"></i></p>
+						<span>漏水</span>
+					</div> -->
+				</div>
+				<div class='fwhite'>
+					<div>剩余天数<span>40</span>天</div>
+					<div>已用天数<span>200</span>天</div>
+				</div>
+			</div>
+		</div>
+		<!-- 底部 -->
+		<div class="indexBottom">
+			<ul>
+				<li><a href="{{:U('Home/Index/filter')}}"><p class="iconfont icon-lvxin1"></p><span>滤芯</span></a></li>
+				<li><a href="javascript:;" class="clickBtn"><p class="iconfont icon-kaiguan"></p><span class="switchText">开机</span></a></li>
+				<li><a href="javascript:;" class="washBtn"><p class="iconfont icon-chongxi1"></p><span class="washText">冲洗</span></a></li>
+			</ul>
+			<ul>
+				<li><a class="charge" href="{{:U('Home/Shop/index')}}" class=""><p class="iconfont icon-chongzhi1"></p><span>充值</span></a></li>
+				<li><a href="{{:U('Home/Users/mine')}}"><p class="iconfont icon-wode1"></p><span>我的</span></a></li>
+				<li><a class="mall" href="{{:U('Home/Shop/index')}}"><p class="iconfont icon-chongzhi"></p><span>商城</span></a></li>
+			</ul>
+		</div>
+		<!-- 分享 -->
+		<div class="share">分享</div>
+		<!-- 分享面板 -->
+		<div class="shareContent" style="display:none;">
+			<ul class="shareContents">
+				<li>
+					<div class="shweixin"><span class="iconfont icon-weixin1" style="color: rgb(11,202,52)"></span><span>微信</span></div>
+					<div class="shweibo"><span class="iconfont icon-weibo" style="color: rgb(251,96,90)"></span><span>微博</span></div>
+					<div class="shpyquan"><span class="iconfont icon-pengyouquan1" style="color: rgb(11,202,52)"></span><span>朋友圈</span></div>
+					
+				</li>
+				<li>
+					<div class="shQQ"><span class="iconfont icon-qq" style="color: rgb(81,145,216)"></span><span>QQ</span></div>
+					<div class="shkjian"><span class="iconfont icon-kongjian00" style="color: rgb(251,176,52)"></span><span>空间</span></div>
+					<div class="shscang"><span class="iconfont icon-xingxing" style="color: rgb(125,174,207)"></span><span>收藏</span></div>
+				</li>
+				<li class="cancel">
+					<p>取消</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<script src="javascripts/jquery.min.js"></script>
+	<script src="amazeui/js/amazeui.min.js"></script>
+	<script src="javascripts/public.js"></script>
+	<script src="javascripts/websocket.js"></script>
+</body>
+<script>
+	var home = new Vue({
+		el: '#home',
+		data() {
+			return {
+				tdsPure: '',		// 纯水tds
+				tdsRaw: '',			// 原水tds
+				statusText: '',									// 水机状态
+				statusIconName: '',								// 状态图标
+				statusIconClass: {
+					makeWater: 'iconfont icon-makeWater',			// 制水
+					waterFull: 'iconfont icon-waterFull',			// 水满
+					checking: 'iconfont icon-checking',			// 检修
+					lacking: 'iconfont icon-lacking',				// 缺水
+					washing: 'iconfont icon-washing',			// 冲洗
+					leaking: 'iconfont icon-leaking',			// 漏水
+					poweroff: 'iconfont icon-poweroff',			// 已关机
+					arrears: 'iconfont icon-arrears',			// 已欠费
+					offline: 'iconfont icon-offline'			// 已离线
+				},
+				statusList: ['制水','水满','检修','缺水','冲洗','漏水','已关机','已欠费','已离线']
+			}
+		},
+		computed: {},
+		mounted() {
+			var that = this;
+			this.tdsPure = 100;
+			this.tdsRaw = 99;
+			this.statusText = this.statusList[0];
+			this.statusIconName = this.statusIconClass.makeWater;
+			var wsurl = "ws://localhost:8181";
+			wsFun(wsurl, function(str, res){
+				// str: 数据类型（接收，关闭， 错误），
+				// 在websocket.js中给出，不需要传
+				console.log(str, res);
+				// 接收数据更新到页面
+				if(str == '接收：'){
+					that.tdsPure = res;
+					that.tdsRaw = (res/2);
+				}
+			});
+		},
+		methods: {
+			// websocket发送数据
+			sendMessage: function(){
+				sendmsg('这是网页发送的数据 ' + new Date().toLocaleString());
+			}
+		}
+	})
+</script>
+</html>

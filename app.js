@@ -12,7 +12,7 @@ var users = require('./routes/users');
 var websocketServer = require('ws').Server,
 	websocket = new websocketServer({port: 8181});
 var time = new Date().toLocaleString();
-
+var num = 0;
 websocket.on('connection',function(ws){
 
 	console.log('client connected');
@@ -33,8 +33,9 @@ websocket.on('connection',function(ws){
 	})
 
 	setInterval(function(){
-		time = new Date().toLocaleString();
-		ws.send('前台你好！ '+time);
+		// time = new Date().toLocaleString();
+		num++;
+		ws.send(num);
 	},5000)
 });
 
@@ -62,8 +63,8 @@ app.get('/amaze', function(req, res){
 app.get('/widget', function(req, res){
 	res.sendFile(path.resolve('./') + '/views/Widget.html');
 })
-app.get('/0326', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/0326.html');
+app.get('/info', function(req, res){
+	res.sendFile(path.resolve('./') + '/views/info.html');
 })
 app.get('/mine', function(req, res){
 	res.sendFile(path.resolve('./') + '/views/mine.html');
@@ -76,6 +77,9 @@ app.get('/myearnings', function(req, res){
 })
 app.get('/team', function(req, res){
 	res.sendFile(path.resolve('./') + '/views/team.html');
+})
+app.get('/home', function(req, res){
+	res.sendFile(path.resolve('./') + '/views/home.html');
 })
 // app.use('/', index);
 app.use('/users', users);
