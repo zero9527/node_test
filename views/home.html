@@ -152,7 +152,7 @@
 								<span class='fleft' v-text='f.fName'>RO膜</span>
 								<span class='fright' v-text='f.fPercent'>80%</span>
 							</p>
-							<div :style='f.fPercent'>百分比进度条</div>
+							<div class='percent'><span class='bgblue' :style='"width:"+f.fPercent'></span></div>
 						</div>
 					</li>
 					<!-- 滤芯描述 -->
@@ -175,7 +175,7 @@
 								<span class='fleft' v-text='f.fName'>RO膜</span>
 								<span class='fright' v-text='f.fPercent'>80%</span>
 							</p>
-							<div :style='f.fPercent'>百分比进度条</div>
+							<div class='percent'><span class='bgblue' :style='"width:"+f.fPercent'></span></div>
 						</li>
 					</ul>
 					<div :index='resetFilter' @click='filterReset' class='reset bgblue'>确认复位</div>
