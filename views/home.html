@@ -13,7 +13,7 @@
 <body><!--设备状态数据-->
 	<div class="content" id='home'>
 		<!-- 顶部 -->
-		<div class="indexTop" :style='topStyle'>
+		<div class="indexTop" :style='homeStyle'>
 			<!-- 水球 -->
 			<div class="waterQiu">
 				<div class="waterQius"> 
@@ -92,7 +92,7 @@
 			</div>
 		</div>
 		<!-- 底部 -->
-		<div class="indexBottom" :style='botStyle'>
+		<div class="indexBottom" :style='homeStyle'>
 			<ul>
 				<li>
 					<a href="javascript:;" @click='filterShow'><p class="iconfont icon-filter"></p><span>滤芯</span></a>
@@ -117,7 +117,7 @@
 			</ul>
 		</div>
 		<!-- 分享 -->
-		<div class="share">分享</div>
+		<div class="share" :style='homeStyle'>分享</div>
 		<!-- 分享面板 -->
 		<div class="shareContent" style="display:none;">
 			<ul class="shareContents">
@@ -147,34 +147,38 @@
 			<div class='filtermain' :style='filmainStyle'>
 				<ul class='mLeft'>
 					<li>
-						<div class='fliterPercItem'>
+						<div class='fliterPercItem' v-for='f in filterList'>
 							<p class='cfix'>
-								<span class='fleft'>RO膜</span>
-								<span class='fright'>80%</span>
+								<span class='fleft' v-text='f.fName'>RO膜</span>
+								<span class='fright' v-text='f.fPercent'>80%</span>
 							</p>
-							<div>百分比进度条</div>
+							<div :style='f.fPercent'>百分比进度条</div>
 						</div>
 					</li>
 					<!-- 滤芯描述 -->
 					<li>
-						<div class='fliterDescItem'>
-							<p>RO膜</p>
-							<p class='color888'>RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇</p>
+						<div class='fliterDescItem' v-for='d in filterDescList'>
+							<p v-text='d.fName'>RO膜</p>
+							<p class='color888' v-text='d.fDesc'>RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇</p>
 							<div class='cfix'>
-								<span class='fleft'>总寿命：<span>1000L</span></span>
-								<span class='fright'>剩余：<span>800L</span></span>
+								<span class='fleft' v-text='d.allLife'>总寿命：<span>1000L</span></span>
+								<span class='fright' v-text='d.surplus'>剩余：<span>800L</span></span>
 							</div>
 						</div>
 					</li>
 				</ul>
 				<ul class='mRight'>
-					<li>
-						<p class='cfix'>
-							<span class='fleft'>RO膜</span>
-							<span class='fright'>80%</span>
-						</p>
-						<div>百分比进度条</div>
-					</li>
+					<ul>
+						<li class='filteritem' v-for='f in filterList' @click.prevent='resetSelect($event)' :fname='f.fName'>
+							<span class='iconfont icon-emptycircle'></span>
+							<p class='cfix'>
+								<span class='fleft' v-text='f.fName'>RO膜</span>
+								<span class='fright' v-text='f.fPercent'>80%</span>
+							</p>
+							<div :style='f.fPercent'>百分比进度条</div>
+						</li>
+					</ul>
+					<div :index='resetFilter' @click='filterReset' class='reset bgblue'>确认复位</div>
 				</ul>
 			</div>
 		</div>
@@ -183,6 +187,11 @@
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="javascripts/public.js"></script>
+	<script>
+		// 显示loading
+		var loaddiv = document.getElementsByClassName('loadingdiv');
+		fadeFn({elem: loaddiv[0]});
+	</script>
 	<script src="javascripts/websocket.js"></script>
 </body>
 <script>
@@ -192,8 +201,7 @@
 			return {
 				tdsPure: '',		// 纯水tds
 				tdsRaw: '',			// 原水tds
-				topStyle: '',		// 上部分
-				botStyle: '',		// 下部分
+				homeStyle: '',		// 首页部分
 				leasingmode: '',	// 滤芯模式
 				statusText: '',									// 水机状态
 				statusIconName: '',								// 状态图标
@@ -213,24 +221,44 @@
 				filterstyle: 'display:none;',					// 滤芯部分
 				lineStyle: '',								//横线
 				filmainStyle: '',							// 滤芯详情，滤芯复位
+				filterList: [],								// 滤芯详情数据集合
+				filterDescList: [],							// 滤芯简介集合
+				resetFilter: '',			// 滤芯复位
 			}
 		},
 		computed: {},
 		mounted() {
+			this.filterList = [
+				{fNum:'0',fName:'RO膜',fPercent:'80%'},
+				{fNum:'1',fName:'PP棉',fPercent:'50%'},
+				{fNum:'2',fName:'滤芯1',fPercent:'10%'},
+				{fNum:'3',fName:'滤芯2',fPercent:'60%'},
+				{fNum:'4',fName:'PP棉',fPercent:'50%'},
+				{fNum:'5',fName:'滤芯1',fPercent:'10%'},
+				{fNum:'6',fName:'滤芯2',fPercent:'60%'}
+			];
+			this.filterDescList = [
+				{fNum:'0',fName:'RO膜',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'60'},
+				{fNum:'1',fName:'PP棉',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'50'},
+				{fNum:'2',fName:'滤芯1',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'20'},
+				{fNum:'3',fName:'滤芯2',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'40'},
+				{fNum:'4',fName:'PP棉',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'50'},
+				{fNum:'5',fName:'滤芯1',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'20'},
+				{fNum:'6',fName:'滤芯2',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'40'},
+			];
 			var that = this;
 			var href = location.href;
 			// 显示滤芯页面
 			if(href.indexOf('filter') > -1){
-				this.topStyle = 'opacity:0;';
-				this.botStyle = 'opacity:0;';
+				this.homeStyle = 'opacity:0;';
 				this.filterstyle = 'display:block;';
 				document.title = '滤芯';
 				$('#navbar>h2').text('滤芯');
+				$('#navbar').css({position:'fixed'});
 				$("#navbar").show();
 
 			}else{
-				this.topStyle = 'opacity:1;';
-				this.botStyle = 'opacity:1;';
+				this.homeStyle = 'opacity:1;';
 			}
 			this.tdsPure = 100;
 			this.tdsRaw = 99;
@@ -248,6 +276,7 @@
 			// 	}
 			// });
 			
+			fadeFn({elem: $('.loadingdiv')[0],handle:'hide'});
 		},
 		methods: {
 			// websocket发送数据
@@ -259,19 +288,23 @@
 				var text = '';
 				if(this.powerStatus == '开机'){
 					console.log('关机');
-					text = '关机';
-					this.powerStatus = '关机';
+					text = '开机';
 
 				}else if(this.powerStatus == '关机'){
-					console.log('开机');
-					text = '开机';
-					this.powerStatus = '开机';
+					console.log('关机');
+					text = '关机';
 				}
 
 				// 确认取消框
 				confirmFn(text, function(res){
 					if(res){
 						// 点击确定
+						if(this.powerStatus == '开机'){
+							this.powerStatus = '关机';
+
+						}else if(this.powerStatus == '关机'){
+							this.powerStatus = '开机';
+						}
 					}else{
 						// 点击取消
 						noticeFn({text:'取消！'});
@@ -289,14 +322,56 @@
 			filterMove: function(e){
 				var index = +e.target.getAttribute('index');
 				var _class = e.target.getAttribute('dataclass');
-				console.log(e);
+				var other = index == 0 ? 1 : 0;			// 滤芯详情或滤芯复位
+				// console.log(e);
 				// 初始化
 				$('.filterTop>span').attr('class',$('.filterTop>span').attr('dataclass'));
 				// 设置字体颜色
 				e.target.setAttribute('class',_class + ' fblue');
 				// 横线滑动
-				this.lineStyle = 'transform: translateX('+ index*50 +'vw);';
-				this.filmainStyle = 'transition: .3s linear;transform: translateX(-'+ index*100 +'vw);';
+				this.lineStyle = 'transition: .3s linear;transform: translateX('+ index*50 +'vw);';
+				this.filmainStyle = 'transform: translateX(-'+ index*100 +'vw);';
+				$('.filtermain>ul').eq(index).show();
+				fadeFn({elem: $('.filtermain>ul').eq(other)[0],handle:'hide'});
+				fadeFn({elem: $('.filtermain>ul').eq(index)[0]});
+				$('.filtermain>ul').eq(other).hide();
+			},
+			// 复位选择
+			resetSelect: function(e){
+				var item = e.currentTarget;
+				var check = item.getElementsByClassName('iconfont')[0];
+				var checkClass = check.getAttribute('class');
+				this.resetFilter = item.getAttribute('fname');		// 选中的滤芯
+				// console.log(item);
+				// 初始化
+				for(var i=0; i<$('.filteritem>.iconfont').length; i++){
+					$('.filteritem>.iconfont').eq(i).attr('class','iconfont icon-emptycircle');
+				}
+				// 选中，取消选择
+				if(checkClass.indexOf('emptycircle') > -1){
+					check.setAttribute('class','iconfont icon-selectcircle fblue');
+
+				}else{
+					check.setAttribute('class','iconfont icon-emptycircle');
+					this.resetFilter = '';
+				}
+			},
+			// 滤芯复位
+			filterReset: function(){
+				var text = '复位';
+				if(!this.resetFilter){
+					noticeFn({text:'请选择需要复位的滤芯！'});
+					return
+				}
+				// 确认取消框
+				confirmFn(text + this.resetFilter, function(res){
+					if(res){
+						// 点击确定
+					}else{
+						// 点击取消
+						noticeFn({text:'取消！'});
+					}
+				})
 			}
 		}
 	})
