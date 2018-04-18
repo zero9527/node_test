@@ -93,10 +93,10 @@ var home = new Vue({
 					// 点击确定
 					if(that.powerStatus == '开机'){
 						that.powerStatus = '关机';
-						// that.sendMessage('关机');
+						that.sendMessage('关机');
 					}else if(that.powerStatus == '关机'){
 						that.powerStatus = '开机';
-						// that.sendMessage('开机');
+						that.sendMessage('开机');
 
 					}
 				}else{
@@ -107,7 +107,8 @@ var home = new Vue({
 		},
 		// 冲洗
 		wash: function(){
-			// that.sendMessage('冲洗');
+			var that = this;
+			that.sendMessage('冲洗');
 		},
 		// 显示滤芯页面
 		filterShow: function(){
@@ -154,6 +155,7 @@ var home = new Vue({
 		},
 		// 滤芯复位
 		filterReset: function(){
+			var that = this;
 			var text = '复位';
 			if(!this.resetFilter){
 				noticeFn({text:'请选择需要复位的滤芯！'});
@@ -163,6 +165,7 @@ var home = new Vue({
 			confirmFn(text + this.resetFilter, function(res){
 				if(res){
 					// 点击确定
+					that.sendMessage(text + that.resetFilter);
 				}else{
 					// 点击取消
 					noticeFn({text:'取消！'});
