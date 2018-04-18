@@ -4,15 +4,16 @@
 	<meta charset="UTF-8">
 	<title>首页</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no minimal-ui">
+	<link rel="stylesheet" href="amazeui/css/amazeui.min.css">
 	<link rel="stylesheet" type="text/css" href="iconfont/iconfont.css">
 	<link rel="stylesheet" type="text/css" href="stylesheets/common.css">
-	<link rel="stylesheet" type="text/css" href="stylesheets/index.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/home.css">
 	<script src="javascripts/vue.min.js"></script>
 </head>
 <body><!--设备状态数据-->
 	<div class="content" id='home'>
 		<!-- 顶部 -->
-		<div class="indexTop">
+		<div class="indexTop" :style='topStyle'>
 			<!-- 水球 -->
 			<div class="waterQiu">
 				<div class="waterQius"> 
@@ -91,10 +92,10 @@
 			</div>
 		</div>
 		<!-- 底部 -->
-		<div class="indexBottom">
+		<div class="indexBottom" :style='botStyle'>
 			<ul>
 				<li>
-					<a href="javascript:;"><p class="iconfont icon-filter"></p><span>滤芯</span></a>
+					<a href="javascript:;" @click='filterShow'><p class="iconfont icon-filter"></p><span>滤芯</span></a>
 				</li>
 				<li>
 					<a href="javascript:;" @click='power'><p class="iconfont icon-power"></p><span class="switchText" v-text='powerStatus'></span></a>
@@ -136,6 +137,47 @@
 				</li>
 			</ul>
 		</div>
+		<!-- 滤芯部分 -->
+		<div id='filter' :style='filterstyle'>
+			<div class='filterTop cfix'>
+				<span class='fleft fblue' @click='filterMove' index='0' dataclass='fleft'>滤芯详情</span>
+				<span class='fright' @click='filterMove' index='1' dataclass='fright'>滤芯复位</span>
+				<div class='line' :style='lineStyle'><span class='bgblue'></span></div>
+			</div>
+			<div class='filtermain' :style='filmainStyle'>
+				<ul class='mLeft'>
+					<li>
+						<div class='fliterPercItem'>
+							<p class='cfix'>
+								<span class='fleft'>RO膜</span>
+								<span class='fright'>80%</span>
+							</p>
+							<div>百分比进度条</div>
+						</div>
+					</li>
+					<!-- 滤芯描述 -->
+					<li>
+						<div class='fliterDescItem'>
+							<p>RO膜</p>
+							<p class='color888'>RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇</p>
+							<div class='cfix'>
+								<span class='fleft'>总寿命：<span>1000L</span></span>
+								<span class='fright'>剩余：<span>800L</span></span>
+							</div>
+						</div>
+					</li>
+				</ul>
+				<ul class='mRight'>
+					<li>
+						<p class='cfix'>
+							<span class='fleft'>RO膜</span>
+							<span class='fright'>80%</span>
+						</p>
+						<div>百分比进度条</div>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
 
 	<script src="javascripts/jquery.min.js"></script>
@@ -150,6 +192,8 @@
 			return {
 				tdsPure: '',		// 纯水tds
 				tdsRaw: '',			// 原水tds
+				topStyle: '',		// 上部分
+				botStyle: '',		// 下部分
 				leasingmode: '',	// 滤芯模式
 				statusText: '',									// 水机状态
 				statusIconName: '',								// 状态图标
@@ -157,20 +201,37 @@
 					makeWater: 'iconfont icon-makeWater',			// 制水
 					waterFull: 'iconfont icon-waterFull',			// 水满
 					checking: 'iconfont icon-checking',			// 检修
-					lacking: 'iconfont icon-lacking',				// 缺水
+					lacking: 'iconfont icon-lacking',			// 缺水
 					washing: 'iconfont icon-washing',			// 冲洗
 					leaking: 'iconfont icon-leaking',			// 漏水
 					poweroff: 'iconfont icon-poweroff',			// 已关机
 					arrears: 'iconfont icon-arrears',			// 已欠费
 					offline: 'iconfont icon-offline'			// 已离线
 				},
-				statusList: ['制水','水满','检修','缺水','冲洗','漏水','已关机','已欠费','已离线'],
+				statusList: ['制水','水满','检修','缺水','冲洗','漏水','已关机','已欠费','已离线'],							// 水机状态集合
 				powerStatus: '开机',							// 开关机状态
+				filterstyle: 'display:none;',					// 滤芯部分
+				lineStyle: '',								//横线
+				filmainStyle: '',							// 滤芯详情，滤芯复位
 			}
 		},
 		computed: {},
 		mounted() {
 			var that = this;
+			var href = location.href;
+			// 显示滤芯页面
+			if(href.indexOf('filter') > -1){
+				this.topStyle = 'opacity:0;';
+				this.botStyle = 'opacity:0;';
+				this.filterstyle = 'display:block;';
+				document.title = '滤芯';
+				$('#navbar>h2').text('滤芯');
+				$("#navbar").show();
+
+			}else{
+				this.topStyle = 'opacity:1;';
+				this.botStyle = 'opacity:1;';
+			}
 			this.tdsPure = 100;
 			this.tdsRaw = 99;
 			this.statusText = this.statusList[0];
@@ -218,7 +279,25 @@
 				})
 			},
 			// 冲洗
-			wash: function(){}
+			wash: function(){},
+			// 显示滤芯页面
+			filterShow: function(){
+				location.href = location.href + '?filter';
+				
+			},
+			// 切换滤芯详情，滤芯复位
+			filterMove: function(e){
+				var index = +e.target.getAttribute('index');
+				var _class = e.target.getAttribute('dataclass');
+				console.log(e);
+				// 初始化
+				$('.filterTop>span').attr('class',$('.filterTop>span').attr('dataclass'));
+				// 设置字体颜色
+				e.target.setAttribute('class',_class + ' fblue');
+				// 横线滑动
+				this.lineStyle = 'transform: translateX('+ index*50 +'vw);';
+				this.filmainStyle = 'transition: .3s linear;transform: translateX(-'+ index*100 +'vw);';
+			}
 		}
 	})
 </script>

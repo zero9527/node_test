@@ -61,6 +61,7 @@ body {
 	        flex-direction: column;
 	background: url("../images/yun_01.jpg") no-repeat 100% 100%;
 	background-size:cover;
+	opacity:0;
 }
 /*底部*/
 .indexBottom {
@@ -75,6 +76,7 @@ body {
 	    -ms-flex-direction: column;
 	        flex-direction: column;
 	background-color:#A8E2FF;
+	opacity:0;
 }
 .indexBottom > ul {
 	-webkit-box-flex: 1;
@@ -368,20 +370,20 @@ body {
 	padding:0 .5rem;
 }
 @keyframes shuibolang {
-	0%{left: 0;}
-	100%{left: 100vw;}
+	0%{transform: translateX(0);}
+	100%{transform: translateX(100vw);}
 }
 @-webkit-keyframes shuibolang {
-	0% {left : 0}
-	100% {left : 100vw;}
+	0%{transform: translateX(0);}
+	100%{transform: translateX(100vw);}
 }
 @keyframes shuibolangs {
-	0%{left: -98vw;}
-	100%{left: 0;}
+	0%{transform: translateX(-98vw);}
+	100%{transform: translateX(0);}
 }
 @-webkit-keyframes shuibolangs {
-	0% {left : -98vw;}
-	100% {left : 0;}
+	0%{transform: translateX(-98vw);}
+	100%{transform: translateX(0);}
 }
 .allStatus > div {
 	position: relative;
@@ -478,3 +480,76 @@ body {
 	font-size:1rem;
 }
 
+/*滤芯部分*/
+
+#filter {
+	width: 100vw;
+	height: 100vh;
+	display: none;
+	position: absolute;
+	background: #fff;
+	z-index: 100;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.filterTop {
+	width: 100%;
+	height: 12vmin;
+	position: relative;
+	line-height: 12vmin;
+	border-bottom: 2vmin solid #f5f5f5;
+	box-shadow: 0 -1px 0 rgba(0,0,0,.1) inset;
+	box-sizing: content-box;
+	background: #fff;
+	z-index: 101;
+}
+.filterTop>span {
+	width: 50%;
+	display: inline-block;
+	text-align: center;
+}
+
+.line {
+	width: 50%;
+	position: absolute;
+	bottom: -50%;
+	left: 0;
+	text-align: center;
+	transform: translateX(0%);
+	transition: .3s linear;
+	z-index: -1;
+}
+.line>span {
+	width: 30%;
+	height: 2vmin;
+	display: inline-block;
+	border-radius: 6px;
+}
+.filtermain {
+	padding: 0 4vw 2vh;
+}
+.fliterPercItem {
+	padding: 2vh 0;
+}
+.fliterDescItem {
+	padding: 1vh 0;
+	border-top: 1px solid #eee;
+}
+.fliterDescItem>p {
+	padding: 1vh 0;
+}
+.color888 {
+	color: #888;
+}
+/*滤芯详情*/
+.mLeft {
+	left: 0;
+}
+.mRight {
+	width: 100%;
+	position: absolute;
+	padding: 4vw 2vh;
+	top: 0;
+	left: 100%;
+}
+/*滤芯部分*/
