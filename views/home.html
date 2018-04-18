@@ -199,16 +199,16 @@
 		back2home[0].setAttribute('href','');
 		window.onload = function(){
 			var wsurl = "ws://localhost:8181";
-			wsFun(wsurl, function(str, res){
-				// str: 数据类型（接收，关闭， 错误），
-				// 在websocket.js中给出，不需要传
-				console.log(str, res);
-				// 接收数据更新到页面
-				if(str == '接收：'){
-					home.tdsPure = res;
-					home.tdsRaw = (res/2);
-				}
-			});
+			// wsFun(wsurl, function(str, res){
+			// 	// str: 数据类型（接收，关闭， 错误），
+			// 	// 在websocket.js中给出，不需要传
+			// 	console.log(str, res);
+			// 	// 接收数据更新到页面
+			// 	if(str == '接收：'){
+			// 		home.tdsPure = res;
+			// 		home.tdsRaw = (res/2);
+			// 	}
+			// });
 			
 			// home 是vue实例
 			home.filterList = [

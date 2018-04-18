@@ -30,46 +30,7 @@ var home = new Vue({
 		}
 	},
 	computed: {},
-	mounted() {
-		// this.filterList = [
-		// 	{fNum:'0',fName:'RO膜',fPercent:'80%'},
-		// 	{fNum:'1',fName:'PP棉',fPercent:'50%'},
-		// 	{fNum:'2',fName:'滤芯1',fPercent:'10%'},
-		// 	{fNum:'3',fName:'滤芯2',fPercent:'60%'},
-		// 	{fNum:'4',fName:'PP棉',fPercent:'40%'},
-		// 	{fNum:'5',fName:'滤芯1',fPercent:'90%'},
-		// 	{fNum:'6',fName:'滤芯2',fPercent:'70%'}
-		// ];
-		// this.filterDescList = [
-		// 	{fNum:'0',fName:'RO膜',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'60'},
-		// 	{fNum:'1',fName:'PP棉',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'50'},
-		// 	{fNum:'2',fName:'滤芯1',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'20'},
-		// 	{fNum:'3',fName:'滤芯2',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'40'},
-		// 	{fNum:'4',fName:'PP棉',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'50'},
-		// 	{fNum:'5',fName:'滤芯1',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'20'},
-		// 	{fNum:'6',fName:'滤芯2',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'40'},
-		// ];
-		// var that = this;
-		// var href = location.href;
-		// // 显示滤芯页面
-		// if(href.indexOf('filter') > -1){
-		// 	this.homeStyle = 'opacity:0;';
-		// 	this.filterstyle = 'display:block;';
-		// 	document.title = '滤芯';
-		// 	$('#navbar>h2').text('滤芯');
-		// 	$('#navbar').css({position:'fixed'});
-		// 	$("#navbar").show();
-
-		// }else{
-		// 	this.homeStyle = 'opacity:1;';
-		// }
-		// this.tdsPure = 100;
-		// this.tdsRaw = 99;
-		// this.statusText = this.statusList[0];
-		// this.statusIconName = this.statusIconClass.makeWater;
-		
-		// fadeFn({elem: $('.loadingdiv')[0],handle:'hide'});
-	},
+	mounted() {},
 	methods: {
 		// websocket发送数据
 		sendMessage: function(text){
@@ -127,10 +88,8 @@ var home = new Vue({
 			e.target.setAttribute('class',_class + ' fblue');
 			// 横线滑动
 			this.lineStyle = 'transition: .3s linear;transform: translateX('+ index*50 +'vw);';
-			this.filmainStyle = 'transform: translateX(-'+ index*100 +'vw);';
+			this.filmainStyle = 'transition: .3s linear;transform: translateX(-'+ index*100 +'vw);';
 			$('.filtermain>ul').eq(index).show();
-			fadeFn({elem: $('.filtermain>ul').eq(other)[0],handle:'hide'});
-			fadeFn({elem: $('.filtermain>ul').eq(index)[0]});
 			$('.filtermain>ul').eq(other).hide();
 		},
 		// 复位选择
