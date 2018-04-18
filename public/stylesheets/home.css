@@ -239,7 +239,6 @@ body {
 	    -ms-flex-direction:column;
 	        flex-direction:column;
 	position:relative;
-	padding-top: 5%;
 	z-index:100;
 }
 .waterRaw {
