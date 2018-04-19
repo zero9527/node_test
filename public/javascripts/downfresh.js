@@ -20,7 +20,7 @@ var _callback;
 				console.log(res);
 			}
 			// 可以刷新了
-	        if(res.frag){
+	        if(res.flag){
 	            console.log('可以刷新了');
 	            setTimeout(function(){
 	                location.reload();
@@ -62,7 +62,7 @@ downFresh.prototype = {
 	},
 	// touchmove函数
 	tmove: function(e){
-		console.log(e);
+		// console.log(e);
 		moveTime = e.timeStamp;
 		// 指定that指向
 		var that = downFresh.prototype;
@@ -86,7 +86,7 @@ downFresh.prototype = {
 	},
 	// touchend函数
 	tend: function(e){
-		var frag = false;		// 滑动结束标志
+		var flag = false;		// 滑动结束标志
 		// 指定that指向
 		var that = downFresh.prototype;
 		// endY = e.changedTouches[0].pageY;
@@ -95,7 +95,7 @@ downFresh.prototype = {
 			_elem.setAttribute('style',
 				_elemStyle + 'transition:.3s ease;transform: translateY('+len/3+'px)'
 			);
-			frag = true;		// 滑动结束标志
+			flag = true;		// 滑动结束标志
 		}else{
 
 			_elem.setAttribute('style',
@@ -116,7 +116,7 @@ downFresh.prototype = {
 			);
 		}
 		// 回调
-		_callback({offTop:len/3, frag:frag});
+		_callback({offTop:len/3, flag:flag});
 		// console.log(e);
 	}
 }

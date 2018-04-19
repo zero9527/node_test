@@ -23,10 +23,10 @@ window.onload = function(){
             console.log(res);
         }
         // 可以刷新了
-        if(res.frag){
+        if(res.flag){
             console.log('可以刷新了');
             setTimeout(function(){
-                location.href = location.href;
+                // location.href = location.href;
             },100);
         }
     });
@@ -43,7 +43,7 @@ window.onload = function(){
     var fc = document.body.firstChild;
     fresh.setAttribute('id','refresh');
     fresh.setAttribute('style','width: 100vw;height: 76px;line-height: 90px;position: absolute;top: 0;text-align: center;transition: .5s linear;transform: translateY(-100%);z-index: 9999;');
-    fresh.innerHTML = '<span style="width: 50px;height: 50px;display: inline-block;position: relative;margin: 0 auto;line-height: 50px;"><i class="am-icon-spinner am-icon-pulse am-icon-lg"></i></span>';
+    fresh.innerHTML = '<span style="width: 100px;height: 50px;display: inline-block;position: relative;margin: 0 auto;line-height: 0;"><i class="am-icon-spinner am-icon-pulse"></i><span style="line-height: 0;">&nbsp;加载中...</span></span>';
     // 添加到页面body下最前面
     document.body.insertBefore(navbar,fc);
     // 下拉刷新
