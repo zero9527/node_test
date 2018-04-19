@@ -24,7 +24,7 @@ var _callback;
 	            console.log('可以刷新了');
 	            setTimeout(function(){
 	                location.reload();
-	            },300);
+	            },100);
 	        }
 		});
 	}
@@ -50,7 +50,6 @@ downFresh.prototype = {
 	},
 	// touchstart函数
 	tstart: function(e){
-		e.preventDefault();
 		startTime = e.timeStamp;
 		// 指定that指向
 		var that = downFresh.prototype;
@@ -63,7 +62,6 @@ downFresh.prototype = {
 	},
 	// touchmove函数
 	tmove: function(e){
-		e.preventDefault();
 		console.log(e);
 		moveTime = e.timeStamp;
 		// 指定that指向
@@ -88,7 +86,6 @@ downFresh.prototype = {
 	},
 	// touchend函数
 	tend: function(e){
-		e.preventDefault();
 		var frag = false;		// 滑动结束标志
 		// 指定that指向
 		var that = downFresh.prototype;
