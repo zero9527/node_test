@@ -14,17 +14,41 @@
   	doc.addEventListener('DOMContentLoaded', recalc, false);
 }(document, window);
 
-// 顶部导航栏
+// 下拉刷新效果
+window.onload = function(){
+    var elem = document.documentElement;
+    var fresh = new downFresh(elem, function(res){
+        // 到顶部
+        if(res.offTop > 0){
+            console.log(res);
+        }
+        // 可以刷新了
+        if(res.frag){
+            console.log('可以刷新了');
+            setTimeout(function(){
+                location.href = location.href;
+            },100);
+        }
+    });
+}
+// 顶部导航栏、下拉刷新
 !function(){
     var navbar = document.createElement('div');
+    var fresh = document.createElement('div');  // 下拉刷新
     navbar.setAttribute('id', 'navbar');
     navbar.setAttribute('class','am-cf');
     navbar.innerHTML = '<span class="iconfont icon-fanhui1" onclick="history.go(-1)">&emsp;</span>'+
         '<h2>title</h2>'+
         '<a class="back2home">首页</a>';
     var fc = document.body.firstChild;
+    fresh.setAttribute('id','refresh');
+    fresh.setAttribute('style','width: 100vw;height: 76px;line-height: 90px;position: absolute;top: 0;text-align: center;transition: .5s linear;transform: translateY(-100%);z-index: 9999;');
+    fresh.innerHTML = '<span style="width: 50px;height: 50px;display: inline-block;position: relative;margin: 0 auto;line-height: 50px;"><i class="am-icon-spinner am-icon-pulse am-icon-lg"></i></span>';
     // 添加到页面body下最前面
     document.body.insertBefore(navbar,fc);
+    // 下拉刷新
+    fc = document.body.firstChild;
+    document.body.insertBefore(fresh,fc);
     // 获取title
     var title = document.getElementById('navbar').getElementsByTagName('h2');
     title[0].innerText = document.getElementsByTagName('title')[0].innerText;
@@ -200,6 +224,7 @@ var noticeFn = function(obj){
     obj.bgcolor = obj.bgcolor || 'rgba(90,90,90,.9)';
     // 消失时间
     obj.time = obj.time || 1800;
+    console.log(obj.time);
     var notice = document.getElementById('noticeDiv');
     var noticeSpan = notice.getElementsByTagName('span')[0];
     

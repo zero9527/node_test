@@ -5,6 +5,8 @@
 var _elem;
 var _elemStyle;
 var startY, moveY, endY;
+var startTime = 0;		// 触摸开始的时间
+var moveTime = 0;		// 触摸滑动的时间
 var len = 0;
 var _callback;
 /**
@@ -18,9 +20,12 @@ var _callback;
 				console.log(res);
 			}
 			// 可以刷新了
-			if(res.offTop == 60){
-				console.log('可以刷新了');
-			}
+	        if(res.frag){
+	            console.log('可以刷新了');
+	            setTimeout(function(){
+	                location.reload();
+	            },300);
+	        }
 		});
 	}
  */
@@ -45,6 +50,8 @@ downFresh.prototype = {
 	},
 	// touchstart函数
 	tstart: function(e){
+		e.preventDefault();
+		startTime = e.timeStamp;
 		// 指定that指向
 		var that = downFresh.prototype;
 		startY = e.changedTouches[0].pageY;
@@ -56,33 +63,42 @@ downFresh.prototype = {
 	},
 	// touchmove函数
 	tmove: function(e){
+		e.preventDefault();
+		console.log(e);
+		moveTime = e.timeStamp;
 		// 指定that指向
 		var that = downFresh.prototype;
 		moveY = e.changedTouches[0].pageY;
 		len = moveY - startY;
-		// 最大300/5的距离
-		len = len > 180 ? 180 : len;
-		if(len >= 0 && _elem.scrollTop == 0){
+		// 最大260/3的距离
+		len = len >= 260 ? 260 : len;
+		if(len >= 200 && _elem.scrollTop == 0 && moveTime - startTime >= 200){
 			_elem.setAttribute('style',
-				_elemStyle + 'transition:0s ease;transform: translateY('+ len/3 +'px)'
+				_elemStyle + 'transition:.3s ease;transform: translateY('+ len/3 +'px)'
+			);
+		}
+		// console.log(_elem.scrollTop + _elem.clientHeight == _elem.scrollHeight);
+		if(startY > moveY){
+			// 手指上滑
+			len = 0;
+			_elem.setAttribute('style',
+				_elemStyle + 'transition:.3s ease;transform: translateY(0)'
 			);
 		}
 	},
 	// touchend函数
 	tend: function(e){
+		e.preventDefault();
+		var frag = false;		// 滑动结束标志
 		// 指定that指向
 		var that = downFresh.prototype;
 		// endY = e.changedTouches[0].pageY;
-		if(len >= 100){
+		if(len >= 200 && moveTime - startTime >= 200){
 			len = 180;
 			_elem.setAttribute('style',
 				_elemStyle + 'transition:.3s ease;transform: translateY('+len/3+'px)'
 			);
-			setTimeout(function(){
-				_elem.setAttribute('style',
-					_elemStyle + 'transition:.3s ease;transform: translateY(0)'
-				);
-			},0);
+			frag = true;		// 滑动结束标志
 		}else{
 
 			_elem.setAttribute('style',
@@ -103,7 +119,7 @@ downFresh.prototype = {
 			);
 		}
 		// 回调
-		_callback({offTop:len/3});
+		_callback({offTop:len/3, frag:frag});
 		// console.log(e);
 	}
 }

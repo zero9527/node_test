@@ -11,26 +11,12 @@
 	<link rel="stylesheet" href="stylesheets/mine.css">
 	<script src="javascripts/vue.min.js"></script>
 	<style>
-		#refresh {
-			width: 100vw;
-			height: 90px;
-			line-height: 90px;
-			position: absolute;
-			top: 0;
-			text-align: center;
-			transition: .5s linear;
-			transform: translateY(-100%);
-			z-index: 9999;
+		/*#refresh {
+			width: 100vw;height: 90px;line-height: 90px;position: absolute;top: 0;text-align: center;transition: .5s linear;transform: translateY(-100%);z-index: 9999;
 		}
 		#refresh>span {
-			width: 56px;
-			height: 56px;
-			display: inline-block;
-			position: relative;
-			margin: 0 auto;
-			line-height: 56px;
-			background: #fff;
-		}
+			width: 56px;height: 56px;display: inline-block;position: relative;margin: 0 auto;line-height: 56px;background: #fff;
+		}*/
 	</style>
 </head>
 <body>
@@ -158,13 +144,14 @@
 				</div>
 			</div>
 		</div>
-		<div id='refresh'>
-			<span><i class="am-icon-spinner am-icon-pulse am-icon-lg"></i></span>
-		</div>
+		<!-- <div id='refresh' style='width: 100vw;height: 90px;line-height: 90px;position: absolute;top: 0;text-align: center;transition: .5s linear;transform: translateY(-100%);z-index: 9999;'>
+			<span style='width: 56px;height: 56px;display: inline-block;position: relative;margin: 0 auto;line-height: 56px;background: #fff;'><i class="am-icon-spinner am-icon-pulse am-icon-lg"></i></span>
+		</div> -->
 	</div>
 	<script src="javascripts/jquery.min.js"></script>
 	<script src="amazeui/js/amazeui.min.js"></script>
 	<script src="javascripts/public.js"></script>
+	<script src='javascripts/downfresh.js'></script>
 	<script>
 		var mine = new Vue({
 			el: '#mine',
