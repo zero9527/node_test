@@ -2,8 +2,8 @@
  * 移动端下拉刷新函数
  * @param {[type]} [varname] [description]
  */
-var _elem;
-var _elemStyle;
+var _elem;				// 需要下拉刷新的容器
+var _elemStyle;			// 容器原有的行内样式
 var startY, moveY, endY;
 var startTime = 0;		// 触摸开始的时间
 var moveTime = 0;		// 触摸滑动的时间
@@ -72,16 +72,14 @@ downFresh.prototype = {
 		len = len >= 260 ? 260 : len;
 		if(len >= 200 && _elem.scrollTop == 0 && moveTime - startTime >= 200){
 			_elem.setAttribute('style',
-				_elemStyle + 'transition:.3s ease;transform: translateY('+ len/3 +'px)'
+				_elemStyle + 'transition:.3s ease;;margin-top:'+ len/3 +'px;'
 			);
 		}
 		// console.log(_elem.scrollTop + _elem.clientHeight == _elem.scrollHeight);
 		if(startY > moveY){
 			// 手指上滑
 			len = 0;
-			_elem.setAttribute('style',
-				_elemStyle + 'transition:.3s ease;transform: translateY(0)'
-			);
+			
 		}
 	},
 	// touchend函数
@@ -93,26 +91,24 @@ downFresh.prototype = {
 		if(len >= 200 && moveTime - startTime >= 200){
 			len = 180;
 			_elem.setAttribute('style',
-				_elemStyle + 'transition:.3s ease;transform: translateY('+len/3+'px)'
+				_elemStyle + 'transition:.3s ease;margin-top:'+ len/3 +'px;'
 			);
 			flag = true;		// 滑动结束标志
 		}else{
 
 			_elem.setAttribute('style',
-				_elemStyle + 'transition:.3s ease;transform: translateY(0)'
+				_elemStyle + 'transition:.3s ease;;margin-top:0;'
 			);
 		}
 		// 手指上滑
 		if(startY > moveY){
 			len = 0;
-			_elem.setAttribute('style',
-				_elemStyle + 'transition:.3s ease;transform: translateY(0)'
-			);
+			
 		}else if(startY <= moveY && _elem.scrollTop != 0){
 			// 手指下滑但未到达顶部
 			len = 0;
 			_elem.setAttribute('style',
-				_elemStyle + 'transition:.3s ease;transform: translateY(0)'
+				_elemStyle + 'transition:.3s ease;margin-top:0;'
 			);
 		}
 		// 回调

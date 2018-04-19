@@ -27,7 +27,7 @@ window.onload = function(){
             console.log('可以刷新了');
             setTimeout(function(){
                 location.href = location.href;
-            },100);
+            },10);
         }
     });
 }
