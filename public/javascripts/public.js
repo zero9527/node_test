@@ -26,7 +26,7 @@ window.onload = function(){
         if(res.flag){
             console.log('可以刷新了');
             setTimeout(function(){
-                // location.href = location.href;
+                location.href = location.href;
             },100);
         }
     });
