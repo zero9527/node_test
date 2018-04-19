@@ -147,34 +147,10 @@
 		#seepwd {
 			text-align: center;
 		}
-		#wrap {
-			width: 100vw;
-			height: 50vh;
-			position: relative;
-			margin: 10vh 0;
-			background: #fff;
-			overflow: hidden;
-		}
-
-		#wrap>ul {
-			width: 500%;
-			height: 100%;
-			position: relative;
-			transition: .3s linear;
-			line-height: 50vh;
-		}
-		#wrap>ul::after {
-			content: '';
-			display: block;
-			clear: both;
-		}
-		#wrap>ul>li {
-			width: 20%;
-			height: 100%;
-			float: left;
-			text-align: center;
-			vertical-align: baseline;
-		}
+		#wrap {width: 100vw;height: 50vh;position: relative;margin: 10vh 0;background: #fff;overflow: hidden;}
+		#wrap>ul {width: 700%;height: 100%;position: relative;transition: .3s linear;line-height: 50vh;}
+		#wrap>ul::after {content: '';display: block;clear: both;}
+		#wrap>ul>li {width: 14.28%;height: 100%;float: left;text-align: center;vertical-align: baseline;}
 		#wrap>ul>li:nth-of-type(1) {
 			background: lightblue;
 		}
@@ -251,7 +227,7 @@
     		<div>确定</div>
     	</div>
 	</div>
-	<!-- <div id='wrap'>
+	<div id='wrap'>
 		<ul id='wrapul'>
 			<li>111111111111</li>
 			<li>222222222222</li>
@@ -259,7 +235,7 @@
 			<li>444444444444</li>
 			<li>555555555555</li>
 		</ul>
-	</div> -->
+	</div>
 	
 	<script src="javascripts/tmove.js"></script>
 	<script src="javascripts/jquery.min.js"></script>
@@ -278,10 +254,10 @@
 		},0)
 		
 		console.log(arr0)
-		// var wrapul = document.getElementById('wrapul');
-		// var len = wrapul.getElementsByTagName('li').length;
-		// // 实例化滑动
-		// var move = new tMove(wrapul,len);
+		var wrapul = document.getElementById('wrapul');
+		var len = wrapul.getElementsByTagName('li').length;
+		// 实例化滑动
+		var move = new tMove(wrapul,len);
 
 	</script>
 	<script>

@@ -95,7 +95,9 @@ tMove.prototype = {
 			offset = Number(nowX - startX);
 			move = -1;
 		}
+		elem.style.transition = '0s linear';		// 跟随手指
 		elem.style.marginLeft = oldLeft + offset + 'px';
+		console.log(elem.style.marginLeft);
 		// 存储本次数据作为下次滑动的参考
 		oldX = nowX;
 		oldY = nowY;
@@ -115,7 +117,8 @@ tMove.prototype = {
 		// console.log('remainLen: ', remainLen);
 		// console.log('marginLeft: ', marginLeft);
 		// console.log('offset: ', offset);
-		
+		// 自动滑动过渡
+		elem.style.transition = '.3s linear';
 		if(move > 0){
 			// console.log('手指向右>>滑');
 			if(offleft){	//滑动距离超过屏幕1/6宽度
