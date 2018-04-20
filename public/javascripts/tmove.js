@@ -51,9 +51,9 @@ function tMove(_elem, _lilen){
 tMove.prototype = {
 	constructor: tMove,
 	init: function(){
-		console.log(elem);
+		// console.log(elem);
 		var that = tMove.prototype;		// 方便获取其他方法
-		console.log(that.getStyleFn(elem, 'margin-left'));
+		// console.log(that.getStyleFn(elem, 'margin-left'));
 		this.elem.addEventListener('touchstart', that.tstartFn);
 		this.elem.addEventListener('touchmove', that.tmoveFn);
 		this.elem.addEventListener('touchend', that.tendFn);
@@ -66,13 +66,13 @@ tMove.prototype = {
 		// console.log(that);
 		e = e || window.event;
 		e.preventDefault();
-		console.log(e);
+		// console.log(e);
 		// 记录开始的位置
 		oldLeft = parseInt(that.getStyleFn(elem, 'margin-left')) || 0;
 		startX = e.changedTouches[0].pageX;
 		startY = e.changedTouches[0].pageY;
 
-		console.log('oldLeft: ', oldLeft);
+		// console.log('oldLeft: ', oldLeft);
 	},
 	/*
 		touchmove 函数
@@ -97,7 +97,7 @@ tMove.prototype = {
 		}
 		elem.style.transition = '0s linear';		// 跟随手指
 		elem.style.marginLeft = oldLeft + offset + 'px';
-		console.log(elem.style.marginLeft);
+		// console.log(elem.style.marginLeft);
 		// 存储本次数据作为下次滑动的参考
 		oldX = nowX;
 		oldY = nowY;
