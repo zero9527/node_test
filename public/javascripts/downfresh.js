@@ -14,21 +14,25 @@ var text = document.getElementsByClassName('refresh_text');
 /**
  * 用法：
    <script src='javascripts/downfresh.js'></script>
- * window.onload = function(){
-		var elem = document.documentElement;
-		var fresh = new downFresh(elem, function(res){
-			// 到顶部
-			if(res.offTop > 0){
-				console.log(res);
-			}
-			// 可以刷新了
-	        if(res.flag){
-	            console.log('可以刷新了');
-	            setTimeout(function(){
-	                location.reload();
-	            },100);
-	        }
-		});
+ * // 下拉刷新效果
+	window.onload = function(){
+	    var elem = document.documentElement;
+	    var fresh;
+	    if(window.downFresh){
+	        fresh = new downFresh(elem, function(res){
+	            // 到顶部
+	            if(res.offTop > 0){
+	                console.log(res);
+	            }
+	            // 可以刷新了
+	            if(res.flag){
+	                console.log('可以刷新了');
+	                setTimeout(function(){
+	                    location.href = location.href;
+	                },10);
+	            }
+	        });
+	    }
 	}
  */
 var downFresh = function(elem, callback){
