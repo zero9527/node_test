@@ -6,13 +6,16 @@ var home = new Vue({
 			tdsRaw: '',			// 原水tds
 			homeStyle: '',		// 首页部分
 			leasingmode: '',	// 滤芯模式
-			statusText: '',									// 水机状态
-			// 设备状态
-			devicestause: {'0':'制水','1':'冲洗','2':'水满','3':'缺水','4':'漏水','5':'检修','6':'欠费停机','7':'关机','8':'开机(仅命令)'},
-			// 租赁模式
-			leasingmode: {'0':'零售型','1':'按流量计费','2':'按时间计费','3':'时长和流量套餐','4':'商务型'},
-			// 滤芯模式
-			filtermode: {'0':'按时长','1':'按流量','2':'时长和流量'},
+			statusText: '',		// 水机状态
+			devicestause: '',	// 设备状态
+			leasingmode: '',	// 租赁模式
+			filtermode: '',	// 滤芯模式
+			// 设备状态集合
+			dstauseList: {'0':'制水','1':'冲洗','2':'水满','3':'缺水','4':'漏水','5':'检修','6':'欠费停机','7':'关机','8':'开机(仅命令)'},
+			// 租赁模式集合
+			leasingmodeList: {'0':'零售型','1':'按流量计费','2':'按时间计费','3':'时长和流量套餐','4':'商务型'},
+			// 滤芯模式集合
+			filtermodeList: {'0':'按时长','1':'按流量','2':'时长和流量'},
 			//包数据
 			ajson: {
 			    "DeviceID": 'deviceId',
@@ -31,6 +34,10 @@ var home = new Vue({
 				arrears: 'iconfont icon-arrears',			// 已欠费
 				offline: 'iconfont icon-offline'			// 已离线
 			},
+			reday: '',			//剩余天数
+			usedday: '',		//已用天数
+			reflow: '',			//剩余流量
+			usedflow: '',		//已用流量
 			statusList: ['制水','水满','检修','缺水','冲洗','漏水','已关机','已欠费','已离线'],							// 水机状态集合
 			powerStatus: '开机',							// 开关机状态
 			filterstyle: 'display:none;',					// 滤芯部分
@@ -84,7 +91,7 @@ var home = new Vue({
 		},
 		// 显示滤芯页面
 		filterShow: function(){
-			location.href = location.href + '?filter';
+			location.href = location.href + '?filter&filtermode=' + this.filtermode;
 			
 		},
 		// 切换滤芯详情，滤芯复位

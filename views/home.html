@@ -81,13 +81,23 @@
 						<span>漏水</span>
 					</div> -->
 				</div>
-				<div class='fwhite'>
-					<div v-if='leasingmode == 0'>剩余天数<span>40</span>天</div>
-					<div v-if='leasingmode == 0'>已用天数<span>200</span>天</div>
-					<div v-if='leasingmode == 1'>剩余流量<span>40</span>L</div>
-					<div v-if='leasingmode == 1'>已用流量<span>200</span>L</div>
-					<div v-if='leasingmode == 2'>剩余流量<span>40</span>L</div>
-					<div v-if='leasingmode == 2'>已用流量<span>200</span>L</div>
+				<!-- 时长 -->
+				<div class='fwhite' v-if='leasingmode == 0'>
+					<div>剩余天数<span v-text='reday'></span>天</div>
+					<div>已用天数<span v-text='usedday'></span>天</div>
+				</div>
+				<!-- 流量 -->
+				<div class='fwhite' v-if='leasingmode == 1'>
+					<div>剩余流量<span v-text='reflow'></span>L</div>
+					<div>已用流量<span v-text='usedflow'></span>L</div>
+				</div>
+				<!-- 时长 和 流量 -->
+				<div class='fwhite' v-if='leasingmode == 2'>
+					<!-- 显示比例小的 -->
+					<div v-if='reday/(reday+usedday) <= reflow/(reflow+usedflow)'>剩余天数<span v-text='reday'></span>天</div>
+					<div v-if='reday/(reday+usedday) <= reflow/(reflow+usedflow)'>已用天数<span v-text='usedday'></span>天</div>
+					<div v-if='reday/(reday+usedday) > reflow/(reflow+usedflow)'>剩余流量<span v-text='reflow'></span>L</div>
+					<div v-if='reday/(reday+usedday) > reflow/(reflow+usedflow)'>已用流量<span v-text='usedflow'></span>L</div>
 				</div>
 			</div>
 		</div>
@@ -147,12 +157,37 @@
 			<div class='filtermain' :style='filmainStyle'>
 				<ul class='mLeft'>
 					<li>
-						<div class='fliterPercItem' v-for='f in filterList'>
+						<!-- 时长 -->
+						<div class='fliterPercItem' v-for='f in filterList' v-if='filtermode == 0'>
 							<p class='cfix'>
 								<span class='fleft' v-text='f.fName'>RO膜</span>
-								<span class='fright' v-text='f.fPercent'>80%</span>
+								<span class='fright' v-text='(f.reday/f.allLife)*100+"%"'>80%</span>
 							</p>
-							<div class='percent'><span class='bgblue' :style='"width:"+f.fPercent'></span></div>
+							<div class='percent'>
+								<span class='bgblue' :style='"width:"+(f.reday/f.allLife)*100+"%"'></span>
+							</div>
+						</div>
+						<!-- 流量 -->
+						<div class='fliterPercItem' v-for='f in filterList' v-if='filtermode == 1'>
+							<p class='cfix'>
+								<span class='fleft' v-text='f.fName'>RO膜</span>
+								<span class='fright' v-text='(f.reflow/f.allFlow)*100+"%"'>80%</span>
+							</p>
+							<div class='percent'>
+								<span class='bgblue' :style='"width:"+(f.reflow/f.allFlow)*100+"%"'></span>
+							</div>
+						</div>
+						<!-- 时长 和 流量 -->
+						<div class='fliterPercItem' v-for='f in filterList' v-if='filtermode == 2'>
+							<p class='cfix'>
+								<span class='fleft' v-text='f.fName'>RO膜</span>
+								<span class='fright' v-if='f.reday/f.allLife <= f.reflow/f.allFlow' v-text='(f.reday/f.allLife)*100+"%"'>80%</span>
+								<span class='fright' v-if='f.reday/f.allLife > f.reflow/f.allFlow' v-text='(f.reflow/f.allFlow)*100+"%"'>80%</span>
+							</p>
+							<div class='percent'>
+								<span class='bgblue' v-if='f.reday/f.allLife <= f.reflow/f.allFlow' :style='"width:"+(f.reday/f.allLife)*100+"%"'></span>
+								<span class='bgblue' v-if='f.reday/f.allLife > f.reflow/f.allFlow' :style='"width:"+(f.reflow/f.allFlow)*100+"%"'></span>
+							</div>
 						</div>
 					</li>
 					<!-- 滤芯描述 -->
@@ -160,22 +195,56 @@
 						<div class='fliterDescItem' v-for='d in filterList'>
 							<p v-text='d.fName'>RO膜</p>
 							<p class='color888' v-text='d.fDesc'>RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇</p>
-							<div class='cfix'>
-								<span class='fleft' v-text='d.allLife'>总寿命：<span>1000L</span></span>
-								<span class='fright' v-text='d.surplus'>剩余：<span>800L</span></span>
+							<!-- 时长 -->
+							<div class='cfix' v-if='filtermode == 0'>
+								<span class='fleft'>总寿命：<span v-text='d.allLife'></span>天</span>
+								<span class='fright'>剩余：<span v-text='d.reday'></span>天</span>
+							</div>
+							<!-- 流量 -->
+							<div class='cfix' v-if='filtermode == 1'>
+								<span class='fleft'>总寿命：<span v-text='d.allFlow'>1000</span>L</span>
+								<span class='fright'>剩余：<span v-text='d.reflow'>800</span>L</span>
+							</div>
+							<!-- 时长 和 流量 -->
+							<div class='cfix' v-if='filtermode == 2'>
+								<span class='fleft' v-if='d.reday/d.allLife <= d.reflow/d.allFlow'>总寿命：<span v-text='d.allLife'></span>天</span>
+								<span class='fright' v-if='d.reday/d.allLife <= d.reflow/d.allFlow'>剩余：<span v-text='d.reday'></span>天</span>
+								<span class='fleft' v-if='d.reday/d.allLife > d.reflow/d.allFlow'>总寿命：<span v-text='d.allFlow'></span>L</span>
+								<span class='fright' v-if='d.reday/d.allLife > d.reflow/d.allFlow'>剩余：<span v-text='d.reflow'></span>L</span>
 							</div>
 						</div>
 					</li>
 				</ul>
 				<ul class='mRight'>
 					<ul>
-						<li class='filteritem' v-for='f in filterList' @click.prevent='resetSelect($event)' :fname='f.fName'>
+						<!-- 时长 -->
+						<li class='filteritem' v-for='f in filterList' @click.prevent='resetSelect($event)' :fname='f.fName' v-if='filtermode == 0'>
 							<span class='iconfont icon-emptycircle'></span>
 							<p class='cfix'>
 								<span class='fleft' v-text='f.fName'>RO膜</span>
-								<span class='fright' v-text='f.fPercent'>80%</span>
+								<span class='fright' v-text='(f.reday/f.allLife)*100+"%"'>80%</span>
 							</p>
-							<div class='percent'><span class='bgblue' :style='"width:"+f.fPercent'></span></div>
+							<div class='percent'><span class='bgblue' :style='"width:"+(f.reday/f.allLife)*100+"%"'></span></div>
+						</li>
+						<!-- 流量 -->
+						<li class='filteritem' v-for='f in filterList' @click.prevent='resetSelect($event)' :fname='f.fName' v-if='filtermode == 1'>
+							<span class='iconfont icon-emptycircle'></span>
+							<p class='cfix'>
+								<span class='fleft' v-text='f.fName'>RO膜</span>
+								<span class='fright' v-text='(f.reflow/f.allFlow)*100+"%"'>80%</span>
+							</p>
+							<div class='percent'><span class='bgblue' :style='"width:"+(f.reflow/f.allFlow)*100+"%"'></span></div>
+						</li>
+						<!-- 时长 和 流量 -->
+						<li class='filteritem' v-for='f in filterList' @click.prevent='resetSelect($event)' :fname='f.fName' v-if='filtermode == 2'>
+							<span class='iconfont icon-emptycircle'></span>
+							<p class='cfix'>
+								<span class='fleft' v-text='f.fName'>RO膜</span>
+								<span class='fright' v-if='f.reday/f.allLife <= f.reflow/f.allFlow' v-text='(f.reday/f.allLife)*100+"%"'>80%</span>
+								<span class='fright' v-if='f.reday/f.allLife > f.reflow/f.allFlow' v-text='(f.reflow/f.allFlow)*100+"%"'>80%</span>
+							</p>
+							<div class='percent' v-if='f.reday/f.allLife <= f.reflow/f.allFlow'><span class='bgblue' :style='"width:"+(f.reday/f.allLife)*100+"%"'></span></div>
+							<div class='percent' v-if='f.reday/f.allLife > f.reflow/f.allFlow'><span class='bgblue' :style='"width:"+(f.reflow/f.allFlow)*100+"%"'></span></div>
 						</li>
 					</ul>
 					<div :index='resetFilter' @click='filterReset' class='reset bgblue'>确认复位</div>
@@ -209,14 +278,19 @@
 			// 		home.tdsRaw = (res/2);
 			// 	}
 			// });
-			
+			home.leasingmode = 2;		// 租赁模式
+			home.filtermode = 1;		// 滤芯模式
+			home.reday = 66;			// 剩余天数
+			home.usedday = 101;			// 已用天数
+			home.reflow = 99;			// 剩余流量
+			home.usedflow = 101;		// 已用流量
 			// home 是vue实例
 			home.filterList = [
-				{fNum:'0',fName:'RO膜',fPercent:'80%',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'60'},
-				{fNum:'1',fName:'PP棉',fPercent:'50%',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'50'},
-				{fNum:'2',fName:'滤芯1',fPercent:'10%',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'20'},
-				{fNum:'3',fName:'滤芯2',fPercent:'60%',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'40'},
-				{fNum:'4',fName:'PP棉',fPercent:'40%',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',surplus:'50'}
+				{fNum:'0',fName:'RO膜',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',allFlow:'100',reday:'80',reflow:'60'},
+				{fNum:'1',fName:'PP棉',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',allFlow:'100',reday:'50',reflow:'80'},
+				{fNum:'2',fName:'滤芯1',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',allFlow:'100',reday:'70',reflow:'20'},
+				{fNum:'3',fName:'滤芯2',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',allFlow:'100',reday:'40',reflow:'70'},
+				{fNum:'4',fName:'PP棉',fDesc:'RO膜能够有效去除水中钙、镁、细菌、有机物、无机物、金属离子和放射性物质等，经过该装置净化出的水晶莹清澈、甜美甘醇',allLife:'100',allFlow:'100',reday:'66',reflow:'90'}
 			];
 			var href = location.href;
 			// 显示滤芯页面
