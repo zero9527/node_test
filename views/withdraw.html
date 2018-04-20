@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class='am-container' id='withdraw'>
-		<div class='item' v-if='!withNext'>
+		<div class='item' :style='{ display: !withNext ? "block" : "none" }'>
 			<span class='fblue f6'>&nbsp;&nbsp;提现方式</span>
 			<ul>
 				<li class='cfix typeitem' @click='chooseway($event)' index='0'>
@@ -32,7 +32,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class='item' v-if='!withNext'>
+		<div class='item' :style='{ display: !withNext ? "block" : "none" }'>
 			<span class='fblue f6'>&nbsp;&nbsp;提现金额</span>
 			<ul>
 				<li class='inmoney'>

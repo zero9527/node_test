@@ -12,6 +12,7 @@ h3 {
 }
 .item {
 	margin: 2vh 0;
+	display: none;
 }
 .item>ul {
 	margin: 4px 0;
