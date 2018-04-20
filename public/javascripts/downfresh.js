@@ -9,6 +9,8 @@ var startTime = 0;		// 触摸开始的时间
 var moveTime = 0;		// 触摸滑动的时间
 var len = 0;
 var _callback;
+// 加载的提示文字
+var text = document.getElementsByClassName('refresh_text');
 /**
  * 用法：
    <script src='javascripts/downfresh.js'></script>
@@ -29,7 +31,7 @@ var _callback;
 		});
 	}
  */
-function downFresh(elem, callback){
+var downFresh = function(elem, callback){
 	this.elem = elem;				// 需要下拉刷新的容器
 	_callback = callback;		// 回调函数
 	_elem = this.elem;
@@ -74,6 +76,7 @@ downFresh.prototype = {
 			_elem.setAttribute('style',
 				_elemStyle + 'transition:.3s ease;;margin-top:'+ len/3 +'px;'
 			);
+			text[0].innerHTML = '&nbsp;放手刷新';;
 		}
 		// console.log(_elem.scrollTop + _elem.clientHeight == _elem.scrollHeight);
 		if(startY > moveY){
@@ -94,6 +97,7 @@ downFresh.prototype = {
 				_elemStyle + 'transition:.3s ease;margin-top:'+ len/3 +'px;'
 			);
 			flag = true;		// 滑动结束标志
+			text[0].innerHTML = '&nbsp;正在加载...';
 		}else{
 
 			_elem.setAttribute('style',

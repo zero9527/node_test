@@ -17,19 +17,22 @@
 // 下拉刷新效果
 window.onload = function(){
     var elem = document.documentElement;
-    var fresh = new downFresh(elem, function(res){
-        // 到顶部
-        if(res.offTop > 0){
-            console.log(res);
-        }
-        // 可以刷新了
-        if(res.flag){
-            console.log('可以刷新了');
-            setTimeout(function(){
-                location.href = location.href;
-            },10);
-        }
-    });
+    var fresh;
+    if(window.downFresh){
+        fresh = new downFresh(elem, function(res){
+            // 到顶部
+            if(res.offTop > 0){
+                console.log(res);
+            }
+            // 可以刷新了
+            if(res.flag){
+                console.log('可以刷新了');
+                setTimeout(function(){
+                    location.href = location.href;
+                },10);
+            }
+        });
+    }
 }
 // 顶部导航栏、下拉刷新
 !function(){
@@ -43,7 +46,7 @@ window.onload = function(){
     var fc = document.body.firstChild;
     fresh.setAttribute('id','refresh');
     fresh.setAttribute('style','width: 100vw;height: 76px;line-height: 90px;position: absolute;top: 0;text-align: center;transition: .5s linear;transform: translateY(-100%);z-index: 9999;');
-    fresh.innerHTML = '<span style="width: 100px;height: 50px;display: inline-block;position: relative;margin: 0 auto;line-height: 0;"><i class="am-icon-spinner am-icon-pulse"></i><span style="line-height: 0;">&nbsp;加载中...</span></span>';
+    fresh.innerHTML = '<span style="height: 50px;display: inline-block;position: relative;margin: 0 auto;line-height: 0;"><i class="am-icon-spinner am-icon-pulse"></i><span class="refresh_text" style="line-height: 0;">&nbsp;加载中...</span></span>';
     // 添加到页面body下最前面
     document.body.insertBefore(navbar,fc);
     // 下拉刷新
