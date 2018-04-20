@@ -7,6 +7,18 @@ var home = new Vue({
 			homeStyle: '',		// 首页部分
 			leasingmode: '',	// 滤芯模式
 			statusText: '',									// 水机状态
+			// 设备状态
+			devicestause: {'0':'制水','1':'冲洗','2':'水满','3':'缺水','4':'漏水','5':'检修','6':'欠费停机','7':'关机','8':'开机(仅命令)'},
+			// 租赁模式
+			leasingmode: {'0':'零售型','1':'按流量计费','2':'按时间计费','3':'时长和流量套餐','4':'商务型'},
+			// 滤芯模式
+			filtermode: {'0':'按时长','1':'按流量','2':'时长和流量'},
+			//包数据
+			ajson: {
+			    "DeviceID": 'deviceId',
+			    "PackType": "login",
+			    "Vison": 0,
+			},
 			statusIconName: '',								// 状态图标
 			statusIconClass: {
 				makeWater: 'iconfont icon-makeWater',			// 制水
@@ -25,7 +37,6 @@ var home = new Vue({
 			lineStyle: '',								//横线
 			filmainStyle: '',							// 滤芯详情，滤芯复位
 			filterList: [],								// 滤芯详情数据集合
-			filterDescList: [],							// 滤芯简介集合
 			resetFilter: '',			// 滤芯复位
 		}
 	},
