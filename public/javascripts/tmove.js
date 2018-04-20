@@ -9,11 +9,11 @@ var nowX = 0; 			//move时的实时坐标
 var nowY = 0;
 var oldX = 0; 			// 上次位置
 var oldY = 0;
-var move = 1;	//移动的方向，1为右滑，-1为左滑
+var move = 1;		//移动的方向，1为右滑，-1为左滑
 var offset = 0;		//偏移距离
 var oldLeft = 0;	//上次的left值
 var lilen = 0;		// li的数量
-
+var _callback;		// 回调函数
 /* +++++++++++ 推荐的HTML结构
  	<div id='wrap'>
 		<ul id='wrapul'>
@@ -39,12 +39,13 @@ var lilen = 0;		// li的数量
 	#wrap>ul::after {content: '';display: block;clear: both;}
 	#wrap>ul>li {width: 14.28%;height: 100%;float: left;text-align: center;vertical-align: baseline;}
 */
-function tMove(_elem, _lilen){
+function tMove(_elem, _lilen, callback){
 	this.elem = _elem;		// 滑动的元素 ul
 	this.lilen = _lilen;	// 滑动元素儿子 li 的数量
 
 	elem = this.elem;
 	lilen = this.lilen;
+	_callback = callback;	// 回调函数
 	// 初始化函数
 	this.init();
 }
@@ -128,6 +129,8 @@ tMove.prototype = {
 				}
 				elem.style.marginLeft = oldLeft + offset + remainLen + 'px';
 
+				// 回调函数
+				_callback({offleft: oldLeft + offset + remainLen});
 			}else{	//滑动距离小于屏幕1/6宽度
 				elem.style.marginLeft = oldLeft + 'px';
 			}
@@ -141,6 +144,8 @@ tMove.prototype = {
 				}
 				elem.style.marginLeft = oldLeft + offset - remainLen + 'px';
 
+				// 回调函数
+				_callback({offleft: oldLeft + offset - remainLen});
 			}else{	//滑动距离小于屏幕1/6宽度
 				elem.style.marginLeft = oldLeft + 'px';
 			}
