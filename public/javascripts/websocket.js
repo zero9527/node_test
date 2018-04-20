@@ -13,7 +13,7 @@
 			// 在websocket.js中给出，不需要传
 			console.log(str, res);
 			// 接收数据更新到页面
-			if(str == '接收：'){
+			if(str == 'message'){
 				text.innerHTML = res;
 			}
 		});
@@ -44,7 +44,7 @@ var wsFun = function(_url, callback){
 		// console.log(res.data);
 		// 接收数据处理函数	(回调)
 		if(callback){
-			callback('接收：',res.data);
+			callback('message',res.data);
 		}
 	});
 
@@ -55,7 +55,7 @@ var wsFun = function(_url, callback){
 
 		ws.close();
 		if(callback){
-			callback('关闭：',res);
+			callback('close',res);
 		}
 		console.log("websocket关闭连接中... ", res.reason);
 	})
@@ -65,7 +65,7 @@ var wsFun = function(_url, callback){
 	*/ 
 	ws.addEventListener("error",function(err){		
 		if(callback){
-			callback('错误：',err);
+			callback('error',err);
 		}
 		console.log('错误！: ',err);
 	})
