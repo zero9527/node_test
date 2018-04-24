@@ -9,10 +9,13 @@ var nowX = 0; 			//move时的实时坐标
 var nowY = 0;
 var oldX = 0; 			// 上次位置
 var oldY = 0;
+var startTime = 0;		// 点击开始的时间
+var oldTime = 0;		//上次点击时间
 var move = 1;		//移动的方向，1为右滑，-1为左滑
 var offset = 0;		//偏移距离
 var oldLeft = 0;	//上次的left值
 var lilen = 0;		// li的数量
+var scale;			// 是否需要缩放
 var _callback;		// 回调函数
 /* +++++++++++ 推荐的HTML结构
  	<div id='wrap'>
@@ -39,12 +42,13 @@ var _callback;		// 回调函数
 	#wrap>ul::after {content: '';display: block;clear: both;}
 	#wrap>ul>li {width: 14.28%;height: 100%;float: left;text-align: center;vertical-align: baseline;}
 */
-function tMove(_elem, _lilen, callback){
-	this.elem = _elem;		// 滑动的元素 ul
-	this.lilen = _lilen;	// 滑动元素儿子 li 的数量
+function tMove(options, callback){
+	this.elem = options.elem;		// 滑动的元素 ul
+	this.lilen = options.lilen;	// 滑动元素儿子 li 的数量
 
 	elem = this.elem;
 	lilen = this.lilen;
+	scale = options.scale || false;
 	_callback = callback;	// 回调函数
 	// 初始化函数
 	this.init();
@@ -66,13 +70,12 @@ tMove.prototype = {
 		var that = tMove.prototype;		// 方便获取其他方法
 		// console.log(that);
 		e = e || window.event;
-		e.preventDefault();
 		// console.log(e);
 		// 记录开始的位置
 		oldLeft = parseInt(that.getStyleFn(elem, 'margin-left')) || 0;
 		startX = e.changedTouches[0].pageX;
 		startY = e.changedTouches[0].pageY;
-
+		startTime = e.timeStamp;
 		// console.log('oldLeft: ', oldLeft);
 	},
 	/*
@@ -120,6 +123,13 @@ tMove.prototype = {
 		// console.log('offset: ', offset);
 		// 自动滑动过渡
 		elem.style.transition = '.3s linear';
+		// 需要缩放（双击）
+		if(scale && oldTime && e.timeStamp - oldTime < 260){
+			// console.log('双击');
+			// 回调函数
+			_callback({offleft: marginLeft,scale: true, elem: elem, posX: startX,posY: startY});
+		}
+		oldTime = e.timeStamp;
 		if(move > 0){
 			// console.log('手指向右>>滑');
 			if(offleft){	//滑动距离超过屏幕1/6宽度
