@@ -180,6 +180,12 @@
 	<script src="javascripts/webuploader.js"></script>
 	<script src='javascripts/downfresh.js'></script>
 	<script>
+		var loaddiv = document.getElementsByClassName('loadingdiv');
+ 		fadeFn({elem: loaddiv[0], handle: 'show'});
+
+ 		setTimeout(function(){
+ 			fadeFn({elem: loaddiv[0], handle: 'hide'});
+ 		},1000);
 		var withdraw = new Vue({
 			el: '#withdraw',
 			data() {
