@@ -33,7 +33,8 @@ window.onload = function(){
             }
         });
     }
-}
+}   
+
 // 顶部导航栏、下拉刷新
 !function(){
     var navbar = document.createElement('div');
@@ -95,6 +96,32 @@ var trimFn = function(str){
     return str.replace(/^(\s)|(\s*)/g,'');
 }
 
+// 数字千位分割 默认以逗号，千位分割
+function splitStr(str,zifu=",", num=3){
+    var iNum = str.length % num; 
+    var prev = ''; 
+    var iNow = 0; 
+    var temp = ''; 
+    var arr = []; 
+    if (iNum != 0){ 
+        prev = str.substring(0, iNum); 
+        arr.push(prev); 
+    } 
+    str = str.substring(iNum); 
+    for (var i = 0; i < str.length; i++){ 
+        iNow++; 
+        temp += str[i]; 
+        if (iNow == num && temp){ 
+            arr.push(temp); 
+            temp = ''; 
+            iNow = 0; 
+        } 
+    } 
+    return arr.join(zifu); 
+}
+// 使用  splitStr("1230215", "-", 5) //分别对应字符串， 分割符， 位数
+
+
 //时间戳转换
 var getLocalTime = function (_time) {
     /*
@@ -135,7 +162,7 @@ var getLocalTime = function (_time) {
 
     // 提示框，确认取消框，loading框的样式
     var style = document.createElement('style');
-    var stylecode = '.loadingdiv {width:30vmin;height:30vmin;display:none;position:fixed;max-width:140px;max-height:140px;left:50%;top:50%;border-radius:4px;transform:translate(-50%,-50%);color:#eee;background:rgba(0,0,0,.8);z-index: 10000;}.loadingdiv>div {width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-flow:column;}#noticeDiv {width:100vw;position:fixed;padding: 0 4%;top:30%;left:50%;text-align:center;margin-left:-50%;transition:.2s ease;z-index:999;transform:scale(0);z-index:9999;}#noticeDiv>span {display:inline-block;padding:10px;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);}#confirmDiv {width:90vw;max-width:400px;position:fixed;top:40%;left:50%;text-align:center;border-radius:2px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff;}#confirmDiv>div {padding:8px 16px;text-align:left;}#confirmDiv>div:nth-of-type(1) {background:#f8f8f8;}#confirmDiv>div:nth-of-type(2) {text-align:center;}#closebtn {width:10%;float:right;text-align:center;}#confirmdiv3 {width:100%;padding:3% 0;}#confirmdiv3>span {display:inline-block;}#confirmdiv3>span:nth-of-type(1){width:44%;}#confirmfalse,#confirmtrue {width:24%;padding:4px 0;color:#fff;background:#0d94f3;border-radius:2px;text-align:center;}#confirmtrue {margin-right:10px;color:#fff;background:#0d94f3;}#confirmfalse {color:#000;background:#eee;}#confirmPar {width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;}@media screen and (max-width: 379px){#noticeDiv,#confirmDiv {font-size: .7rem;}}@media screen and (min-width: 380px){.loadingdiv{font-size:18px;}#noticeDiv,#confirmDiv {font-size: 18px;}}#fadeshow {display: block;-webkit-animation: showload .5s forwards;animation: showload .5s forwards;}#fadehide {display: block;-webkit-animation: hideload .5s forwards;animation: hideload .5s forwards;}@-webkit-keyframes showload {from {opacity: 0;}to {opacity: 1;}}@keyframes showload {from {opacity: 0;}to {opacity: 1;}}@-webkit-keyframes hideload {from {opacity: 1;}to {opacity: 0;}}@keyframes hideload {from {opacity: 1;}to {opacity: 0;}}';
+    var stylecode = '.loadingdiv {width:30vmin;height:30vmin;display:none;position:fixed;max-width:140px;max-height:140px;left:50%;top:50%;border-radius:4px;transform:translate(-50%,-50%);color:#eee;background:rgba(0,0,0,.8);z-index: 10000;}.loadingdiv>div {width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-flow:column;}#noticeDiv {width:100vw;position:fixed;padding: 0 4%;top:30%;left:50%;text-align:center;margin-left:-50%;transition:.2s ease;z-index:999;transform:scale(0);z-index:9999;}#noticeDiv>span {display:inline-block;padding:4px 10px;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);}#confirmDiv {width:90vw;max-width:400px;position:fixed;top:40%;left:50%;text-align:center;border-radius:2px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff;}#confirmDiv>div {padding:8px 16px;text-align:left;}#confirmDiv>div:nth-of-type(1) {background:#f8f8f8;}#confirmDiv>div:nth-of-type(2) {text-align:center;}#closebtn {width:10%;float:right;text-align:center;font-weight: 600;color: #999;transform: scale(1.4);}#closebtn:active{color:#666;}#confirmdiv3 {width:100%;padding:3% 0;}#confirmdiv3>span {display:inline-block;position:relative;}#confirmdiv3>span:nth-of-type(1){width:44%;}#confirmfalse,#confirmtrue {width:24%;padding:4px 0;color:#fff;background:#0d94f3;border-radius:2px;text-align:center;}#confirmtrue {margin-right:10px;color:#fff;background:#0d94f3;}#confirmfalse {color:#000;background:#eee;}#confirmfalse:active::after,#confirmtrue:active::after {content: "";width: 100%;height: 100%;display: block;position: absolute;top: 0;left: 0;background: rgba(0,0,0,.1);}#confirmPar {width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;}@media screen and (max-width: 379px){#noticeDiv,#confirmDiv {font-size: .7rem;}}@media screen and (min-width: 380px){.loadingdiv{font-size:18px;}#noticeDiv,#confirmDiv {font-size: 18px;}}#fadeshow {display: block;-webkit-animation: showload .5s forwards;animation: showload .5s forwards;}#fadehide {display: block;-webkit-animation: hideload .5s forwards;animation: hideload .5s forwards;}@-webkit-keyframes showload {from {opacity: 0;}to {opacity: 1;}}@keyframes showload {from {opacity: 0;}to {opacity: 1;}}@-webkit-keyframes hideload {from {opacity: 1;}to {opacity: 0;}}@keyframes hideload {from {opacity: 1;}to {opacity: 0;}}';
     style.innerHTML = stylecode;
     document.head.appendChild(style);
 
@@ -227,7 +254,7 @@ var noticeFn = function(obj){
     obj.bgcolor = obj.bgcolor || 'rgba(90,90,90,.9)';
     // 消失时间
     obj.time = obj.time || 1800;
-    console.log(obj.time);
+    // console.log(obj.time);
     var notice = document.getElementById('noticeDiv');
     var noticeSpan = notice.getElementsByTagName('span')[0];
     
@@ -338,11 +365,11 @@ window.onscroll = function(){
     }
     if(scrollTop - scTop > 0){
         // console.log('手指下滑');
-        navbar.setAttribute('class','nav-move');
+        navbar.setAttribute('class','nav-show');
 
     }else if(scrollTop - scTop < 0){
         // console.log('手指上滑');
-        navbar.setAttribute('class','');
+        navbar.setAttribute('class','nav-hide');
 
     }
     // 初始化
