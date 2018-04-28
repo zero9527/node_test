@@ -52,37 +52,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/client.html');
-})
-app.get('/amaze', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/amaze.html');
-})
-app.get('/widget', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/Widget.html');
-})
-app.get('/info', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/info.html');
-})
-app.get('/mine', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/mine.html');
-})
-app.get('/withdraw', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/withdraw.html');
-})
-app.get('/myearnings', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/myearnings.html');
-})
-app.get('/team', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/team.html');
-})
-app.get('/home', function(req, res){
-	res.sendFile(path.resolve('./') + '/views/home.html');
-})
-// app.use('/', index);
-app.use('/users', users);
+app.use(express.static(path.join(__dirname, '/views')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
