@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>懒加载</title>
+</head>
+<body>
+	<img class='dataimg' data-src="/resource/images/bolang.jpg" alt="">
+	<img class='dataimg' data-src="/resource/images/bolang.png" alt="">
+	<img class='dataimg' data-src="/resource/images/icon.jpg" alt="">
+	<img class='dataimg' data-src="/resource/images/yl.png" alt="">
+	<img class='dataimg' data-src="/resource/images/yuan_02.png" alt="">
+	<img class='dataimg' data-src="/resource/images/yun_01.jpg" alt="">
+	<img class='dataimg' data-src="/resource/images/mine01.png" alt="">
+	<img class='dataimg' data-src="/resource/images/mine02.jpg" alt="">
+	<script src='/resource/javascripts/lazyload.js'></script>
+	<script>
+		var img = document.getElementsByClassName('dataimg')
+		var lazy = new lazyLoad(img, function(res){
+			console.log(res);
+		});
+	</script>
+</body>
+</html>
