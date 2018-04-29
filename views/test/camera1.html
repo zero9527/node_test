@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>摄像头拍照</title>
+  <style>
+    #canvas {
+      width: 100%;
+      height: 300px;
+    }
+  </style>
+</head>
+<body>
+  <input id='file' type="file" accept="image/*;capture=camera">
+  <canvas id='canvas'>你的浏览器不支持canvas</canvas>
+  <script>
+      var camera = document.querySelector('#file');
+      var canvas = document.querySelector("#canvas");
+      var ctx = canvas.getContext('2d');
+      // console.log(canvas);
+      
+      camera.onchange = function(){
+        var file = this.files[0];
+        // console.log(file);
+        
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function(){
+
+          var img = new Image();
+          img.src = this.result;
+          // document.body.appendChild(img);
+          // console.log(this.result);
+          img.onload = function(){
+            var w = img.width;
+            var h = img.height;
+            ctx.drawImage();
+            ctx.drawImage(img, 0, 0, w, h);
+          }
+        }
+      }
+  </script>
+</body>
+</html>
