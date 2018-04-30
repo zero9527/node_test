@@ -19,6 +19,74 @@
 		var lazy = new lazyLoad(img, function(res){
 			console.log(res);
 		});
+		console.log(img[0]);
+	</script>
+	<script>
+		// // call/apply继承
+		// var Animal = function(){
+		// 	this.species = '动物';
+		// }
+		// var Cat = function(name, color){
+		// 	Animal.apply(this, arguments);
+		// 	this.name = name;
+		// 	this.color = color;
+		// }
+
+		// // 空对象中介继承
+		// function extend(Child, Parent){
+		// 	var F = function(){};
+		// 	F.prototype = Parent.prototype;
+
+		// 	Child.prototype = new F();
+		// 	Child.prototype.constructor = Child;
+		// 	Child.uber = Parent.prototype;
+		// }
+		// // 继承
+		// extend(Cat, Animal);
+
+		// var cat2 = new Cat('大毛','黄色');
+		// console.log(cat2.species);	// 动物
+	</script>
+	<script>
+		
+		// // 非构造函数object 继承
+		// function object(o){
+		// 	var F = function(){};
+		// 	F.prototype = o;
+		// 	return new F();
+		// }
+		// var chinese = {
+		// 	nation: '中国'
+		// }
+		// var OBJ = object(chinese);
+		// OBJ.carrer = '医生';
+		// console.log(OBJ.nation)
+	</script>
+	<script>
+		// 深拷贝(子对象修改符合类型的属性不会影响父对象的属性)
+		var deepCopy = function(child, parent){
+			var child = child || {};
+			for(var i in parent){
+				if(typeof parent[i] === 'object'){
+					child[i] = parent[i].constructor === Array ? [] : {};
+					// 递归调用
+					deepCopy(child[i],parent[i]);
+
+				}else{
+					child[i] = parent[i];
+				}
+			}
+			return child;
+		}
+
+		var parent = {
+			a: '123',
+			b: 'axc',
+			c: [1,2,3]
+		}
+		var child;
+		var son = deepCopy(child, parent);
+		son.c.push('abc');
 	</script>
 </body>
 </html>

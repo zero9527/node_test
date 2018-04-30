@@ -24,7 +24,7 @@ lazyLoad.prototype = {
 				setTimeout(function(){
 					that.fallback(that.src[i], i);
 					that.imgElem[i].setAttribute('src', that.src[i]);
-				},1000*i);
+				},500*i);
 			})(i);
 		}
 		
