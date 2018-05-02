@@ -44,13 +44,14 @@
 		// }
 		// var OBJ = object(chinese);
 		// OBJ.carrer = '医生';
-		// console.log(OBJ.nation)
+		// console.log(OBJ.nation, chinese.carrer);	// 中国 ，undefined
 	</script>
 	<script>
 		// 深拷贝(子对象修改符合类型的属性不会影响父对象的属性)
 		var deepCopy = function(child, parent){
 			var child = child || {};
 			for(var i in parent){
+				// 判断是否复合类型
 				if(typeof parent[i] === 'object'){
 					child[i] = parent[i].constructor === Array ? [] : {};
 					// 递归调用
