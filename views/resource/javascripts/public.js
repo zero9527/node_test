@@ -38,6 +38,24 @@
     title[0].innerText = document.getElementsByTagName('title')[0].innerText;
 }()
 
+/**
+ * 获取网址（解决在js文件中无法使用thinkPHP的大U方法的问题）
+ * @param {string} [_home] [Home 或 Coms]
+ * @param {string} [_url] [模块，如 Index/index]
+ */ 
+function getURL(_home, _url){
+    var href = location.href;
+    var homeurl, homeindex;
+    // 默认首页
+    _url = _url || 'Index/index';
+    // 获取 Home 或 Coms 的下标
+    if(href.indexOf(_home) > -1){
+        homeindex = href.indexOf(_home) + _home.length;
+    }
+    homeurl = href.substring(0, homeindex) + '/' + _url;
+    return homeurl;
+}
+
 // 验证价格
 var moneyCheck = function(val){
     return /^\d+([\.]{1}[0-9]+){0,1}$/.test(val);

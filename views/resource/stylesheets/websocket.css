@@ -1,0 +1,92 @@
+body {
+	font-size: 16px;
+	padding-top: 1vmin;
+	color: rgb(56,56,56);
+	background: #fff;
+}
+* {
+	box-sizing: border-box;
+}
+a {
+	color: #333;
+}
+#websocket {
+	padding: 0 3vmin;
+}
+#websocket>.h1 {
+	margin: 3vmin 0;
+	font-size: 18px;
+}
+#refresh,
+#navbar {
+	display: none !important;
+}
+.wTop {
+	margin-bottom: 3vmin;
+}
+.content {
+	border: 1px solid #aaa;
+}
+.content>li {
+	padding: 8px;
+}
+.set {
+	border-left: 1px solid #aaa;
+}
+.set>ul>li {
+	margin: 2vmin 0;
+}
+#receive {
+	width: 100%;
+	position: relative;
+	margin: 60px 0;
+	border: 1px solid #aaa;
+}
+#receive>table {
+	width: 100%;
+}
+#receive>p {
+	position: absolute;
+	top: -30px;
+}
+#receive>table>thead {
+	padding: 2px;
+	background: #eee;
+}
+
+#receive tr {
+	border: 1px solid #eee;
+}
+#receive th, 
+#receive td {
+	padding-left: 4px;
+}
+#receive td:not(:last-child) {
+	border-right: 1px solid #eee;
+}
+#receive>table>tbody>tr:nth-of-type(2n) {
+	background: #f6f6f6;
+}
+#receive>table>tbody>tr:hover {
+	background: #ddd;
+}
+/*@media screen and (min-width:600px) {
+	body {
+		font-size: .4rem;
+	}
+}
+@media screen and (min-width:800px) {
+	body {
+		font-size: .3rem;
+	}
+}
+@media screen and (min-width:1000px) {
+	body {
+		font-size: .24rem;
+	}
+}
+@media screen and (min-width:1300px) {
+	body {
+		font-size: 16px;
+	}
+}*/
