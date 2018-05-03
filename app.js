@@ -13,6 +13,15 @@ var websocketServer = require('ws').Server,
 	websocket = new websocketServer({port: 8181});
 var time = new Date().toLocaleString();
 var num = 0;
+var sendData = {
+		PackType: 'Select',
+		DeviceStause: '1',
+		reFlow: '10',
+		reDay: '20',		
+		allFlow: '50',		
+		allDay: '60',		
+		time: '',		
+	}
 websocket.on('connection',function(ws){
 
 	console.log('client connected');
@@ -20,7 +29,16 @@ websocket.on('connection',function(ws){
 
 	ws.on('message',function(message){
 		time = new Date().toLocaleString();
-		console.log(message);
+		console.log('message: ',message);
+		message = JSON.parse(message);
+		
+		sendData['DeviceStause'] = message.DeviceStause ? message.DeviceStause : sendData.DeviceStause;
+		sendData['reFlow'] = message.reFlow ? message.reFlow : sendData.reFlow;
+		sendData['reDay'] = message.reDay ? message.reDay : sendData.reDay;
+		sendData['allFlow'] = message.allFlow ? message.allFlow : sendData.allFlow;
+		sendData['allDay'] = message.allDay ? message.allDay : sendData.allDay;
+
+		console.log('sendData: ',sendData);
 		// ws.send('前台你好！(^=^) '+ time + '欢迎来信！');
 	});
 
@@ -33,9 +51,9 @@ websocket.on('connection',function(ws){
 	})
 
 	setInterval(function(){
-		// time = new Date().toLocaleString();
-		num++;
-		ws.send(num);
+		time = new Date().toLocaleString();
+		sendData['time'] = time;
+		ws.send(JSON.stringify(sendData));
 	},5000)
 });
 

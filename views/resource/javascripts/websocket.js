@@ -24,7 +24,7 @@
  */
 var ws;	//ws: websocket实例；
 
-var wsFun = function(_url, callback){
+var wsFun = function(_url, connected, callback){
 	// 创建实例化websocket
 	ws = new WebSocket(_url);
 
@@ -35,6 +35,7 @@ var wsFun = function(_url, callback){
 
 		time = new Date().toLocaleString();
 		console.log('websocket已连接！', res);
+		connected('connect');
 	});
 
 	/************
