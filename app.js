@@ -39,6 +39,9 @@ websocket.on('connection',function(ws){
 		sendData['allDay'] = message.allDay ? message.allDay : sendData.allDay;
 
 		console.log('sendData: ',sendData);
+		time = new Date().toLocaleString();
+		sendData['time'] = time;
+		ws.send(JSON.stringify(sendData));
 		// ws.send('前台你好！(^=^) '+ time + '欢迎来信！');
 	});
 
@@ -50,11 +53,11 @@ websocket.on('connection',function(ws){
 		console.log(err)
 	})
 
-	setInterval(function(){
-		time = new Date().toLocaleString();
-		sendData['time'] = time;
-		ws.send(JSON.stringify(sendData));
-	},5000)
+	// setInterval(function(){
+	// 	time = new Date().toLocaleString();
+	// 	sendData['time'] = time;
+	// 	ws.send(JSON.stringify(sendData));
+	// },5000)
 });
 
 /*****************************************/

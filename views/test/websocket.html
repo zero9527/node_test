@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div id='websocket'>
-		<div class='h1 tcenter'><label for="">芯智云websocket测试平台</label></div>
+		<div class='h1 tcenter'><label for="">websocket测试平台</label></div>
 		<div class='wTop am-g'>
 			<span class='am-u-md-4 am-u-sm-12 am-u-xs-12'>
 				<label for="">域&emsp;名: </label>
@@ -185,11 +185,20 @@
 						调用封装的websocket函数
 						函数在 websocket.js中
 					*/ 
+				
+					var int;	// 定时查询
 					wsFun(websocket.wsurl, function(){
 						// 连接成功
 						// 发送登录包
 						websocket.sendMessage(websocket.login);
 
+						setTimeout(function(){
+							// 定时查询
+							int = setInterval(function(){
+								websocket.setData['PackType'] = 'Select';
+								websocket.sendMessage(websocket.setData);
+							},10000);
+						},1000);
 					}, function(str, res){
 						// str: 数据类型（接收，关闭， 错误），
 						// 在websocket.js中给出，不需要传
@@ -204,12 +213,16 @@
 							websocket.showObj.reDay = data.reDay;		
 							websocket.showObj.allFlow = data.allFlow;		
 							websocket.showObj.allDay = data.allDay;
-							
+
 							websocket.receive.push(data);
 							// 多于20条则清空
 							if(websocket.receive.length >= 20){
 								websocket.receive.splice(0,20);
 							}
+						}else if(str == 'error'){
+
+							noticeFn({text:'连接中断!'});
+							clearTimeout(int);
 						}
 						// console.log(websocket.receive)
 					});
