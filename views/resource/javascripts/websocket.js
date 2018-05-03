@@ -8,7 +8,9 @@
 		//调用封装的websocket函数
 		//函数在 websocket.js中
 		 
-		wsFun(wsurl, function(str, res){
+		wsFun(wsurl, function(){
+			// 连接成功，只调用一次
+		},function(str, res){
 			// str: 数据类型（接收，关闭， 错误），
 			// 在websocket.js中给出，不需要传
 			console.log(str, res);
@@ -35,7 +37,7 @@ var wsFun = function(_url, connected, callback){
 
 		time = new Date().toLocaleString();
 		console.log('websocket已连接！', res);
-		connected('connect');
+		connected('connect');	// 连接成功调用， 只调用一次
 	});
 
 	/************

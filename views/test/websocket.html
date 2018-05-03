@@ -215,9 +215,9 @@
 							websocket.showObj.allDay = data.allDay;
 
 							websocket.receive.push(data);
-							// 多于20条则清空
+							// 多于20条则删除前15条
 							if(websocket.receive.length >= 20){
-								websocket.receive.splice(0,20);
+								websocket.receive.splice(0,15);
 							}
 						}else if(str == 'error'){
 

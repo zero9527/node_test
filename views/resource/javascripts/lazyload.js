@@ -16,7 +16,7 @@ lazyLoad.prototype = {
 		for(var i=0; i<that.imgElem.length; i++){
 			var datasrc =  that.imgElem[i].getAttribute('data-src')
 			that.src.push(datasrc);
-		}
+		}	
 		// console.log(that.src);
 		
 		for(var i=0; i<that.imgElem.length; i++){
