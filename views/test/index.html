@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="/resource/stylesheets/common.css">
     <title>这是测试路径</title>
     <style>
+        #navbar {
+            display: none;
+        }
         body {
             font-size: 1rem;
         }
@@ -19,6 +22,19 @@
     <a class='block' href="../test/camera.html">camera</a>
     <a class='block' href="../test/camera1.html">camera1</a>
     <a class='block' href="../test/typescript.html">ts</a>
-    <a class='block' href="../test/websocket.html">芯智云websocket测试平台</a>
+    <a class='block' href="../test/websocket.html">websocket测试平台</a>
+    <button class='addClass btn'>addClass</button>
+    <button class='removeClass btn abc'>removeClass</button>
+    <script src="/resource/javascripts/public.js"></script>
+    <script>
+        // 修改，添加或删除类
+        var btn = document.querySelectorAll('.btn');
+        btn[0].onclick = function(){
+            toggleClass(btn[0], 'abc');
+        }
+        btn[1].onclick = function(){
+            toggleClass(btn[1], 'abc');
+        }
+    </script>
 </body>
 </html>

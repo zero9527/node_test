@@ -10,7 +10,7 @@ var users = require('./routes/users');
 	websocket
 */
 var websocketServer = require('ws').Server,
-	websocket = new websocketServer({port: 8181});
+	websocket = new websocketServer({port: 6001});
 var time = new Date().toLocaleString();
 var num = 0;
 var sendData = {

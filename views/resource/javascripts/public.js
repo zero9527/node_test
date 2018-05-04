@@ -347,6 +347,39 @@ var confirmFn = function(text, callback){
 }
 
 /**
+ * [toggleClass 添加类名/删除类名]
+ * @param  {[type]} elem   [元素]
+ * @param  {[type]} _class [需要删除或添加的类]
+ * @return {[type]}        [description]
+ */
+var toggleClass = function(elem, _class){
+    var oldClass = elem.getAttribute('class');
+    var newClass;
+    var arr = [];
+    // 去除多余空格
+    oldClass = oldClass.lastIndexOf(' ') == oldClass.length-1
+    ? (oldClass.substring(0, oldClass.length-1))
+    : oldClass;
+    if(oldClass.indexOf(_class) > -1){
+        // 删除类名
+        newClass = oldClass.split(_class)[0] + oldClass.split(_class)[1];
+
+    }else{
+        newClass = oldClass + ' ' + _class;
+    }
+    // 去重
+    var newClass = newClass.split(' ');
+    for(var i=0; i<newClass.length; i++){
+        if(arr.indexOf(newClass[i]) == -1){
+            arr.push(newClass[i])
+        }
+    }
+    // console.log(arr);
+    // 设置类名
+    elem.setAttribute('class', arr.join(' '));
+}
+
+/**
  * 顶部导航栏上滑消失，下滑出现
  * scTop: 当前scrollTop
  * scrollTop: 上次scrollTop
