@@ -140,7 +140,9 @@
 	</div>
 	<script src="/resource/javascripts/websocket.js"></script>
 	<script src="/resource/javascripts/public.js"></script>
+    <script src='/resource/vConsole-3.1.0/dist/vconsole.min.js'></script>
 	<script>
+        var vconsole = new VConsole();
 		var websocket = new Vue({
 			el: '#websocket',
 			data(){
@@ -250,7 +252,7 @@
 							var data = JSON.parse(res);
 							console.log(data);
 							websocket.status = websocket.dstauseList[data.DeviceStause];
-							websocket.showObj.leasingmode = data.leasingmode;		
+							websocket.showObj.leasingmode = data.leasingmode;
 							websocket.showObj.filtermode = data.filtermode;
 							websocket.showObj.reFlow = data.reFlow;
 							websocket.showObj.reDay = data.reDay;		
