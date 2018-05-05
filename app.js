@@ -33,6 +33,8 @@ websocket.on('connection',function(ws){
 		message = JSON.parse(message);
 		
 		sendData['DeviceStause'] = message.DeviceStause ? message.DeviceStause : sendData.DeviceStause;
+		sendData['leasingmode'] = message.leasingmode ? message.leasingmode : sendData.leasingmode;
+		sendData['filtermode'] = message.filtermode ? message.filtermode : sendData.filtermode;
 		sendData['reFlow'] = message.reFlow ? message.reFlow : sendData.reFlow;
 		sendData['reDay'] = message.reDay ? message.reDay : sendData.reDay;
 		sendData['allFlow'] = message.allFlow ? message.allFlow : sendData.allFlow;

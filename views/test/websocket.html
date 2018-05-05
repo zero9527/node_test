@@ -32,20 +32,52 @@
 				<button @click='link'>连接</button>
 				<button @click='offline'>断开</button>
 				<ul>
-					<label for="">状态:</label>
-					<li v-text='status'></li>
+					<label for="">水机状态：&emsp;<span v-text='status'></span></label>
+					<div>
+						<p><label for="">租赁模式：</label><span v-text='showObj.leasingmode'></span> <span v-text='leasingmodeList[showObj.leasingmode]'></span></p>
+					</div>
+					<div>
+						<p><label for="">滤芯模式：</label><span v-text='showObj.filtermode'></span> <span v-text='filtermodeList[showObj.filtermode]'></span></p>
+					</div>
+					<div>
+						<label for="">滤芯详情：</label>
+						<span>剩余流量&nbsp;<span v-text='showObj.reFlow'></span>&emsp;</span>
+						<span>剩余天数&nbsp;<span v-text='showObj.reDay'></span>&emsp;</span>
+						<span>总流量&nbsp;<span v-text='showObj.allFlow'></span>&emsp;</span>
+						<span>总流量&nbsp;<span v-text='showObj.allDay'></span>&emsp;</span>
+					</div>
 				</ul>
 			</li>
 			<li class='am-u-md-6 am-u-sm-12 am-u-xs-12 set'>
-				<div>
-					<label for="">水机状态</label>
+				<!-- <div>
+					<label for="">水机状态：</label>
 					<input type="text" v-model='setObj.DeviceStause'>
-				</div>
+				</div> -->
 				<ul>
 					<li>
 						<!-- <button>冲洗</button>
 						<button>开机</button>
 						<button>关机</button> -->
+					</li>
+					<li class='cfix'>
+						<span class='am-u-md-6 am-u-sm-12 am-u-xs-12'>
+							<label for="">水机状态：</label>
+							<input type="text" v-model='setObj.DeviceStause'>
+						</span>
+						<span class='am-u-md-6 am-u-sm-12 am-u-xs-12'>
+							<label for="">激活状态：</label>
+							<input type="text" v-model='setObj.living'>
+						</span>
+					</li>
+					<li class='cfix'>
+						<span class='am-u-md-6 am-u-sm-12 am-u-xs-12'>
+							<label for="">滤芯模式：</label>
+							<input type="text" v-model='setObj.filtermode'>
+						</span>
+						<span class='am-u-md-6 am-u-sm-12 am-u-xs-12'>
+							<label for="">租赁模式：</label>
+							<input type="text" v-model='setObj.leasingmode'>
+						</span>
 					</li>
 					<li class='cfix'>
 						<span class='am-u-md-6 am-u-sm-12 am-u-xs-12'>
@@ -68,13 +100,6 @@
 						</span>
 					</li>
 				</ul>
-				<div>
-					<p><label for="">滤芯：</label></p>
-					<span>剩余流量&nbsp;<span v-text='showObj.reFlow'></span>&nbsp;</span>
-					<span>剩余天数&nbsp;<span v-text='showObj.reDay'></span>&nbsp;</span>
-					<span>总流量&nbsp;<span v-text='showObj.allFlow'></span>&nbsp;</span>
-					<span>总流量&nbsp;<span v-text='showObj.allDay'></span>&nbsp;</span>
-				</div>
 				<div style='margin: 2vmin 0;'>
 					<button @click='setDataFn'>设置</button>
 					<button @click='clearSetObj'>清空</button>
@@ -88,6 +113,8 @@
 					<tr>
 						<th>数据包类型</th>
 						<th>设备状态</th>
+						<th>纯水值</th>
+						<th>原水值</th>
 						<th>剩余流量</th>
 						<th>剩余天数</th>
 						<th>总流量</th>
@@ -99,6 +126,8 @@
 					<tr v-for='s in receive'>
 						<td v-text='s.PackType'>数据包类型</td>
 						<td v-text='s.DeviceStause'>设备状态</td>
+						<td v-text='s.puretds'>纯水值</td>
+						<td v-text='s.rawtds'>原水值</td>
 						<td v-text='s.reFlow'>剩余流量</td>
 						<td v-text='s.reDay'>剩余天数</td>
 						<td v-text='s.allFlow'>总流量</td>
@@ -135,17 +164,29 @@
 						DeviceStause: '',	//设备状态码
 						PackType: 'SetData',	// 数据包类型
 					},
+					// 租赁模式集合
+					leasingmodeList: {'0':'零售型','1':'按流量计费','2':'按时间计费','3':'时长和流量套餐','4':'商务型'},
+					// 滤芯模式集合
+					filtermodeList: {'0':'按时长','1':'按流量','2':'时长和流量'},
 					showObj: {
-						reFlow: '',		// 剩余流量
-						reDay: '',		// 剩余天数
+						reFlow: '',			// 剩余流量
+						reDay: '',			// 剩余天数
 						allFlow: '',		// 总流量
-						allDay: '',		// 总天数
+						allDay: '',			// 总天数
+						leasingmode: '',	// 租赁模式
+						filtermode: '',		// 滤芯模式
+						rawtds: '',			// 原水值
+						puretds: '',		// 纯水值
 					},
 					setObj: {
-						reFlow: '',		// 剩余流量
-						reDay: '',		// 剩余天数
+						reFlow: '',			// 剩余流量
+						reDay: '',			// 剩余天数
 						allFlow: '',		// 总流量
-						allDay: '',		// 总天数
+						allDay: '',			// 总天数
+						leasingmode: '',	// 租赁模式
+						filtermode: '',		// 滤芯模式
+						rawtds: '',			// 原水值
+						puretds: '',		// 纯水值
 					}
 				}
 			},
@@ -168,6 +209,8 @@
 				link: function(){
 					websocket.wsurl = 'ws://' + websocket.url + ':' + websocket.port;
 					websocket.login['DeviceID'] = websocket.deviceid;	// 登录包
+					websocket.setData['DeviceID'] = websocket.deviceid;	// 查询包
+					websocket.setData['DeviceStause'] = 0;	// 查询包
 					if(!websocket.url){
 						noticeFn({text:'请输入域名'});
 						return
@@ -207,6 +250,8 @@
 							var data = JSON.parse(res);
 							console.log(data);
 							websocket.status = websocket.dstauseList[data.DeviceStause];
+							websocket.showObj.leasingmode = data.leasingmode;		
+							websocket.showObj.filtermode = data.filtermode;
 							websocket.showObj.reFlow = data.reFlow;
 							websocket.showObj.reDay = data.reDay;		
 							websocket.showObj.allFlow = data.allFlow;		
@@ -242,6 +287,8 @@
 
 					websocket.setData['DeviceID'] = websocket.deviceid;	
 					websocket.setData['DeviceStause'] = websocket.setObj['DeviceStause'];	
+					websocket.setData['leasingmode'] = websocket.setObj['leasingmode'];
+					websocket.setData['filtermode'] = websocket.setObj['filtermode'];
 					websocket.setData['reFlow'] = websocket.setObj['reFlow'];
 					websocket.setData['reDay'] = websocket.setObj['reDay'];
 					websocket.setData['allFlow'] = websocket.setObj['allFlow'];
@@ -252,11 +299,9 @@
 				},
 				// 清空设置的数据
 				clearSetObj: function(){
-					websocket.setObj['DeviceStause'] = '';	
-					websocket.setObj['reFlow'] = '';
-					websocket.setObj['reDay'] = '';
-					websocket.setObj['allFlow'] = '';
-					websocket.setObj['allDay'] = '';
+					for(var i in websocket.setObj){
+						websocket.setObj[i] = '';
+					}
 				}
 			}
 		})
