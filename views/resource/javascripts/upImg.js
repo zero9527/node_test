@@ -39,7 +39,7 @@
         })
     }
  */
-var upImg = function(formdata, input, callback){
+var upImg = function(formdata, input, CALLBACK){
 	formdata = formdata ? formdata : new FormData();
 	var backdata = {};
 	/*
@@ -91,12 +91,16 @@ var upImg = function(formdata, input, callback){
 			console.log("文件大小大于600kb");
 			//文件大于600kb则压缩后上传
 			compressImage(result, function(res){
-				backdata['src'] = res,src;
+				//将base64字符串转为2进制
+				convert2Binary(res.src, function(res){
+					formdata.append('UploadForm[]',res.src);
+					backdata['src'] = res.src;
+				})
 				backdata['compress'] = true;
 			});
 			
 			// 回调
-			callback(backdata);
+			CALLBACK(backdata);
 		}else{
 			backdata['src'] = result;
 			// 将图片转成二进制
@@ -106,7 +110,7 @@ var upImg = function(formdata, input, callback){
 				backdata['compress'] = false;
 			})
 			// 回调
-			callback(backdata);
+			CALLBACK(backdata);
 			// console.log('不压缩： ',formdata.getAll('UploadForm[]'))
 		}
 
@@ -114,39 +118,33 @@ var upImg = function(formdata, input, callback){
 
 	/*
 		图片压缩(canvas)
-	 */
-	function compressImage(_url, callback) {
-		var canvas = document.createElement("canvas");
-		var ctx = canvas.getContext("2d");
-		var img = new Image();
+	*/
+	var canvas = document.createElement("canvas");
+	var ctx = canvas.getContext("2d");
+	var img = new Image();
+	function compressImage(_url, fallback) {
 		img.src = _url;
 
 		img.onload = function(){
 			canvas.width = img.width*8;
 			canvas.height = img.height*8;
 
-			ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-			setTimeout(function(){
-				img.src = canvas.toDataURL('image/jpeg', .5);
-				// console.log(img.src);
-				img.onload = function(){
-					//将base64字符串转为2进制
-					convert2Binary(img.src, function(res){
-						formdata.append('UploadForm[]',res.src);
-
-						//停止 img.onload
-						img.onload = null;
-						callback({src: res.src});
-					})
-				}
-			},0);
+			// (function(_img){
+				// setTimeout(function(){
+					ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+					// img.src = canvas.toDataURL('image/jpeg', .5);
+					// console.log(img.src);
+					fallback({src: canvas.toDataURL('image/jpeg', .5)});
+					
+				// },0);
+			// })(img)
 		}
 		
 	}
 	/*
 		将base64字符串转换为2进制
 	 */
-	function convert2Binary(dataURI, callback){
+	function convert2Binary(dataURI, fallback){
 		let byteString = window.atob(dataURI.split(',')[1]);
 		let ab = new ArrayBuffer(byteString.length);
 		let ua = new Uint8Array(ab);
@@ -158,7 +156,7 @@ var upImg = function(formdata, input, callback){
 		let bb = new window.Blob([ ab ]);
 		// console.log(bb)
 		// 回调
-		callback({src: bb});
+		fallback({src: bb});
 	}
 
 }
