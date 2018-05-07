@@ -1,8 +1,4 @@
 /**
- * [upFile 图片上传]
- * @param {[type]} [formdata] [formdata]
- * @param {[type]} [input] [input type="file"的元素]
- * @param {[function]} [callback] [回调函数]
  * 用法：
  * 	html: +++++++++++++++
  * 	<form action="" id='form'>
@@ -39,7 +35,14 @@
         })
     }
  */
-var upImg = function(formdata, input, CALLBACK){
+ /**
+ * [upFile 图片上传]
+ * @param {[type]} [formdata] [formdata]
+ * @param {[type]} [input] [input type="file"的元素]
+ * @param {[function]} [comfn] [压缩提示函数]
+ * @param {[function]} [callback] [回调函数]
+ */
+var upImg = function(formdata, input, COMFN, CALLBACK){
 	formdata = formdata ? formdata : new FormData();
 	var backdata = {};
 	/*
@@ -60,6 +63,7 @@ var upImg = function(formdata, input, CALLBACK){
 		}else if(fileList.length >= 2){
 			// 多选 input multiple
 			//（ PC可以，安卓因为不支持多选所以只有一张会显示, ios未测试）
+			//（multiple 时微信无法调起相册或相机）
 			// console.log(Object.prototype.toString.call(fileList))
 			for(var i in fileList){
 				// console.log(Object.prototype.toString.call(fileList[i]));
@@ -86,10 +90,10 @@ var upImg = function(formdata, input, CALLBACK){
 	function readerFun(e, file_reader){
 		var dx = (e.total/1024)/1024;
 		var result = file_reader.result;
-		console.log('e: ',e);
-		if(dx >= .3){
-			console.log("文件大小大于600kb");
-			//文件大于600kb则压缩后上传
+		// console.log('e: ',e);
+		if(dx >= 2){
+			console.log("文件大小大于2M");
+			//文件大于2M则压缩后上传
 			compressImage(result, function(res){
 				backdata['compress'] = true;
 				//将base64字符串转为2进制
@@ -131,16 +135,18 @@ var upImg = function(formdata, input, CALLBACK){
 		img.src = _url;
 
 		img.onload = function(){
-			canvas.width = img.width*8;
-			canvas.height = img.height*8;
-
+			canvas.width = img.width;
+			canvas.height = img.height;
+			// 压缩提示回调
+			COMFN();
 			setTimeout(function(){
 				ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-				src = canvas.toDataURL('image/jpeg', .5);
+				src = canvas.toDataURL('image/jpeg', .6);
 				// console.log(src);
+				// 返回压缩后的图片src
 				fallback({src: src});
 				
-			},0);
+			},100);
 		}
 		
 	}
