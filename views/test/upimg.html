@@ -20,13 +20,14 @@
     </style>
 </head>
 <body>
-    <div class='divpar'></div>
     <form action="" id='form'>
-        <input type="file" id='file' multiple="">
+        <input type="file" id='file' accept='image/*'>
         <div id='picShow'></div>
     </form>
+    <script src='/resource/vConsole-3.1.0/dist/vconsole.min.js'></script>
     <script src='/resource/javascripts/upImg.js'></script>
     <script>
+        var vconsole = new VConsole();
         var form = document.querySelector('#form');
         var file = document.querySelector('#file');
         var picShow = document.querySelector('#picShow');
@@ -36,7 +37,7 @@
 
             // 读取图片
             upImg(formdata, _this, function(res){
-                console.log('res: ',res);
+                console.log('是否压缩: ',res.compress);
 
                 //图片显示
                 var span = document.createElement('span');
@@ -54,6 +55,35 @@
                 }
             })
         }
+        
+    //  /**
+    //      点击上传的图片右上角的" x "，删除这张图片
+    //   */ 
+    //  $("#picShow").on("click", ".delPic", function(){
+    //      // console.log($(this).parent());
+    //      $(this).parent().remove()
+    //      //最多3张图片
+    //      $(".file_upload").css({display: 'block'});
+    //      var imgUpload = formdata.getAll('UploadForm[]');
+    //      var index = Number($(this).attr('index'));      //第几张图片
+            
+    //      // console.log('before: ',imgUpload);
+    //      //  清空formData数据
+    //      formdata.delete('UploadForm[]');
+
+    //      //删除当前元素在formData中的数据
+    //      imgUpload.splice(index,1);
+    //      // console.log(Object.prototype.toString.call(imgUpload[index]));
+    //      // console.log('after: ',imgUpload);
+            
+    //      //重新将图片数据添加到formData中
+    //      for(var i=0; i<imgUpload.length; i++){
+    //          formdata.append('UploadForm[]', imgUpload[i])
+    //      }
+    //      console.log('after: ',formdata.getAll('UploadForm[]'));
+
+    //  })
+    // });
         
     </script>
 </body>
