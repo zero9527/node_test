@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+    <link rel="stylesheet" href="/resource/stylesheets/common.css">
+    <title>upimg上传图片练习</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            font-size: 1rem;
+        }
+        img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class='divpar'></div>
+    <form action="" id='form'>
+        <input type="file" id='file' multiple="">
+        <div id='picShow'></div>
+    </form>
+    <script src='/resource/javascripts/upImg.js'></script>
+    <script>
+        var form = document.querySelector('#form');
+        var file = document.querySelector('#file');
+        var picShow = document.querySelector('#picShow');
+        file.onclick = function(){
+            var formdata = new FormData(form);
+            var _this = this;
+
+            // 读取图片
+            upImg(formdata, _this, function(res){
+                console.log('res: ',res);
+
+                //图片显示
+                var span = document.createElement('span');
+                var spanclose = document.createElement('span');
+                spanclose.setAttribute('class', 'delPic');
+                spanclose.setAttribute('style', 'z-index:999;');
+                span.appendChild(spanclose);
+                var img = new Image();
+                
+                if(res.src){
+                    img.src = res.src;      // 显示图片
+                    span.appendChild(img);
+                    picShow.appendChild(span);
+                    // console.log(formdata.getAll('UploadForm[]'));
+                }
+            })
+        }
+        
+    </script>
+</body>
+</html>
