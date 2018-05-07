@@ -62,7 +62,7 @@ var upImg = function(formdata, input, COMFN, CALLBACK){
 			}
 		}else if(fileList.length >= 2){
 			// 多选 input multiple
-			//（ PC可以，安卓因为不支持多选所以只有一张会显示, ios未测试）
+			//（ PC可以，安卓chrome浏览器可以，uc浏览器不行，夸克浏览器不行, ios未测试）
 			//（multiple 时微信无法调起相册或相机）
 			// console.log(Object.prototype.toString.call(fileList))
 			for(var i in fileList){
