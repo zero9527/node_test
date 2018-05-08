@@ -42,8 +42,7 @@
  * @param {[function]} [comfn] [压缩提示函数]
  * @param {[function]} [callback] [回调函数]
  */
-var upImg = function(formdata, input, COMFN, CALLBACK){
-	formdata = formdata ? formdata : new FormData();
+var upImg = function(input, COMFN, CALLBACK){
 	var backdata = {};
 	/*
 		图片压缩上传
@@ -91,7 +90,7 @@ var upImg = function(formdata, input, COMFN, CALLBACK){
 		var dx = (e.total/1024)/1024;
 		var result = file_reader.result;
 		// console.log('e: ',e);
-		if(dx >= 2){
+		if(dx >= 1){
 			console.log("文件大小大于2M");
 			//文件大于2M则压缩后上传
 			compressImage(result, function(res){
@@ -102,25 +101,24 @@ var upImg = function(formdata, input, COMFN, CALLBACK){
 					res.src = result;
 					backdata['compress'] = false;
 				}
-				convert2Binary(res.src, function(bin){
-					formdata.append('UploadForm[]',bin.src);
-				})
 				backdata['src'] = res.src;
-				// 回调
-				CALLBACK(backdata);
+				convert2Binary(res.src, function(bin){
+					backdata['binsrc'] = bin.src;
+					// 回调
+					CALLBACK(backdata);
+				})
 			});
 			
 		}else{
 			backdata['src'] = result;
 			// 将图片转成二进制
-			convert2Binary(result, function(res){
-				//将图片二进制数据 append 进 formdata
-				formdata.append('UploadForm[]', res.src);
+			convert2Binary(result, function(bin){
+				//传回图片二进制数据 
+				backdata['binsrc'] = bin.src;
 				backdata['compress'] = false;
+				// 回调
+				CALLBACK(backdata);
 			})
-			// 回调
-			CALLBACK(backdata);
-			// console.log('不压缩： ',formdata.getAll('UploadForm[]'))
 		}
 
 	}
@@ -141,7 +139,7 @@ var upImg = function(formdata, input, COMFN, CALLBACK){
 			COMFN();
 			setTimeout(function(){
 				ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-				src = canvas.toDataURL('image/jpeg', .6);
+				src = canvas.toDataURL('image/jpeg', 1);
 				// console.log(src);
 				// 返回压缩后的图片src
 				fallback({src: src});
