@@ -2,22 +2,32 @@
  * 用法：
  * 	html: +++++++++++++++
  * 	<form action="" id='form'>
-        <input type="file" id='file' multiple="">
+        <!-- 微信  -->
+        <input type="file" id='file' accept='image/*' >
+        <!-- 其他 -->
+        <!-- <input type="file" id='file' multiple="" accept='image/*' > -->
         <div id='picShow'></div>
     </form>
     
     js: +++++++++++++++++
- *  var form = document.querySelector('#form');
-    var file = document.querySelector('#file');
+ *  var file = document.querySelector('#file');
     var picShow = document.querySelector('#picShow');
+    var notidiv = document.querySelector('.notidiv');
+    var notison = notidiv.querySelector('.noti');
+
     file.onclick = function(){
-        var formdata = new FormData(form);
+        // var formdata = new FormData(form);
         var _this = this;
 
         // 读取图片
-        upImg(formdata, _this, function(res){
-            console.log('res: ',res);
+        upImg( _this, function(){
+            // 压缩提示(不压缩不进来)
+            notison.innerHTML = '图片加载中...';
+            fadeFn({elem: notidiv});
 
+        }, function(res){
+            console.log('res: ',res);
+            console.log('是否压缩: ',res.compress);
             //图片显示
             var span = document.createElement('span');
             var spanclose = document.createElement('span');
@@ -30,6 +40,8 @@
                 img.src = res.src;      // 显示图片
                 span.appendChild(img);
                 picShow.appendChild(span);
+                // 加载完成
+                fadeFn({elem: notidiv, handle:'hide'});
                 // console.log(formdata.getAll('UploadForm[]'));
             }
         })
@@ -103,6 +115,7 @@ var upImg = function(input, COMFN, CALLBACK){
 				}
 				backdata['src'] = res.src;
 				convert2Binary(res.src, function(bin){
+					//传回图片二进制数据 
 					backdata['binsrc'] = bin.src;
 					// 回调
 					CALLBACK(backdata);
@@ -139,7 +152,7 @@ var upImg = function(input, COMFN, CALLBACK){
 			COMFN();
 			setTimeout(function(){
 				ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-				src = canvas.toDataURL('image/jpeg', 1);
+				src = canvas.toDataURL('image/jpeg', .8);
 				// console.log(src);
 				// 返回压缩后的图片src
 				fallback({src: src});
