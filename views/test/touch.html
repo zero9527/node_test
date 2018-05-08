@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>touch练习</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		#wrap {width: 100vw;height: 50vh;position: relative;margin: 10vh 0;background: #fff;overflow: hidden;}
+		#wrap>ul {width: 700%;height: 100%;position: relative;transition: .3s linear;/*line-height: 50vh;*/}
+		#wrap>ul::after {content: '';display: block;clear: both;}
+		#wrap>ul>li {width: 14.28%;height: 100%;float: left;text-align: center;vertical-align: baseline;}
+		#wrap img {
+			width: 100%;
+			height: auto;
+		}
+		.fullscreen {
+			width: 100vw !important;
+			height: 100vh !important;
+			background: rgba(0,0,0,.4) !important;
+			overflow: hidden !important;
+		}
+		.close {
+			width: 30px;
+			height: 30px;
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			line-height: 30px;
+			border-radius: 50%;
+			text-align: center;
+			background: #fff;
+			box-shadow: 0 0 10px rgba(0,0,0,.4);
+			z-index: 999;
+		}
+		.close:active {
+			background: #eee;
+		}
+	</style>
+</head>
+<body>
+ 	<div id='wrap'>
+ 		<div class='close'>X</div>
+		<ul id='wrapul'>
+			<li><img class='dataimg' src="/resource/images/yun_01.jpg" alt=""></li>
+			<li>222222222222</li>
+			<li>333333333333</li>
+			<li>444444444444</li>
+			<li>555555555555</li>
+			<li>666666666666</li>
+			<li>777777777777</li>
+		</ul>
+	</div>
+	<!-- <img class='dataimg' data-src="/resource/images/yuan_02.png" alt="">
+	<img class='dataimg' data-src="/resource/images/yun_01.jpg" alt="">
+	<img class='dataimg' data-src="/resource/images/mine01.png" alt="">
+	<img class='dataimg' data-src="/resource/images/mine02.jpg" alt=""> -->
+	<script src='/resource/javascripts/tmove.js'></script>
+    <script src='/resource/vConsole-3.1.0/dist/vconsole.min.js'></script>
+	<script>
+		var vconsole = new VConsole();
+		var wrapul = document.getElementById('wrapul');
+		var lilen = wrapul.getElementsByTagName('li').length;
+		var close = document.querySelector('.close');
+		var viewport = document.querySelector('meta[name="viewport"]');
+		var viewscale = {
+			enable: 'width=device-width,initial-scale=1.0',
+			disable: 'width=device-width,initial-scale=1.0,user-scalable=no'
+		}
+		var wrapulid = wrapul.getAttribute('id');
+		// 实例化滑动方法
+		var move = new tMove({
+			elem: wrapul,
+			lilen: lilen
+		}, function click(elem){
+			var img = wrapul.querySelectorAll('img');
+			// 点击
+			console.log('clickimg: ', img);
+			elem.removeEventListener('touchstart', tMove.prototype.tstartFn);
+			elem.removeEventListener('touchmove', tMove.prototype.tmoveFn);
+			elem.removeEventListener('touchend', tMove.prototype.tendFn);
+
+			img.forEach(function(img, index){
+				console.log(img, index, '\n');
+				img.onclick = function(){
+					console.log(this);
+					viewport.setAttribute('content', viewscale.enable);
+					wrap.setAttribute('class', 'fullscreen');
+				}
+			});
+
+		}, function touch(res){
+			// 触屏事件
+			console.log('res: ',res);
+		});
+		
+		close.ontouchend = function(){
+			elem.addEventListener('touchstart', tMove.prototype.tstartFn);
+			elem.addEventListener('touchmove', tMove.prototype.tmoveFn);
+			elem.addEventListener('touchend', tMove.prototype.tendFn);
+
+			viewport.setAttribute('content', viewscale.disable);
+			wrap.setAttribute('class', '');
+		}
+		
+	</script>
+</body>
+</html>

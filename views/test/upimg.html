@@ -71,11 +71,11 @@
         var notison = notidiv.querySelector('.noti');
 
         file.onclick = function(){
-            var formdata = new FormData(form);
+            // var formdata = new FormData(form);
             var _this = this;
 
             // 读取图片
-            upImg(formdata, _this, function(){
+            upImg( _this, function(){
                 // 压缩提示(不压缩不进来)
                 notison.innerHTML = '图片加载中...';
                 fadeFn({elem: notidiv});
