@@ -152,7 +152,7 @@ var upImg = function(input, COMFN, CALLBACK){
 			COMFN();
 			setTimeout(function(){
 				ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-				src = canvas.toDataURL('image/jpeg', .8);
+				src = canvas.toDataURL('image/jpeg', .7);
 				// console.log(src);
 				// 返回压缩后的图片src
 				fallback({src: src});
