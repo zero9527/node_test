@@ -408,7 +408,7 @@ window.onscroll = function(){
 }
 
 // 下拉刷新效果
-window.onload = function(){
+document.onready = function(){
     var elem = document.documentElement;
     var _from = window.innerWidth*12/100;
     // console.log(_from);
