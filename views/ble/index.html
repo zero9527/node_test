@@ -69,8 +69,14 @@
 			background: #fff;
 		}
 		.cMain>ul {
-			padding: 2vh 0;
+			padding: 2vh 4vw;
 		}
+		.nextul>li {
+			height: 10vmin;
+			line-height: 10vmin;
+			border-bottom: 1px solid #eee;
+		}
+
 		.meal {
 			width: 72vw;
 			padding: 3vmin 0;
@@ -124,7 +130,7 @@
 				<p>套餐选择</p>
 			</li>
 			<li class='fleft'>
-				<span :class='mainShow == "info" ? "roundok" : ""'>2</span>
+				<span :class='(mainShow == "info" || mainShow == "done") ? "roundok" : ""'>2</span>
 				<p>信息录入</p>
 			</li>
 			<li class='fleft'>
@@ -134,31 +140,31 @@
 		</ul>
 		<div class='cMain'>
 			<!-- 套餐选择 -->
-			<ul v-if='mainShow == "meal"'>
+			<ul v-if='mainShow == "meal"' :style='{display: mainShow == "meal" ? "block" : "none"}'>
 				<p class='tcenter'><label for="">套餐选择</label></p>
-				<li v-for='m in mealList' @click='select_meal' class='meal tcenter' :meal_id='m.meal_id'>
+				<li v-for='m in mealList' @click='select_meal' class='meal tcenter' :meal_id='m.meal_id' :money='m.money'>
 					<span v-text='m.content'>套餐</span>
 				</li>
 			</ul>
 			<!-- 信息录入 -->
 			<ul class='nextul' :style='{display: mainShow == "info" ? "block" : "none"}'>
-				<p>
+				<li>
 					<label for="">姓名</label>
 					<input type="text" name='name' class='name'>
-				</p>
-				<p>
+				</li>
+				<li>
 					<label for="">电话</label>
 					<input type="text" name='phone' class='phone'>
-				</p>
-				<p>
+				</li>
+				<li>
 					<p>
 						<label for="">地址</label>
 					</p>
 					<textarea name="addr" class='addr' cols="30" rows="5" placeholder="请输入详细地址，如道路、门牌号、小区、楼栋号、单元室等"></textarea>
-				</p>
-				<div class='money'>
-					<p v-text='money'>300元</p>
-				</div>
+				</li>
+				<li class='money'>
+					<span v-text='money'>300元</span>
+				</li>
 			</ul>
 			<!-- 完成充值 -->
 			<ul class='nextul' :style='{display: mainShow == "done" ? "block" : "none"}'></ul>
@@ -177,6 +183,7 @@
 			el: '#charge',
 			data() {
 				return {
+					href: location.href,
 					mealList: [],//套餐数据
 					money: '',		// 充值的套餐金额
 					class2: '',		// 流程第二步
@@ -196,29 +203,61 @@
 					});
 					// 获取套餐id
 					this.meal_id = ele.getAttribute('meal_id');
+					// 获取套餐金额
+					this.money = ele.getAttribute('money');
 					ele.setAttribute('class', 'meal tcenter select');
 				},
 				// 下一步
 				next: function(){
+					if(!this.meal_id || !this.money){
+						noticeFn({text: '请选择套餐!'});
+						return
+					}
 					if(this.mainShow == 'meal'){
 						// 当前为套餐选择界面
+						// 下一步为信息录入
+						location.href = this.href + '?info&meal_id=' + this.meal_id + '&money=' + this.money;
 					}else if(this.mainShow == 'info'){
 						// 当前录入信息界面
+						// 下一步为完成
+						location.href = this.href + '?done';
 					}
+				},
+				// 获取套餐数据
+				getMeal: function(){
+					// 套餐数据
+					this.mealList = [
+						{meal_id: 1, content: '100元/100天', money:'100'},
+						{meal_id: 2, content: '300元/300天', money:'300'},
+						{meal_id: 3, content: '500元/500天', money:'500'}
+					];
 				}
 			},
 			created() {
-				this.mealList = [
-					{meal_id: 1, content: '100元/100天'},
-					{meal_id: 2, content: '300元/300天'},
-					{meal_id: 3, content: '500元/500天'}
-				];
+				var href = this.href;
+				if(href.indexOf('info') > -1){
+					var moneyindex = href.indexOf('money=')+6;
+					this.money = href.substring(moneyindex);
+					this.mainShow = 'info';		// 信息选择
+
+				}else if(href.indexOf('done') > -1){
+					this.mainShow = 'done';		// 完成选择
+
+				}else if(href.indexOf('meal') > -1){
+					this.mainShow = 'meal';		// 套餐选择
+					this.getMeal();				// 获取套餐信息
+
+				}else{
+					this.mainShow = 'meal';		// 套餐选择
+					this.getMeal();				// 获取套餐信息
+				}
+				
 			},
 			mounted() {
-				var meal2 = document.querySelectorAll('.meal')[1];
-				meal2.setAttribute('class', 'meal tcenter select');
-				// 获取套餐id
-				this.meal_id = meal2.getAttribute('meal_id');
+				// var meal2 = document.querySelectorAll('.meal')[1];
+				// meal2.setAttribute('class', 'meal tcenter select');
+				// // 获取套餐id
+				// this.meal_id = meal2.getAttribute('meal_id');
 			},
 		})
 	</script>
