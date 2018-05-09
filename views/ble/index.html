@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>充值</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	<link rel="stylesheet" href="/resource/amazeui/css/amazeui.min.css">
+	<link rel="stylesheet" type="text/css" href="/resource/iconfont/iconfont.css">
+	<link rel="stylesheet" type="text/css" href="/resource/stylesheets/common.css">
+	<script src="/resource/javascripts/vue.min.js"></script>
+	<style>
+		.back2home {display: none !important;}
+		.cTop {
+			width: 100%;
+			position: relative;
+			padding: 4vh 4vw;
+		}
+		.cTop>li {
+			width: 33.33%;
+			text-align: center;
+		}
+		.cTop p {
+			color: #555;
+		}
+		.cTop>li>span {
+			width: 12vmin;
+			height: 12vmin;
+			position: relative;
+			display: inline-block;
+			margin-bottom: 2vh;
+			line-height: 12vmin;
+			border-radius: 50%;
+			font-size: 1.2rem;
+			color: #fff;
+			background: #bbb;
+		}
+		.cTop>li>span::after {
+			content: '';
+			width: 80%;
+			height: 3px;
+			position: absolute;
+			right: -80%;
+			top: 0;
+			bottom: 0;
+			margin: auto 0;
+			background: inherit;
+		}
+		.cTop>li:last-child>span::after {
+			left: -80%;
+		}
+		.cTop>li:nth-of-type(2)>span::before {
+			content: '';
+			width: 80%;
+			height: 3px;
+			position: absolute;
+			left: -80%;
+			top: 0;
+			bottom: 0;
+			margin: auto 0;
+			background: inherit;
+		}
+		.nextul {
+			display: none;
+		}
+		.roundok {
+			background: #0d94f3 !important;
+		}
+		.cMain {
+			background: #fff;
+		}
+		.cMain>ul {
+			padding: 2vh 0;
+		}
+		.meal {
+			width: 72vw;
+			padding: 3vmin 0;
+			margin: 3vh 0;
+			position: relative;
+			left: 50%;
+			margin-left: -36vw;
+			border-radius: 30px;
+			background: #f1f1f1;
+		}
+		.select {
+			color: #fff;
+			background: #0d94f3 !important;
+		}
+		.next {
+			width: 90vw;
+			position: fixed;
+			bottom: 6vh;
+			left: 50%;
+			margin-left: -45vw;
+			padding: 2vmin 0;
+			color: #fff;
+			font-size: .9rem;
+			border-radius: 30px;
+			background: #0d94f3;
+			z-index: 99;
+		}
+		.next:active::after {
+			content: '';
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			display: block;
+			left: 0;
+			top: 0;
+			border-radius: 30px;
+			background: rgba(0,0,0,.1);
+		}
+	</style>
+	<script>
+		var ble_options = {
+			title: document.querySelector('title').innerText
+		}
+	</script>
+</head>
+<body>
+	<div id='charge'>
+		<ul class='cTop cfix'>
+			<li class='fleft'>
+				<span class='roundok'>1</span>
+				<p>套餐选择</p>
+			</li>
+			<li class='fleft'>
+				<span :class='mainShow == "info" ? "roundok" : ""'>2</span>
+				<p>信息录入</p>
+			</li>
+			<li class='fleft'>
+				<span :class='mainShow == "done" ? "roundok" : ""'>3</span>
+				<p>完成充值</p>
+			</li>
+		</ul>
+		<div class='cMain'>
+			<!-- 套餐选择 -->
+			<ul v-if='mainShow == "meal"'>
+				<p class='tcenter'><label for="">套餐选择</label></p>
+				<li v-for='m in mealList' @click='select_meal' class='meal tcenter' :meal_id='m.meal_id'>
+					<span v-text='m.content'>套餐</span>
+				</li>
+			</ul>
+			<!-- 信息录入 -->
+			<ul class='nextul' :style='{display: mainShow == "info" ? "block" : "none"}'>
+				<p>
+					<label for="">姓名</label>
+					<input type="text" name='name' class='name'>
+				</p>
+				<p>
+					<label for="">电话</label>
+					<input type="text" name='phone' class='phone'>
+				</p>
+				<p>
+					<p>
+						<label for="">地址</label>
+					</p>
+					<textarea name="addr" class='addr' cols="30" rows="5" placeholder="请输入详细地址，如道路、门牌号、小区、楼栋号、单元室等"></textarea>
+				</p>
+				<div class='money'>
+					<p v-text='money'>300元</p>
+				</div>
+			</ul>
+			<!-- 完成充值 -->
+			<ul class='nextul' :style='{display: mainShow == "done" ? "block" : "none"}'></ul>
+		</div>
+		<footer class='next tcenter' @click='next'>下一步</footer>
+	</div>
+	<script src="/resource/javascripts/public.js"></script>
+	<script src="/resource/javascripts/jquery.min.js"></script>
+	<script src="/resource/amazeui/js/amazeui.min.js"></script>
+	<script>
+		// 显示loading
+		document.querySelector('.loadingdiv').setAttribute('id','fadeShow');
+	</script>
+	<script>
+		var charge = new Vue({
+			el: '#charge',
+			data() {
+				return {
+					mealList: [],//套餐数据
+					money: '',		// 充值的套餐金额
+					class2: '',		// 流程第二步
+					class3: '',		// 流程第三步（走完）
+					mainShow: 'meal',	// 显示套餐meal，信息info，还是完成done
+					meal_id: '',		// 选择的套餐id
+				}
+			},
+			watch: {},
+			methods: {
+				// 选择套餐
+				select_meal: function(e){
+					var ele = e.currentTarget;
+					var meal = document.querySelectorAll('.meal');
+					meal.forEach(function(meal, index){
+						meal.setAttribute('class', 'meal tcenter');
+					});
+					// 获取套餐id
+					this.meal_id = ele.getAttribute('meal_id');
+					ele.setAttribute('class', 'meal tcenter select');
+				},
+				// 下一步
+				next: function(){
+					if(this.mainShow == 'meal'){
+						// 当前为套餐选择界面
+					}else if(this.mainShow == 'info'){
+						// 当前录入信息界面
+					}
+				}
+			},
+			created() {
+				this.mealList = [
+					{meal_id: 1, content: '100元/100天'},
+					{meal_id: 2, content: '300元/300天'},
+					{meal_id: 3, content: '500元/500天'}
+				];
+			},
+			mounted() {
+				var meal2 = document.querySelectorAll('.meal')[1];
+				meal2.setAttribute('class', 'meal tcenter select');
+				// 获取套餐id
+				this.meal_id = meal2.getAttribute('meal_id');
+			},
+		})
+	</script>
+</body>
+</html>
