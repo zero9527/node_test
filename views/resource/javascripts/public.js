@@ -251,7 +251,7 @@ var noticeFn = function(obj){
     //设置背景颜色
     obj.bgcolor = obj.bgcolor || 'rgba(90,90,90,.9)';
     // 消失时间
-    obj.time = obj.time || 1800;
+    obj.time = obj.time || 1000;
     // console.log(obj.time);
     var notice = document.getElementById('noticeDiv');
     var noticeSpan = notice.getElementsByTagName('span')[0];

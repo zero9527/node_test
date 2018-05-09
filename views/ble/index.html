@@ -73,12 +73,19 @@
 			padding: 2vh 4vw;
 		}
 		.nextul>li {
-			height: 10vmin;
 			position: relative;
-			line-height: 10vmin;
+			padding: 2vmin 0;
+		}
+		.nextul>li:not(:last-child) {
 			border-bottom: 1px solid #eee;
 		}
 
+		.nextul input,
+		.nextul textarea {
+			width: 86%;
+			padding: 2px 4px;
+			border: none;
+		}
 		.meal {
 			width: 72vw;
 			padding: 3vmin 0;
@@ -117,12 +124,19 @@
 			border-radius: 30px;
 			background: rgba(0,0,0,.1);
 		}
-	</style>
-	<script>
-		var ble_options = {
-			title: document.querySelector('title').innerText
+		.money>span {
+			padding-left: 10%;
+			color: red;
 		}
-	</script>
+		.addr {
+			width: 62%;
+    		display: inline-block;
+    		padding-left: 4vmin;
+		}
+		.f888 {
+			color: #888;
+		}
+	</style>
 </head>
 <body>
 	<div id='charge'>
@@ -150,22 +164,24 @@
 			</ul>
 			<!-- 信息录入 -->
 			<ul class='nextul' :style='{display: mainShow == "info" ? "block" : "none"}'>
-				<li>
+				<li class='cfix'>
 					<label for="">姓名</label>
-					<input type="text" name='name' class='name'>
+					<input type="text" name='name' class='uname fright' v-model='uname' placeholder="请输入姓名">
 				</li>
-				<li>
+				<li class='cfix'>
 					<label for="">电话</label>
-					<input type="text" name='phone' class='phone'>
+					<input type="text" name='phone' class='uphone fright' v-model='uphone' placeholder="请输入手机号码">
 				</li>
-				<li>
-					<p>
-						<label for="">地址</label>
-					</p>
-					<textarea name="addr" class='addr' cols="30" rows="5" placeholder="请输入详细地址，如道路、门牌号、小区、楼栋号、单元室等"></textarea>
+				<li class='cfix'>
+					<label for="" style='vertical-align: top;'>地址</label>
+					<span class='addr'></span>
+					<span class='fright f888'>请选择 >&nbsp;</span>
+				</li>
+				<li class='cfix'>
+					<textarea name="addrdetail" class='uaddrdetail fright' cols="30" rows="5" placeholder="请输入详细地址，如道路、门牌号、小区、楼栋号、单元室等" v-model='uaddrdetail'></textarea>
 				</li>
 				<li class='money'>
-					<span v-text='money'>300元</span>
+					<label for="">金额</label><span><span v-text='money'>300元</span>元</span>
 				</li>
 			</ul>
 			<!-- 完成充值 -->
@@ -192,6 +208,10 @@
 					class3: '',		// 流程第三步（走完）
 					mainShow: 'meal',	// 显示套餐meal，信息info，还是完成done
 					meal_id: '',		// 选择的套餐id
+					uname: '',			//用户名
+					uphone: '',			// 电话
+					uaddr: '',			// 地址
+					uaddrdetail: '',	// 详细地址
 				}
 			},
 			watch: {},
@@ -211,18 +231,53 @@
 				},
 				// 下一步
 				next: function(){
-					if(!this.meal_id || !this.money){
-						noticeFn({text: '请选择套餐!'});
-						return
-					}
 					if(this.mainShow == 'meal'){
 						// 当前为套餐选择界面
+						if(!this.meal_id || !this.money){
+							noticeFn({text: '请选择套餐!'});
+							return
+						}
 						// 下一步为信息录入
 						location.href = this.href + '?info&meal_id=' + this.meal_id + '&money=' + this.money;
 					}else if(this.mainShow == 'info'){
 						// 当前录入信息界面
+						var origin = location.origin;
+						var pathname = location.pathname;
+						if(!this.uname){
+							noticeFn({text:'请输入用户名!'});
+							$('.uname').css({border: '1px solid red'});
+							return
+						}else if(!nameCheck(trimFn(this.uname))){
+							noticeFn({text:'请输入用户名!'});
+							$('.uname').css({border: '1px solid red'});
+							return
+						}else{
+							$('.uname').css({border: 'none'});
+						}
+						if(!this.uphone){
+							noticeFn({text:'请输入手机号!'});
+							$('.uphone').css({border: '1px solid red'});
+							return
+						}else if(!phoneCheck(trimFn(this.uphone))){
+							noticeFn({text:'请输入正确的手机号!'});
+							$('.uphone').css({border: '1px solid red'});
+							return
+						}else{
+							$('.uphone').css({border: 'none'});
+						}
+						if(!this.uaddr){
+							noticeFn({text:'请选择地址!'});
+							return
+						}
+						if(!this.uaddrdetail){
+							noticeFn({text:'请输入详细地址!'});
+							$('.uaddrdetail').css({border: '1px solid red'});
+							return
+						}else{
+							$('.uaddrdetail').css({border: 'none'});
+						}
 						// 下一步为完成
-						location.href = this.href + '?done';
+						location.href = origin + pathname + '?done';
 					}
 				},
 				// 获取套餐数据
