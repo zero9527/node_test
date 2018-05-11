@@ -1,22 +1,39 @@
 
 //设置字体自适应大小
 !function (doc, win) {
-	var docEl = doc.documentElement,
-	resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
-	recalc = function () {
-	  var clientWidth = docEl.clientWidth;
-	  if (!clientWidth) return;
-	  docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
+    var docEl = doc.documentElement,
+    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+    recalc = function () {
+      var clientWidth = docEl.clientWidth;
+      if (!clientWidth) return;
+      docEl.style.fontSize = 20 * (clientWidth / 320) + 'px';
       // doc.body.style.height = doc.body.clientHeight;
-	};
-  	if (!doc.addEventListener) return;
-  	win.addEventListener(resizeEvt, recalc, false);
-  	doc.addEventListener('DOMContentLoaded', recalc, false);
+    };
+    if (!doc.addEventListener) return;
+    win.addEventListener(resizeEvt, recalc, false);
+    doc.addEventListener('DOMContentLoaded', recalc, false);
 }(document, window);
 
-
+ 
 // 顶部导航栏、下拉刷新
 !function(){
+    
+    // loading 加载等待
+    var loading = document.createElement('div');
+    loading.setAttribute('class', 'loadingdiv');
+    loading.innerHTML = '<div>'+
+    '<i class="am-icon-spinner am-icon-pulse am-icon-lg"></i>'+
+    '<div class="am-text-center" style="margin-top:10px;">正在加载 ...</div></div>';
+
+    // 添加到页面
+    document.body.appendChild(loading);
+    // 提示框，确认取消框，loading框, navbar等的样式
+    var style = document.createElement('style');
+    var stylecode = '.loadingdiv {width:30vmin;height:30vmin;display:none;position:fixed;max-width:140px;max-height:140px;left:50%;top:50%;border-radius:4px;transform:translate(-50%,-50%);color:#eee;background:rgba(0,0,0,.8);z-index: 10000;}.loadingdiv>div {width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-flow:column;}#noticeDiv {width:100vw;position:fixed;padding: 0 4%;top:30%;left:50%;text-align:center;margin-left:-50%;transition:.2s ease;z-index:999;transform:scale(0);z-index:9999;}#noticeDiv>span {display:inline-block;padding:10px;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);}#confirmDiv {width:90vw;max-width:400px;position:fixed;top:40%;left:50%;text-align:center;border-radius:2px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff;}#confirmDiv>div {padding:8px 16px;text-align:left;}#confirmDiv>div:nth-of-type(1) {background:#f8f8f8;}#confirmDiv>div:nth-of-type(2) {text-align:center;}#closebtn {width:10%;float:right;text-align:center;font-weight: 600;color: #999;transform: scale(1.4);}#closebtn:active{color:#666;}#confirmdiv3 {width:100%;padding:3% 0;}#confirmdiv3>span {display:inline-block;position:relative;}#confirmdiv3>span:nth-of-type(1){width:44%;}#confirmfalse,#confirmtrue {width:24%;padding:4px 0;color:#fff;background:#0d94f3;border-radius:2px;text-align:center;}#confirmtrue {margin-right:10px;color:#fff;background:#0d94f3;}#confirmfalse {color:#000;background:#eee;}#confirmfalse:active::after,#confirmtrue:active::after {content: "";width: 100%;height: 100%;display: block;position: absolute;top: 0;left: 0;background: rgba(0,0,0,.1);}#confirmPar {width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;}@media screen and (max-width: 379px){#noticeDiv,#confirmDiv {font-size: .7rem;}}@media screen and (min-width: 380px){.loadingdiv{font-size:18px;}#noticeDiv,#confirmDiv {font-size: 18px;}}#fadeshow {display: block;-webkit-animation: showload .5s forwards;animation: showload .5s forwards;}#fadehide {display: block;-webkit-animation: hideload .5s forwards;animation: hideload .5s forwards;}@-webkit-keyframes showload {from {opacity: 0;}to {opacity: 1;}}@keyframes showload {from {opacity: 0;}to {opacity: 1;}}@-webkit-keyframes hideload {from {opacity: 1;}to {opacity: 0;}}@keyframes hideload {from {opacity: 1;}to {opacity: 0;}}';
+    stylecode += '.go2Top{width:12vmin;height:12vmin;line-height:12vmin;display:none;position:fixed;border-radius: 50%;bottom:10vmin;right:2vmin;text-align:center;color:#0e90d2;background:#fff;box-shadow:0px 2px 16px 0px rgba(0,0,0, .1);transform: translate3d(0,0,0);font-weight:bold;z-index:99;}.go2Top:active{box-shadow: 0px 2px 16px 0px rgba(0,0,0, .1) inset;}'
+    style.innerHTML = stylecode;
+    document.head.appendChild(style);
+
     var navbar = document.createElement('div');
     var fresh = document.createElement('div');  // 下拉刷新
     navbar.setAttribute('id', 'navbar');
@@ -26,7 +43,7 @@
         '<a class="back2home">首页</a>';
     var fc = document.body.firstChild;
     fresh.setAttribute('id','refresh');
-    fresh.setAttribute('style','width: 50px;height: 50px;line-height: 40px;position: fixed;font-size:1rem;top: 0;left:50%;padding:4px;border-radius:50%;text-align: center;transition: .3s ease-in;transform: translate(-50%,-120%);background:#f6f6f6;box-shadow:0 0 10px rgba(0,0,0,.2);z-index: 9999;');
+    fresh.setAttribute('style','width: 50px;height: 50px;line-height: 40px;position: fixed;font-size:1rem;top: 0;left:50%;padding:4px;border-radius:50%;text-align: center;transition: .3s ease-in;transform: translate(-50%,-120%);background:#f6f6f6;box-shadow:0 0 10px rgba(0,0,0,.2);z-index: 99999;');
     fresh.innerHTML = '<span style="height: 50px;display: inline-block;position: relative;margin: 0 auto;line-height: 0;"><i class="am-icon-spinner am-icon-pulse"></i><span class="refresh_text" style="line-height: 0;"></span></span>';
     // 添加到页面body下最前面
     document.body.insertBefore(navbar,fc);
@@ -36,7 +53,28 @@
     // 获取title
     var title = document.getElementById('navbar').getElementsByTagName('h2');
     title[0].innerText = document.getElementsByTagName('title')[0].innerText;
+
+    // 显示loading
+    var loaddiv = document.querySelector('.loadingdiv');
+    loaddiv.setAttribute('id', 'fadeshow');
+
+    // 设置首页链接
+    var homebtn = document.getElementsByClassName('back2home');
+    // var href = location.href;
+    // var homeurl, homeindex;
+    // if(href.indexOf('Home') > -1){
+    //     homeindex = href.indexOf('Home') + 4;
+    // }else if(href.indexOf('Coms') > -1){
+    //     homeindex = href.indexOf('Coms') + 4;
+    // }
+    // homeurl = href.substring(0, homeindex);
+    if(location.href.indexOf('Home') > -1){
+        homebtn[0].setAttribute('href', getURL('Home', 'Index/index'));
+    }else if(location.href.indexOf('Coms') > -1){
+        homebtn[0].setAttribute('href', getURL('Coms', 'Index/index'));
+    }
 }()
+
 
 /**
  * 获取网址（解决在js文件中无法使用thinkPHP的大U方法的问题）
@@ -54,6 +92,14 @@ function getURL(_home, _url){
     }
     homeurl = href.substring(0, homeindex) + '/' + _url;
     return homeurl;
+}
+/**
+ * [isWX 判断是否微信环境]
+ * @return {[type]} [description]
+ */
+var isWX = function(){
+    var ua = navigator.userAgent.toLowerCase();
+    return (ua.match(/MicroMessenger/i) == 'micromessenger' ? true : false);
 }
 
 // 验证价格
@@ -79,7 +125,7 @@ var chineseCheck = function(val){
 }
 //验证昵称
 var nameCheck = function(val){
-    return /^[\w\-_\u4e00-\u9fa5]{2,255}$/.test(val);
+    return /^[\w\-_\u4e00-\u9fa5]{1,255}$/.test(val);
 }
 //验证银行卡号
 var bankCheck = function(val){
@@ -152,56 +198,6 @@ var getLocalTime = function (_time) {
     return normal;
 }
 
-/*
-    生成提示框、确认取消框和loading 加载模块的页面元素
-    并添加样式到页面
- */ 
-!function(){
-
-    // 提示框，确认取消框，loading框的样式
-    var style = document.createElement('style');
-    var stylecode = '.loadingdiv {width:30vmin;height:30vmin;display:none;position:fixed;max-width:140px;max-height:140px;left:50%;top:50%;border-radius:4px;transform:translate(-50%,-50%);color:#eee;background:rgba(0,0,0,.8);z-index: 10000;}.loadingdiv>div {width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-flow:column;}#noticeDiv {width:100vw;position:fixed;padding: 0 4%;top:30%;left:50%;text-align:center;margin-left:-50%;transition:.2s ease;z-index:999;transform:scale(0);z-index:9999;}#noticeDiv>span {display:inline-block;padding:10px;border-radius:4px;box-shadow:0 0 10px rgba(0,0,0,.2);}#confirmDiv {width:90vw;max-width:400px;position:fixed;top:40%;left:50%;text-align:center;border-radius:2px;box-shadow:0 0 10px rgba(110,101,110,.2);color:#000;transform:translate(-50%,-50%);z-index:999;background:#fff;}#confirmDiv>div {padding:8px 16px;text-align:left;}#confirmDiv>div:nth-of-type(1) {background:#f8f8f8;}#confirmDiv>div:nth-of-type(2) {text-align:center;}#closebtn {width:10%;float:right;text-align:center;font-weight: 600;color: #999;transform: scale(1.4);}#closebtn:active{color:#666;}#confirmdiv3 {width:100%;padding:3% 0;}#confirmdiv3>span {display:inline-block;position:relative;}#confirmdiv3>span:nth-of-type(1){width:44%;}#confirmfalse,#confirmtrue {width:24%;padding:4px 0;color:#fff;background:#0d94f3;border-radius:2px;text-align:center;}#confirmtrue {margin-right:10px;color:#fff;background:#0d94f3;}#confirmfalse {color:#000;background:#eee;}#confirmfalse:active::after,#confirmtrue:active::after {content: "";width: 100%;height: 100%;display: block;position: absolute;top: 0;left: 0;background: rgba(0,0,0,.1);}#confirmPar {width:100vw;height:100vh;display:none;position:fixed;top:0;left:0;background:rgba(0,0,0,.2);z-index:9999;}@media screen and (max-width: 379px){#noticeDiv,#confirmDiv {font-size: .7rem;}}@media screen and (min-width: 380px){.loadingdiv{font-size:18px;}#noticeDiv,#confirmDiv {font-size: 18px;}}#fadeshow {display: block;-webkit-animation: showload .5s forwards;animation: showload .5s forwards;}#fadehide {display: block;-webkit-animation: hideload .5s forwards;animation: hideload .5s forwards;}@-webkit-keyframes showload {from {opacity: 0;}to {opacity: 1;}}@keyframes showload {from {opacity: 0;}to {opacity: 1;}}@-webkit-keyframes hideload {from {opacity: 1;}to {opacity: 0;}}@keyframes hideload {from {opacity: 1;}to {opacity: 0;}}';
-    style.innerHTML = stylecode;
-    document.head.appendChild(style);
-
-    // 生成提示框元素
-    var notice = document.createElement('div');
-    notice.setAttribute('id', 'noticeDiv');
-    notice.innerHTML = '<span></span>';
-
-    // 生成确认取消框元素
-    var confirm = document.createElement('div');
-    // 遮罩层
-    confirm.setAttribute('id','confirmPar');
-    var contain = '<div id="confirmDiv">'+
-        '<div >温馨提示'+
-            '<span id="closebtn" class="iconfont icon-chacha1" ></span>'+
-        '</div>'+
-        '<div style="margin: 16px 0;">'+
-            '<p><i class="am-icon-question-circle-o"></i>&nbsp;确定要&nbsp;'+
-            '<span class="text" style="color:#0d94f3;"></span>&nbsp;吗？</p>'+
-        '</div>'+
-        '<div id="confirmdiv3">'+
-            '<span>&emsp;</span>'+
-            '<span id="confirmtrue" >确定</span>'+
-            '<span id="confirmfalse" >取消</span>'+
-        '</div>'+
-    '</div>';
-    confirm.innerHTML = contain;
-
-    // loading 加载等待
-    var loading = document.createElement('div');
-    loading.setAttribute('class', 'loadingdiv');
-    loading.innerHTML = '<div>'+
-    '<i class="am-icon-spinner am-icon-pulse am-icon-lg"></i>'+
-    '<div class="am-text-center" style="margin-top:10px;">正在加载 ...</div></div>';
-
-    // 添加到页面
-    document.body.appendChild(loading);
-    document.body.appendChild(confirm);
-    document.body.appendChild(notice);
-}()
-
 /**
  * 仿JQ的fade方法显示、隐藏函数
  * @param {对象} obj.elem 作用的元素
@@ -231,6 +227,47 @@ var fadeFn = function(obj){
         },obj.time);
     }
 }
+/*
+    生成提示框、确认取消框和loading 加载模块的页面元素
+    并添加样式到页面
+ */ 
+!function(){
+
+    // 顶部按钮
+    var go2Top = document.createElement('div');
+    go2Top.setAttribute('class', 'go2Top');
+    go2Top.setAttribute('ontouchend', 'goTop()');
+    go2Top.innerHTML = '<i class="iconfont icon-xiangshang1"></i>';
+
+    // 生成提示框元素
+    var notice = document.createElement('div');
+    notice.setAttribute('id', 'noticeDiv');
+    notice.innerHTML = '<span></span>';
+
+    // 生成确认取消框元素
+    var confirm = document.createElement('div');
+    // 遮罩层
+    confirm.setAttribute('id','confirmPar');
+    var contain = '<div id="confirmDiv">'+
+        '<div >温馨提示'+
+            '<span id="closebtn" class="iconfont icon-chacha1" ></span>'+
+        '</div>'+
+        '<div style="margin: 16px 0;">'+
+            '<p><i class="am-icon-question-circle-o"></i>&nbsp;'+
+            '<span class="text" style="color:#0d94f3;"></span>&nbsp;</p>'+
+        '</div>'+
+        '<div id="confirmdiv3">'+
+            '<span>&emsp;</span>'+
+            '<span id="confirmtrue" >确定</span>'+
+            '<span id="confirmfalse" >取消</span>'+
+        '</div>'+
+    '</div>';
+    confirm.innerHTML = contain;
+
+    document.body.appendChild(confirm);
+    document.body.appendChild(notice);
+    document.body.appendChild(go2Top);
+}()
 
 /**
  * 提示框函数 noticeFn()
@@ -249,7 +286,7 @@ var noticeFn = function(obj){
     //设置字体颜色
     obj.fcolor = obj.fcolor || '#fff';
     //设置背景颜色
-    obj.bgcolor = obj.bgcolor || 'rgba(90,90,90,.9)';
+    obj.bgcolor = obj.bgcolor || 'rgba(70,70,70,.9)';
     // 消失时间
     obj.time = obj.time || 1000;
     // console.log(obj.time);
@@ -347,45 +384,14 @@ var confirmFn = function(text, callback){
 }
 
 /**
- * [toggleClass 添加类名/删除类名]
- * @param  {[type]} elem   [元素]
- * @param  {[type]} _class [需要删除或添加的类]
- * @return {[type]}        [description]
- */
-var toggleClass = function(elem, _class){
-    var oldClass = elem.getAttribute('class');
-    var newClass;
-    var arr = [];
-    // 去除多余空格
-    oldClass = oldClass.lastIndexOf(' ') == oldClass.length-1
-    ? (oldClass.substring(0, oldClass.length-1))
-    : oldClass;
-    if(oldClass.indexOf(_class) > -1){
-        // 删除类名
-        newClass = oldClass.split(_class)[0] + oldClass.split(_class)[1];
-
-    }else{
-        newClass = oldClass + ' ' + _class;
-    }
-    // 去重
-    var newClass = newClass.split(' ');
-    for(var i=0; i<newClass.length; i++){
-        if(arr.indexOf(newClass[i]) == -1){
-            arr.push(newClass[i])
-        }
-    }
-    // console.log(arr);
-    // 设置类名
-    elem.setAttribute('class', arr.join(' '));
-}
-
-/**
  * 顶部导航栏上滑消失，下滑出现
  * scTop: 当前scrollTop
  * scrollTop: 上次scrollTop
  */
 var scrollTop = 0;  // scrolltop
 var navbar = document.getElementById('navbar');
+var go2Top = document.querySelector('.go2Top');
+var innerHeight = window.innerHeight;
 window.onscroll = function(){   
     var scTop = document.body.scrollTop || document.documentElement.scrollTop;
     // console.log('scrollTop-scTop: ',scrollTop-scTop);
@@ -405,7 +411,24 @@ window.onscroll = function(){
     }
     // 初始化
     scrollTop = scTop;
+
+    // 顶部按钮 显示隐藏
+    if(document.documentElement.scrollHeight >= innerHeight*2){
+        if(scTop > innerHeight){
+            fadeFn({elem: go2Top});
+
+        }else{
+            go2Top.setAttribute('id','');
+        }
+    }
 }
+
+// 隐藏loading
+setTimeout(function(){
+    var script = document.createElement('script');
+    script.innerHTML = "var loaddiv = document.querySelector('.loadingdiv');/* 加载结束，隐藏loading*/fadeFn({elem: loaddiv,handle:'hide'});";
+    document.head.appendChild(script);
+},0);
 
 // 下拉刷新效果
 document.onready = function(){
@@ -428,4 +451,34 @@ document.onready = function(){
             }
         });
     }
+
+}
+// 点击返回顶部
+// console.log(goTop());
+var goTop = function(){
+    var scint;
+    var scTop = document.body.scrollTop || document.documentElement.scrollTop;
+    // console.log('scTop: ',scTop);
+
+    // scTop -= 40;
+    // scint = setTimeout(function(){
+    //     document.body.scrollTop
+    //     ? (document.body.scrollTop = scTop)
+    //     : (document.documentElement.scrollTop = scTop);
+        
+    //     if(scTop <= 0){
+    //         clearTimeout(scint);
+    //         return;
+    //     }
+    //     goTop();
+    // },1)
+    
+    scTop -= 40;
+    document.body.scrollTop
+    ? (document.body.scrollTop = scTop)
+    : (document.documentElement.scrollTop = scTop);
+    if(scTop >= 0){
+        goTop();
+    }
+
 }   
