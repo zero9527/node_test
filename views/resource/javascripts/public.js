@@ -236,7 +236,7 @@ var fadeFn = function(obj){
     // 顶部按钮
     var go2Top = document.createElement('div');
     go2Top.setAttribute('class', 'go2Top');
-    go2Top.setAttribute('ontouchend', 'goTop()');
+    go2Top.setAttribute('ontouchstart', 'goTop()');
     go2Top.innerHTML = '<i class="iconfont icon-xiangshang1"></i>';
 
     // 生成提示框元素
@@ -383,6 +383,7 @@ var confirmFn = function(text, callback){
     }
 }
 
+var extendFn = function(par, son){}
 /**
  * 顶部导航栏上滑消失，下滑出现
  * scTop: 当前scrollTop
@@ -460,25 +461,17 @@ var goTop = function(){
     var scTop = document.body.scrollTop || document.documentElement.scrollTop;
     // console.log('scTop: ',scTop);
 
-    // scTop -= 40;
-    // scint = setTimeout(function(){
-    //     document.body.scrollTop
-    //     ? (document.body.scrollTop = scTop)
-    //     : (document.documentElement.scrollTop = scTop);
-        
-    //     if(scTop <= 0){
-    //         clearTimeout(scint);
-    //         return;
-    //     }
-    //     goTop();
-    // },1)
-    
     scTop -= 40;
-    document.body.scrollTop
-    ? (document.body.scrollTop = scTop)
-    : (document.documentElement.scrollTop = scTop);
-    if(scTop >= 0){
+    scint = setTimeout(function(){
+        document.body.scrollTop
+        ? (document.body.scrollTop = scTop)
+        : (document.documentElement.scrollTop = scTop);
+        
+        if(scTop <= 0){
+            clearTimeout(scint);
+            return;
+        }
         goTop();
-    }
-
+    },1)
+    
 }   
