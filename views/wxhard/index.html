@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>充值</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	<link rel="stylesheet" href="__PUBLIC__/Home/amazeui/assets/css/amazeui.min.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/iconfont/iconfont.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/common.css">
+	<link rel="stylesheet" type="text/css" href="__PUBLIC__/Home/css/index/index.css">
+</head>
+<body>
+	<div id='charge'>
+		<ul class='cTop cfix'>
+			<li class='fleft'>
+				<span class='roundok'>1</span>
+				<p>套餐选择</p>
+			</li>
+			<li class='fleft'>
+				<span :class='(mainShow == "info" || mainShow == "done") ? "roundok" : ""'>2</span>
+				<p>信息录入</p>
+			</li>
+			<li class='fleft'>
+				<span :class='mainShow == "done" ? "roundok" : ""'>3</span>
+				<p>完成充值</p>
+			</li>
+		</ul>
+		<div class='cMain'>
+			<!-- 套餐选择 -->
+			<ul v-if='mainShow == "meal"' :style='{display: mainShow == "meal" ? "block" : "none"}'>
+				<p class='tcenter'><label for="">套餐选择</label></p>
+				<li v-for='m in mealList' @click='select_meal(meal)' class='meal tcenter' :class='{select : active_meal == meal}' :meal_id='m.meal_id' :money='m.money'>
+					<span v-text='m.describe'>套餐</span>/
+					<span v-text='m.money'></span>
+				</li>
+			</ul>
+			<!-- 信息录入 -->
+			<ul class='nextul' :style='{display: mainShow == "info" ? "block" : "none"}'>
+				<li class='cfix'>
+					<label for="">姓名</label>
+					<input type="text" name='name' class='uname fright f888' v-model='uname' placeholder="请输入姓名">
+				</li>
+				<li class='cfix'>
+					<label for="">电话</label>
+					<input type="text" name='phone' class='uphone fright f888' v-model='uphone' placeholder="请输入手机号码">
+				</li>
+				<li class='cfix'>
+					<label for="" style='vertical-align: top;'>地址</label>
+					<span class='uaddr areabtn f888'></span>
+					<span class='fright f888 areabtn'>请选择 >&nbsp;</span>
+				</li>
+				<li class='cfix'>
+					<textarea name="addrdetail" class='uaddrdetail fright f888' cols="30" rows="5" placeholder="请输入详细地址，如道路、门牌号、小区、楼栋号、单元室等" v-model='uaddrdetail'></textarea>
+				</li>
+				<li class='money'>
+					<label for="">金额</label><span><span v-text='money'>300元</span>元</span>
+				</li>
+			</ul>
+			<!-- 完成充值 -->
+			<ul class='nextul done' :style='{display: mainShow == "done" ? "block" : "none"}'>
+				<li class='tcenter'>
+					<span class='iconfont icon-chenggong'></span>
+					<p class='f888'>恭喜，你已充值成功</p>
+				</li>
+			</ul>
+		</div>
+		<footer class='next tcenter' @click='next'>下一步</footer>
+		<div id="areaChoose" class="citys">
+			<div class="areaChoosebg">&emsp;</div>
+	        <div class="areaDiv">
+	        	<div class='atop'>
+	        		<p>&emsp;</p>
+		        	<h2 class='am-h2 am-text-center'>所在地区</h2>
+		        	<button type="button" class="am-close close">&times;</button>
+				</div>
+				<div>
+					<div>
+						<p class='ptext ltext fblue'>请选择&nbsp;</p>
+						<div class='province areadiv' value="440000" data-code="440000"></div>
+					</div>
+					<div>
+						<p class='ctext ltext fblue'>&nbsp;</p>
+						<div class="city areadiv" value="440100" data-code="440100"></div>
+					</div>
+					<div>
+						<p class='atext ltext fblue'>&nbsp;</p>
+						<div class="area areadiv" value="440103" data-code="440103"></div>
+					</div>
+				</div>
+	    	</div>
+	    	<div id="confirmAreaChoose">
+	    		<div>确定</div>
+	    	</div>
+		</div>
+	</div>
+	<script src="__PUBLIC__/Home/js/public.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery.min.js"></script>
+	<script src="__PUBLIC__/Home/amazeui/assets/js/amazeui.min.js"></script>
+	<script src="__PUBLIC__/Home/js/jquery.citys.js"></script>
+	<script src="__PUBLIC__/Home/js/jweixin-1.2.0.js"></script>	
+	<script src="__PUBLIC__/Home/js/vue.min.js"></script>
+	<script src="__PUBLIC__/Home/vConsole-3.1.0/dist/vconsole.min.js"></script>
+	<script>
+		var vconsole = new VConsole();
+		var wxinfo = JSON.parse('{{$weixin[1]|json_encode}}');
+		// console.log(wxinfo);
+		//微信接口
+		wx.config({
+			beta: true,
+			debug: true,
+			appId: wxinfo.appId,
+			timestamp: wxinfo.timestamp,
+			nonceStr: wxinfo.nonceStr,
+			signature: wxinfo.signature,
+			jsApiList: [
+				// 所有要调用的 API 都要加到这个列表中
+				'chooseWXPay',
+		        'openWXDeviceLib',
+		        'closeWXDeviceLib',
+		        'getWXDeviceInfos',
+		        'getWXDeviceTicket',
+		        'startScanWXDevice',
+		        'stopScanWXDevice',
+		        'connectWXDevice',
+		        'disconnectWXDevice',
+		        'sendDataToWXDevice',
+		        'onWXDeviceBindStateChange',
+		        'onWXDeviceStateChange',
+		        'onScanWXDeviceResult',
+		        'onReceiveDataFromWXDevice',
+		        'onWXDeviceBluetoothStateChange',
+			]
+		});
+		// 微信支付方法
+		function weixinPay(res, callback){
+			var type = Object.prototype.toString.call(res);
+			if(type === '[object Object]'){
+				res = JSON.stringify(res);
+			}
+			WeixinJSBridge.invoke(
+				'getBrandWCPayRequest',
+				JSON.parse(res),
+				function(res){
+					if (res.err_msg.substr(-2) == 'ok') {
+		                // 付款成功
+						callback({status: 'ok'});
+						
+		            } else if (res.err_msg.substr(-6) == 'cancel') {
+		                // 取消付款
+						callback({status: 'cancel'});
+
+		            }else{
+		                // 付款失败
+						callback({status: 'fail'});
+		            }
+		        }
+		    );
+		};
+
+		// 获取订单号（后台生成，用于微信支付）
+		function getOrderid(buyinfo, callback){
+			$.ajax({
+				url: '',
+				type: 'post',
+				data: buyinfo,
+				success: function(res){
+					console.log('res: ',res);
+					callback(res.orderid);
+				},
+				error: function(err){
+					console.log('err: ',err);
+					callback(err);
+				}
+			})
+		}
+		// 查询订单信息，支付信息
+		function checkOrderid(orderid, callback){
+			$.ajax({
+				url: '',
+				type: 'post',
+				data: {orderid: orderid},
+				success: function(res){
+					console.log('res: ',res);
+					callback(res);
+				},
+				error: function(err){
+					console.log('err: ',err);
+					callback(err);
+				}
+			})
+		}
+
+		// 获取套餐数据
+		function getMeal(connectid){
+			console.log('connectid: ',connectid);
+			if(!connectid){
+				noticeFn({text: '请先连接一个设备, 退出公众号界面再进入，等待设备连接成功即可!'});
+				return
+			}
+			$.ajax({
+				url: '{{:U("Home/Index/getSetmeal")}}',
+				data: {device_code: connectid},
+				type: 'post',
+				success: function(res){
+					console.log('res: ',res);
+					if(res.code == 200){
+						res.msg.forEach(function(meal, index){
+							// 套餐数据
+							charge.mealList.push({
+								meal_id: meal.auid,
+								describe: meal.describe,
+								money: meal.money
+							});
+						})
+						// 套餐数据
+						// this.mealList = [
+						// 	{meal_id: 1, describe: '100元/100天', money:'100'},
+						// 	{meal_id: 2, describe: '300元/300天', money:'300'},
+						// 	{meal_id: 3, describe: '500元/500天', money:'500'}
+						// ];
+					}else if(res.code == 201){
+						noticeFn({text: res.msg});
+					}
+				},
+				error: function(err){
+					noticeFn({text: '系统出错，请稍后再试'});
+					console.log('err: ',err);
+				}
+			})
+		}
+	</script>
+	<script src='__PUBLIC__/Home/js/index/wxhard.js'></script>
+	<script src="__PUBLIC__/Home/js/index/index.js"></script>
+</body>
+</html>
