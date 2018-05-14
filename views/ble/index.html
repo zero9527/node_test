@@ -161,8 +161,8 @@
 			<!-- 套餐选择 -->
 			<ul v-if='mainShow == "meal"' :style='{display: mainShow == "meal" ? "block" : "none"}'>
 				<p class='tcenter'><label for="">套餐选择</label></p>
-				<li v-for='m in mealList' @click='select_meal' class='meal tcenter' :meal_id='m.meal_id' :money='m.money'>
-					<span v-text='m.content'>套餐</span>
+				<li v-for='meal in mealList' @click='select_meal(meal)' class='meal tcenter' :class='active_meal == meal ? "select v-enter" : ""' :meal_id='meal.meal_id' :money='meal.money'>
+					<span v-text='meal.content'>套餐</span>
 				</li>
 			</ul>
 			<!-- 信息录入 -->
@@ -203,6 +203,7 @@
 				return {
 					href: location.href,
 					mealList: [],//套餐数据
+					active_meal: '',	// 套餐选中
 					money: '',		// 充值的套餐金额
 					class2: '',		// 流程第二步
 					class3: '',		// 流程第三步（走完）
@@ -217,17 +218,14 @@
 			watch: {},
 			methods: {
 				// 选择套餐
-				select_meal: function(e){
-					var ele = e.currentTarget;
-					var meal = document.querySelectorAll('.meal');
-					meal.forEach(function(meal, index){
-						meal.setAttribute('class', 'meal tcenter');
-					});
+				select_meal: function(meal){
+					console.log(meal);
+					this.active_meal = meal;
 					// 获取套餐id
-					this.meal_id = ele.getAttribute('meal_id');
+					this.meal_id = meal.meal_id;
 					// 获取套餐金额
-					this.money = ele.getAttribute('money');
-					ele.setAttribute('class', 'meal tcenter select');
+					this.money = meal.money;
+					console.log(this.meal_id, this.money);
 				},
 				// 下一步
 				next: function(){
