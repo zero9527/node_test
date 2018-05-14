@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>loading加载框</title>
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+    <style>
+        * {margin: 0;padding: 0;box-sizing: border-box;}
+        .loadingdiv {
+            width: 30vmin;
+            height: 30vmin;
+            max-width: 120px;
+            max-height: 120px;
+            min-width: 120px;
+            min-height: 120px;
+            position: fixed;
+            top: -60px;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            margin: auto;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: rgba(0,0,0,.5);
+            box-sizing: content-box;
+        }
+        .load {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            border-radius: 50%;
+            border: 2px solid #999;
+            border-right: 2px solid #eee;
+            animation: run linear 1s infinite;
+        }
+        .loadingdiv>p {margin-top: 16px;color: #fff;font-size: 14px;}
+        @keyframes run {
+            0% {transform: rotate(0);}
+            25% {transform: rotate(90deg);}
+            50% {transform: rotate(180deg);}
+            75% {transform: rotate(270deg);}
+            100% {transform: rotate(360deg);}
+        }
+    </style>
+</head>
+<body>
+    <div class='loadingdiv'>
+        <div class='load'></div>
+        <p>加载中···</p>
+    </div>
+</body>
+</html>
