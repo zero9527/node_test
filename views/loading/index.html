@@ -10,8 +10,7 @@
             height: 30vmin;
             max-width: 120px;
             max-height: 120px;
-            min-width: 120px;
-            min-height: 120px;
+            min-width: 120px;min-height: 120px;
             position: fixed;
             top: -60px;
             right: 0;
@@ -23,19 +22,20 @@
             align-items: center;
             justify-content: center;
             border-radius: 6px;
-            background: rgba(0,0,0,.5);
+            background: rgba(0,0,0,.6);
             box-sizing: content-box;
         }
         .load {
             width: 30px;
             height: 30px;
-            display: inline-block;
+            display: block;
+            margin-bottom: 16px;
             border-radius: 50%;
             border: 2px solid #999;
             border-right: 2px solid #eee;
             animation: run linear 1s infinite;
         }
-        .loadingdiv>p {margin-top: 16px;color: #fff;font-size: 14px;}
+        .loadingdiv>p {color: #fff;font-size: 14px;}
         @keyframes run {
             0% {transform: rotate(0);}
             25% {transform: rotate(90deg);}
