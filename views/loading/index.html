@@ -5,7 +5,7 @@
     <meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
     <style>
         * {margin: 0;padding: 0;box-sizing: border-box;}
-        .loadingdiv {
+        /*.loadingdiv {
             width: 30vmin;
             height: 30vmin;
             max-width: 120px;
@@ -22,8 +22,9 @@
             align-items: center;
             justify-content: center;
             border-radius: 6px;
-            background: rgba(0,0,0,.6);
+            background: rgba(0,0,0,.7);
             box-sizing: content-box;
+            z-index: 10000;
         }
         .load {
             width: 30px;
@@ -42,12 +43,135 @@
             50% {transform: rotate(180deg);}
             75% {transform: rotate(270deg);}
             100% {transform: rotate(360deg);}
+        }*/
+    </style>
+    <style>
+        * {margin:0;padding:0;list-style: none;}
+        .loadingdiv {
+            width: 30vmin;
+            height: 30vmin;
+            max-height: 120px;
+            max-width: 120px;
+            min-height: 120px;
+            min-height: 120px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: rgba(0,0,0,.8);
+            z-index: 10000;
+        }
+        .loadingdiv>ul {
+            width: 10vmin;
+            height: 10vmin;
+            max-width: 40px;
+            max-height: 40px;
+            position: relative;
+        }
+        .loadingdiv li {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #eee;
+            transform-origin: center;
+            opacity: 0;
+            animation: go linear 1s infinite;
+        }
+        /* 上 */
+        .loadingdiv li:nth-of-type(1) {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            margin-left: -3px;
+            animation-delay: .1s;
+        }
+        .loadingdiv li:nth-of-type(2) {
+            position: absolute;
+            top: 12%;
+            right: 12%;
+            animation-delay: .2s;
+        }
+        /* 右 */
+        .loadingdiv li:nth-of-type(3) {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            margin-top: -3px;
+            animation-delay: .3s;
+        }
+        .loadingdiv li:nth-of-type(4) {
+            position: absolute;
+            bottom: 12%;
+            right: 12%;
+            animation-delay: .45s;
+        }
+        /* 下 */
+        .loadingdiv li:nth-of-type(5) {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            animation-delay: .6s;
+        }
+        .loadingdiv li:nth-of-type(6) {
+            position: absolute;
+            bottom: 12%;
+            left: 12%;
+            animation-delay: .7s;
+        }
+        /* 左 */
+        .loadingdiv li:nth-of-type(7) {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            margin-top: -3px;
+            animation-delay: .85s;
+        }
+        .loadingdiv li:nth-of-type(8) {
+            position: absolute;
+            top: 12%;
+            left: 12%;
+            animation-delay: 1s;
+        }
+        .loadingdiv>p {
+            margin-top: 10px;
+            color: #fff;
+            font-size: 16px;
+        }
+        @keyframes go {
+            from {
+                opacity: 1;
+            }
+            to{
+                opacity: .1;
+            }
         }
     </style>
 </head>
 <body>
-    <div class='loadingdiv'>
+    <!-- <div class='loadingdiv'>
         <div class='load'></div>
+        <p>加载中···</p>
+    </div> -->
+    <div class='loadingdiv'>申达股份电饭锅的反悔的返回</div>
+    <div class='loadingdiv'>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
         <p>加载中···</p>
     </div>
 </body>
