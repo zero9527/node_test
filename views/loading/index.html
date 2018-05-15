@@ -124,7 +124,7 @@
             position: relative;
             /*position: fixed;*/
             /*top: -60px;*/
-            top: 40px;
+            top: 30px;
             right: 0;
             left: 0;
             /*bottom: 0;*/
@@ -199,5 +199,39 @@
         <span></span>
         <span></span>
     </div>
+    <!-- 五 js: requestAnimationFrame -->
+    <div class='loading5'>
+        <div class='load5'></div>
+        <p>加载中···</p>
+        <button class='btn'>走起</button>
+    </div>
+    <script>
+        // 五 requestAnimationFrame
+        var style = document.createElement('style');
+        style.innerHTML = '.loading5{width: 30vmin;height: 30vmin;max-width: 120px;max-height: 120px;min-width: 120px;min-height: 120px;position: relative;/* position: fixed; *//* top: -60px; */top: 40px;right: 0;left: 0;/* bottom: 0; */margin: auto;display: flex;flex-flow:column;align-items: center;justify-content: center;border-radius: 6px;background: #fff;box-shadow: 2px 1px 10px rgba(0,0,0,.2);box-sizing: content-box;z-index: 10000;}';
+        // 添加样式
+        document.head.appendChild(style);  
+        var num = 0;
+        var timer;
+        // 监听 文档树构建（获取dom元素最早可以放到这里）
+        document.addEventListener('DOMContentLoaded', load, false);
+        function load(){
+            var load5 = document.querySelector('.loading5');
+            var loadson = load5.querySelector('.load5');
+
+            document.querySelector('.btn').onclick = function(){
+                cancelAnimationFrame(timer);
+                timer = requestAnimationFrame(function fn(){
+                    if(num >= 100){
+                        cancelAnimationFrame(timer);
+                    }else{
+                        num++;
+                        loadson.innerHTML = num;
+                        timer = requestAnimationFrame(fn)
+                    }
+                })
+            }
+        }
+    </script>
 </body>
 </html>
