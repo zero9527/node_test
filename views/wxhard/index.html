@@ -29,9 +29,9 @@
 			<!-- 套餐选择 -->
 			<ul v-if='mainShow == "meal"' :style='{display: mainShow == "meal" ? "block" : "none"}'>
 				<p class='tcenter'><label for="">套餐选择</label></p>
-				<li v-for='m in mealList' @click='select_meal(meal)' class='meal tcenter' :class='{select : active_meal == meal}' :meal_id='m.meal_id' :money='m.money'>
-					<span v-text='m.describe'>套餐</span>/
-					<span v-text='m.money'></span>
+				<li v-for='meal in mealList' @click='select_meal(meal)' class='meal tcenter' :class='{select : active_meal == meal}' :meal_id='meal.meal_id' :money='meal.money'>
+					<span v-text='meal.describe'>套餐</span>/
+					<span v-text='meal.money'></span>
 				</li>
 			</ul>
 			<!-- 信息录入 -->
@@ -64,7 +64,7 @@
 				</li>
 			</ul>
 		</div>
-		<footer class='next tcenter' @click='next'>下一步</footer>
+		<footer class='next tcenter' @touchstart='next'>下一步</footer>
 		<div id="areaChoose" class="citys">
 			<div class="areaChoosebg">&emsp;</div>
 	        <div class="areaDiv">
@@ -102,7 +102,9 @@
 	<script src="__PUBLIC__/Home/vConsole-3.1.0/dist/vconsole.min.js"></script>
 	<script>
 		var vconsole = new VConsole();
-		var wxinfo = JSON.parse('{{$weixin[1]|json_encode}}');
+		var wxinfo = JSON.parse('{{$weixin|json_encode}}');
+		var openId = '{{$openid}}';
+		console.log('openId: ',openId);
 		// console.log(wxinfo);
 		//微信接口
 		wx.config({
@@ -141,6 +143,7 @@
 				'getBrandWCPayRequest',
 				JSON.parse(res),
 				function(res){
+					console.log('payres: ', res);
 					if (res.err_msg.substr(-2) == 'ok') {
 		                // 付款成功
 						callback({status: 'ok'});
@@ -157,28 +160,54 @@
 		    );
 		};
 
-		// 获取订单号（后台生成，用于微信支付）
-		function getOrderid(buyinfo, callback){
+		// 提交订单数据（微信支付成功之后）
+		function upLoadInfo(buyinfo, callback){
 			$.ajax({
-				url: '',
+				url: '{{:U("Home/Index/makeOrder")}}',
 				type: 'post',
 				data: buyinfo,
 				success: function(res){
-					console.log('res: ',res);
-					callback(res.orderid);
+					console.log('sendres: ',JSON.stringify(res));
+					if(res.code == 200){
+						// 转为8位16进制数
+						var hex8 = get8Hex(Number(res.msg));
+						var Bytes = [];
+						Bytes[0] = 0xdd;
+						Bytes[1] = 0xaa;
+			            Bytes[2] = 0x00;
+			            Bytes[3] = 0x00;
+			            Bytes[4] = 0x00;
+			            Bytes[5] = 0x0E;
+			            Bytes[6] = 0x00;
+			            Bytes[7] = 0x0A;
+			            // 转为8位16进制数
+			            Bytes[8] = hex8[0]-0;
+			            Bytes[9] = hex8[1]-0;
+			            Bytes[10] = hex8[2]-0;
+			            Bytes[11] = hex8[3]-0;
+			            Bytes[12] = 0x00;
+			            Bytes[13] = 0x00;
+
+			            // console.log('hex8: ',hex8);
+						callback(Bytes);
+					}else{
+						// 发送的数据有误
+						noticeFn({text: res.msg});
+					}
 				},
 				error: function(err){
 					console.log('err: ',err);
-					callback(err);
+					// 发送的数据有误
+					noticeFn({text: '发生错误，请稍后再试'});
 				}
 			})
 		}
-		// 查询订单信息，支付信息
-		function checkOrderid(orderid, callback){
+		// 获取支付信息, 用于 微信支付
+		function prePay(obj, callback){
 			$.ajax({
-				url: '',
+				url: '{{:U("Home/Index/uniformOrder")}}',
 				type: 'post',
-				data: {orderid: orderid},
+				data: obj,
 				success: function(res){
 					console.log('res: ',res);
 					callback(res);
@@ -228,6 +257,31 @@
 				}
 			})
 		}
+
+		/**
+		 * [get8Hex 8位16进制转换]
+		 * @param  {[type]} num [数字]
+		 * @return {[array]} arr    [8位16进制数]
+		 */
+		function get8Hex(num){
+           	// 转为数字型
+            num = num - 0;
+            var hex;
+            var arr = [];   // 返回值
+            var zero = '0000';
+            var zero8 = '00000000';     // 8位数
+            var len = zero.length - num.length;
+            // 转为16进制数
+            hex = zero.substr(0,len) + num.toString(16);
+            // 转为8位16进制数
+            hex = zero8.substr(0,zero8.length - hex.length) + hex;
+            for(var i=0; i<hex.length+1; i++){
+                arr.push(hex.substr(0, 2));
+                hex = hex.substr(2,);
+            }
+            arr.push(hex.substr(-2));
+            return arr;
+        }
 	</script>
 	<script src='__PUBLIC__/Home/js/index/wxhard.js'></script>
 	<script src="__PUBLIC__/Home/js/index/index.js"></script>

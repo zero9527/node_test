@@ -24,6 +24,11 @@ var home = new Vue({
 			    "PackType": "login",
 			    "Vison": 0,
 			},
+            bjson: {
+                "DeviceID": 'deviceId',
+                "PackType": "Select",
+                "Vison": 0,
+            },
 			statusIconName: '',								// 状态图标
 			statusIconClass: {
 				'0': 'iconfont icon-makewater glint',		// 制水
@@ -58,11 +63,11 @@ var home = new Vue({
 			var text = '';
 			if(that.powerStatus == '开机'){
 				console.log('关机');
-				text = '关机';
+				text = '确定要关机吗？';
 
 			}else if(that.powerStatus == '关机'){
 				console.log('开机');
-				text = '开机';
+				text = '确定要开机吗？';
 			}
 
 			// 确认取消框
@@ -86,7 +91,7 @@ var home = new Vue({
 
 					}
 					// 发送数据包
-					wsSend(JSON.stringify(home.ajson));
+					that.sendMSG(home.ajson);
 					
 					// 设置水机状态
 					// home.statusIconName = home.statusIconClass[home.ajson['DeviceStause']];	// 水机状态图标
@@ -110,7 +115,7 @@ var home = new Vue({
 			home.ajson['type'] = '冲洗中';
 			home.ajson['curTime'] = '0';
 			// 发送数据包
-			wsSend(JSON.stringify(home.ajson));
+			that.sendMSG(home.ajson);
 
 			// 设置水机状态
 			// home.statusIconName = home.statusIconClass[1];	// 水机状态图标
@@ -191,12 +196,20 @@ var home = new Vue({
                     home.ajson['DayLifeFiter'+ filter ] = home.filterList[filter].timelife;
 					// 点击确定
 					// 发送数据包
-					wsSend(JSON.stringify(home.ajson));
+					that.sendMSG(home.ajson);
 				}else{
 					// 点击取消
 					noticeFn({text:'取消！'});
 				}
 			})
+		},
+		sendMSG: function(data){
+			// 发送json格式数据
+			if(Object.prototype.toString.call(data) === "[object Object]"){
+				data = JSON.stringify(data);
+			}
+			// 发送数据
+			sendmsg(data);
 		}
 	}
 })

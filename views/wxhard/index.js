@@ -6,11 +6,13 @@ var charge = new Vue({
 			urlparam: getQuery(),
 			connectid: '',		// 当前连接的设备
 			mealList: [],		// 套餐数据
+			active_meal: '',	// 套餐选中
 			money: '',			// 充值的套餐金额
 			class2: '',			// 流程第二步
 			class3: '',			// 流程第三步（走完）
 			mainShow: 'meal',	// 显示套餐meal，信息info，还是完成done
 			meal_id: '',		// 选择的套餐id
+			buyinfo: {},		// 发送给后台生成订单号的数据
 			uname: '',			// 用户名
 			uphone: '',			// 电话
 			uaddr: '',			// 地址
@@ -41,17 +43,13 @@ var charge = new Vue({
 				// 下一步为信息录入
 				location.href = this.href + '?info&meal_id=' + this.meal_id + '&money=' + this.money + '&connectid=' + this.connectid;
 			}else if(this.mainShow == 'info'){
-				var buyinfo = {};		// 发送给后台生成订单号的数据
-				buyinfo['meal_id'] = this.meal_id;
-				buyinfo['money'] = this.money;
-				buyinfo['name'] = this.uname;
-				buyinfo['phone'] = this.uphone;
-				buyinfo['addr'] = this.uaddr;
-				buyinfo['addrdetail'] = this.uaddrdetail;
+				charge.buyinfo['meal_id'] = getQuery().meal_id;
+				charge.buyinfo['money'] = getQuery().money;
+				charge.buyinfo['name'] = this.uname;
+				charge.buyinfo['phone'] = this.uphone;
+				charge.buyinfo['addr'] = this.uaddr;
+				charge.buyinfo['addrdetail'] = this.uaddrdetail;
 
-				// 当前录入信息界面
-				var origin = location.origin;
-				var pathname = location.pathname;
 				if(!this.uname){
 					noticeFn({text:'请输入用户名!'});
 					$('.uname').css({border: '1px solid red'});
@@ -98,52 +96,58 @@ var charge = new Vue({
 			}
 		},
 		goNext: function(){
-			// 发送客户信息和订单信息，让后台生成订单号
-			getOrderid(buyinfo, function(orderid){
-				// 订单生成成功
-				if(orderid){
-					// 查询订单信息，支付信息, 用于 微信支付
-					checkOrderid(orderid, function(res){
-						if(res == -1){
-							noticeFn({text: '支付出错， 请稍后再试！'});
-							return
-						}
-						// 微信支付
-						weixinPay(res, function(res){
-							if(res.status === 'ok'){
-								// 发送数据给设备
-								sendData(device.connectid, device.senddata, function(res){
-									if(res.status === 'ok'){
-										// 支付成功
-										location.href = origin + pathname + '?done';
+			// 当前录入信息界面
+			var origin = location.origin;
+			var pathname = location.pathname;
+			charge.buyinfo['openId'] = openId;
+			charge.buyinfo['money'] = getQuery().money;
+			charge.buyinfo['deviceId'] = getQuery().connectid;
 
-									}else if(res.status === 'fail'){
-										noticeFn({text: '发送数据出错！'});
+			// 获取支付信息, 用于 微信支付
+			prePay(charge.buyinfo, function(res){
+				if(res == -1){
+					noticeFn({text: '支付出错， 请稍后再试！'});
+					return
+				}
+				// 微信支付
+				weixinPay(res, function(res){
+					if(res.status === 'ok'){
+						// 把数据发送到后台保存
+						upLoadInfo(charge.buyinfo, function(res){
+							console.log('sendres: ',res);
+							// 发送数据给设备
+							sendData(charge.connectid, res, function(res){
+								if(res.status === 'ok'){
+									// 支付成功
+									location.href = origin + pathname + '?done';
 
-									}else{
-										// 无设备号，或发送的数据为空
-										noticeFn({text: res.msg});
-									}
-								})
-								
-							}else if(res.status === 'cancel'){
-								// 取消支付
-								noticeFn({text: '你取消了支付！'});
+								}else if(res.status === 'fail'){
+									noticeFn({text: '发送数据出错！'});
 
-							}else if(res.status === 'failed'){
-								// 支付失败
-								noticeFn({text: '支付失败, 请稍后再试！'});
-
-							}
+								}else{
+									// 无设备号，或发送的数据为空
+									noticeFn({text: res.msg});
+								}
+							})
 						})
 						
-					})
-				}
+					}else if(res.status === 'cancel'){
+						// 取消支付
+						noticeFn({text: '你取消了支付！'});
+
+					}else if(res.status === 'failed'){
+						// 支付失败
+						noticeFn({text: '支付失败, 请稍后再试！'});
+
+					}
+				})
 				
 			})
+
 		}
 	},
 	created() {
+		var href = this.href;
 		wx.ready(function(){
 			// openWXDeviceLib();
 			// console.log('openWXDeviceLib: ',openWXDeviceLib());
@@ -151,13 +155,12 @@ var charge = new Vue({
 			openWXDevice(function(res){
 				console.log('openWXDevice_res: ',res);
 				if(res.status == 'ok'){
-
+ 
 					// 获取当前连接的设备
 					getWXDeviceInfos(function(arr, connectid){
 						console.log('getWXDeviceInfos_arr: ',arr);
 						console.log('getWXDeviceInfos_connectid: ',connectid);
 						charge.connectid = connectid;
-						getMeal(connectid);		// 获取套餐数据
 						var num = 0;
 						arr.forEach(function(device, index){
 							if(device.state == 'connected'){
@@ -168,9 +171,14 @@ var charge = new Vue({
 							}
 							if(num == 0){
 								noticeFn({text: '请先连接设备!'});
+								return
 							}
 							charge.device_num = num;
 						})
+						// 获取套餐数据(在套餐选择页面获取)
+						if(href.indexOf('?info') == -1 && href.indexOf('&done') == -1 && charge.device_num == 1){
+							getMeal(connectid);		
+						}
 					})
 
 				}else{
@@ -178,7 +186,6 @@ var charge = new Vue({
 				}
 			})
 		})
-		var href = this.href;
 		if(href.indexOf('info') > -1){
 			this.money = getQuery().money;
 			this.mainShow = 'info';		// 信息选择

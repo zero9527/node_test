@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+    <link rel="stylesheet" href="/resource/stylesheets/common.css">
+    <title>数字（10进制转换16进制）</title>
+</head>
+<body>
+    <script>
+        
+        /**
+         * [get8Hex 8位16进制转换]
+         * @param  {[type]} num [description]
+         * @return {[type]}     [description]
+         */
+        function get8Hex(num){
+            // 转为数字型
+            num = num - 0;
+            var hex;
+            var arr = [];   // 返回值
+            var zero = '0000';
+            var zero8 = '00000000';     // 8位数
+            var len = zero.length - num.length;
+            // 转为16进制数
+            hex = zero.substr(0,len) + num.toString(16);
+            // 转为8位16进制数
+            hex = zero8.substr(0,zero8.length - hex.length) + hex;
+            for(var i=0; i<hex.length; i++){
+                arr.push(hex.substr(0, 2));
+                hex = hex.substr(2,);
+            }
+            arr.push(hex.substr(-2));
+            return arr;
+        }
+    </script>
+</body>
+</html>
