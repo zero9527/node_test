@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="X-UA-Compatable" content="text/html;utf-8">
+	<meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+	<title>地区插件</title>
+	<link rel="stylesheet" href="/resource/iconfont/iconfont.css">
+	<link rel="stylesheet" href="/resource/stylesheets/common.css">
+	<link rel="stylesheet" href="./css/area.css">
+</head>
+<body>
+	<button class='btn'>选择地区</button>
+	<!-- 地区选择 -->
+	<div id="areaChoose" class="citys">
+		<div class="areaChoosebg">&emsp;</div>
+        <div class="areaDiv">
+        	<div class='atop'>
+        		<p>&emsp;</p>
+	        	<h4 class='tcenter'>所在地区</h2>
+	        	<button type="button" class="am-close close">&times;</button>
+			</div>
+			<div>
+				<div>
+					<input type="hidden" class='ptext ltext fblue'>
+					<div class='province areadiv' value="440000" data-code="440000"></div>
+				</div>
+				<div>
+					<input type="hidden" class='ctext ltext fblue'>
+					<div class="city areadiv" value="440100" data-code="440100"></div>
+				</div>
+				<div>
+					<input type="hidden" class='atext ltext fblue'>
+					<div class="area areadiv" value="440103" data-code="440103"></div>
+				</div>
+			</div>
+    	</div>
+    	<div id="confirmAreaChoose">
+    		<div>确定</div>
+    	</div>
+	</div>
+	<script src="/resource/javascripts/public.js"></script>
+	<script src="./js/jquery.min.js"></script>
+	<script src="./js/jquery.citys.js"></script>
+	<script src="./js/area.js"></script>
+	<script>
+		var areaPar = document.querySelector('#areaChoose');
+		var btn = document.querySelector('.btn');
+		var panel = document.querySelector('.areaDiv');
+		var close = document.querySelector('.close');
+
+		// 实例化地区选择
+		var area = new __areaFn({
+			panel: panel,
+		},function(res){
+			console.log('res: ',res);
+		    $('#areaChoose').citys({
+		    	required: false,
+		    	nodata: 'disabled',
+		        onChange:function(info){
+		        	// townFormat(info);
+		        }
+		    },function(api){
+		        var info = api.getInfo();
+		        // townFormat(info);
+	   		});
+	   		// 选择地区
+			btn.ontouchend = function(){
+				res.showPanel(panel);
+				areaPar.style.display = 'block';
+
+			}
+	   		// 关闭地区选择面板
+			close.ontouchend = function(){
+				areaPar.style.display = 'block';
+				res.hidePanel(panel);
+				setTimeout(function(){
+					areaPar.style.display = 'none';
+				},300);
+			}
+		})
+
+		// // 点击选择地区
+		// $(".areabtn").click(function(){
+		// 	$("#areaChoose").fadeIn('fast');
+		// 	$('.atop>p').text('');	//确定按钮不显示
+		// 	// 清空城市， 区县
+		// 	$('.ctext').text('');
+		// 	$('.atext').text('');
+
+		//     $('#areaChoose').citys({
+		//     	required: false,
+		//     	nodata: 'disabled',
+		//         onChange:function(info){
+		//         	townFormat(info);
+		//         }
+		//     },function(api){
+		//         var info = api.getInfo();
+		//         townFormat(info);
+		//     });
+		// })
+		// // 选择城市的时候判断有没有区县
+		// $('.city').on('click', 'p', function(){
+		// 	// console.log($('.area>p').length)
+		// 	setTimeout(function(){
+		// 		// 没有区县可选
+		// 		if($('.area>p').length <= 1){
+		// 			$('.atop>p').text('确定');
+
+		// 		}else{
+		// 			$('.atop>p').text('');
+		// 		}
+		// 	},0)
+		// })
+		// // 地址面板点击确定(没有区县可选时候出现)
+		// $('.atop>p').on('click',function(){
+		// 	var province = $('.ptext').text(),
+		// 			city = $('.ctext').text(),
+		// 			area = $('.atext').text();
+
+		// 	if(city.indexOf('请选择') > -1){
+		// 		noticeFn({text:'请选择一个有有效的地址！'});
+		// 		return
+		// 	}
+		// 	if(area.indexOf('请选择') > -1){
+		// 		noticeFn({text:'请选择一个有效的地址！'});
+		// 		return
+		// 	}
+		// 	$('.uaddress').text(province + ' ' + city + ' ' + area);
+		// 	$("#areaChoose").fadeOut('fast');	//关闭地区选择面板
+		// 	$('.choosebtn').hide();	// 隐藏请选择
+		// })
+		// // 点击 xx 关闭地区选择面板
+		// $(".close").on('click',function(){
+		// 	$("#areaChoose").fadeOut('fast');
+			
+		// 	if(!$(".uaddress").text()){
+		// 		//请选择
+		// 		$('.choosebtn').show();
+		// 	}
+		// })
+		// // 点击选择省份，城市，区县
+		// $('.ltext').on('click', 'p', function(){
+		// 	for(var i=0; i<$('.province>p').length; i++){
+		// 		$('.province>p').removeClass('selected');
+		// 	}
+		// 	$(this).toggleClass('selected fblue');
+			
+		// })
+		// $('.areadiv').on('click','p', function(){
+		// 	// console.log($(this).text())
+		// 	if($(this).text().indexOf('请选择') > -1){
+		// 		noticeFn({text:'请选择一个有有效的地址！'});
+		// 	}
+		// })
+		// // 地区选择
+		// var script = $("<script/>");
+		// var scriptCode = `
+		// 	// 选择地区
+		// 	$(".areabtn").on("click", function(){
+		// 		$("#areaChoose").fadeIn('fast');
+		// 	});
+
+		// 	// 关闭地区选择，并显示到对应区域
+		// 	$(".area").on("click", 'p', function(){
+				
+		// 		var province = $('.ptext').text(),
+		// 			city = $('.ctext').text(),
+		// 			area = $(this).text();
+				
+		// 		$(".uaddress").text( (!province && !city && !area) ? '请选择' : province + ' ' + city + ' ' + area);
+		// 		// console.log($(this).text().indexOf('请选择'));
+		// 		if($(this).text().indexOf('请选择') == -1){
+		// 			setTimeout(function(){
+		// 				$("#areaChoose").fadeOut('fast');
+		// 				$('.choosebtn').hide();
+		// 			},300);
+		// 		}
+
+		// 	});`;
+		// script.html(scriptCode);
+		// $("body").append(script);
+
+	</script>
+</body>
+</html>

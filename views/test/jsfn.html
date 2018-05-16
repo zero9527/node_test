@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
     <link rel="stylesheet" href="/resource/stylesheets/common.css">
-    <title>数字（10进制转换16进制）</title>
+    <title>js各种算法练习</title>
 </head>
 <body>
-    <h3>数字（10进制转换16进制）</h3>
+    <h3>1、数字（10进制转换16进制）</h3>
+    <h3>2、排序算法</h3>
     <script>
-        
         /**
          * [get8Hex 8位16进制转换]
          * @param  {[type]} num [description]
@@ -30,10 +30,10 @@
             // 按长度为2分割成数组
             // 方法一
             for(var i=0; i<hex.length; i++){
-                arr.push(hex.substr(0, 2));
+                arr.push('0x' + hex.substr(0, 2));
                 hex = hex.substr(2,);
             }
-            arr.push(hex.substr(-2));
+            arr.push('0x' + hex.substr(-2));
             // 方法二
             // for(var i=1; i=hex.length; i++){
             //     if(i%2 == 0){
@@ -44,12 +44,17 @@
             // }
             return arr;
         }
+
+    </script>
+    <script>
         /**
          * js 排序算法
          */
-        var arr = [1,2,3,45,5,6,98];
+        var arr = [1,2,10,3,45,5,6,98];
         console.log(arr);
-        // 冒泡排序
+        /**
+         * 冒泡排序
+         */
         // for(var i=0; i<arr.length; i++){
         //     for(var j=i+1; j<arr.length; j++){
         //         if(arr[i] > arr[j]){
@@ -65,14 +70,20 @@
         //     return x-y
         // })
         
-        // 快速排序算法
+        /**
+         * 快速排序算法  -- 未完
+         * @param  {[array]} arr [待排序的数组]
+         * @return {[type]}     [description]
+         */
         function qSort(arr){
             if(arr.length <= 1){
                 return arr
             }
             var left = [], right = [];
             // 对比基准值
-            var base = arr.splice(arr.length/2, 1)[0];
+            var index = Math.floor(arr.length/2);
+            var base = arr.splice(index, 1)[0];
+
             for(var i=0; i<arr.length; i++){
                 if(arr[i] < base){
                     left.push(arr[i]);
@@ -80,11 +91,8 @@
                     right.push(arr[i]);
                 }
             }
-            left.push(base);
-
-            return (left.concat(right));
+            return qSort(left).concat([base], qSort(right));
         }
-
         qSort(arr);
     </script>
 </body>

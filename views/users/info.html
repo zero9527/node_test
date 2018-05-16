@@ -147,25 +147,6 @@
 		#seepwd {
 			text-align: center;
 		}
-		#wrap {width: 100vw;height: 50vh;position: relative;margin: 10vh 0;background: #fff;overflow: hidden;}
-		#wrap>ul {width: 700%;height: 100%;position: relative;transition: .3s linear;line-height: 50vh;}
-		#wrap>ul::after {content: '';display: block;clear: both;}
-		#wrap>ul>li {width: 14.28%;height: 100%;float: left;text-align: center;vertical-align: baseline;}
-		#wrap>ul>li:nth-of-type(1) {
-			background: lightblue;
-		}
-		#wrap>ul>li:nth-of-type(2) {
-			background: lightgreen;
-		}
-		#wrap>ul>li:nth-of-type(3) {
-			background: pink;
-		}
-		#wrap>ul>li:nth-of-type(4) {
-			background: aqua;
-		}
-		#wrap>ul>li:nth-of-type(5) {
-			background: greenyellow;
-		}
 		
 	</style>
 
@@ -227,39 +208,12 @@
     		<div>确定</div>
     	</div>
 	</div>
-	<div id='wrap'>
-		<ul id='wrapul'>
-			<li>111111111111</li>
-			<li>222222222222</li>
-			<li>333333333333</li>
-			<li>444444444444</li>
-			<li>555555555555</li>
-		</ul>
-	</div>
 	
-	<script src="javascripts/tmove.js"></script>
-	<script src="javascripts/jquery.min.js"></script>
-	<script src="javascripts/jquery.citys.js"></script>
-	<script src="amazeui/js/amazeui.min.js"></script>
-	<script src="amazeui/js/amazeui.datetimepicker.js"></script>
-	<script src="javascripts/public.js"></script>
-	<script src='javascripts/downfresh.js'></script>
-	<script>
-		// 试试 map
-		var arr0 = [];
-		var arr = [12,24,36,48,60,24,12];
-
-		arr0 = arr.reduce(function(key, value){
-			return value + key
-		},0)
-		
-		console.log(arr0)
-		var wrapul = document.getElementById('wrapul');
-		var len = wrapul.getElementsByTagName('li').length;
-		// 实例化滑动
-		var move = new tMove(wrapul,len);
-
-	</script>
+	<script src="/resource/javascripts/jquery.min.js"></script>
+	<script src="/resource/javascripts/jquery.citys.js"></script>
+	<script src="/resource/amazeui/js/amazeui.min.js"></script>
+	<script src="/resource/javascripts/public.js"></script>
+	<script src='/resource/javascripts/downfresh.js'></script>
 	<script>
 		// 提交
 		$('.confirm').click(function(){
