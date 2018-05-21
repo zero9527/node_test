@@ -48,26 +48,7 @@
         }
     </style>
     <style>
-        /* 二 */
-        /*.__loading {width: 30vmin;height: 30vmin;max-height: 120px;max-width: 120px;min-height: 120px;min-width: 120px;position: fixed;top: -60px;right: 0;bottom: 0;left: 0;margin: auto;display: flex;flex-flow: column;align-items: center;justify-content: center;border-radius: 6px;background: rgba(0,0,0,.7);z-index: 10000;}*/
-        .__loading {width: 30vmin;height: 30vmin;max-height: 120px;max-width: 120px;min-height: 120px;min-width: 120px;position: relative;top: 10px;right: 0;bottom: 0;left: 0;margin: auto;display: flex;flex-flow: column;align-items: center;justify-content: center;border-radius: 6px;background: rgba(0,0,0,.7);z-index: 10000;}
-        .__loading>ul {width: 10vmin;height: 10vmin;max-width: 40px;max-height: 40px;min-width: 30px;min-height: 30px;position: relative;list-style: none;}
-        .__loading li {width: 6px;height: 6px;position: absolute;border-radius: 50%;background: #eee;transform-origin: center;opacity: 0;animation: go linear 1s infinite;}
-        /* 上 */
-        .__loading li:nth-of-type(1) {top: 0;left: 50%;margin-left: -3px;animation-delay: .1s;}
-        .__loading li:nth-of-type(2) {top: 12%;right: 12%;animation-delay: .2s;}
-        /* 右 */
-        .__loading li:nth-of-type(3) {top: 50%;right: 0;margin-top: -3px;animation-delay: .3s;}
-        .__loading li:nth-of-type(4) {bottom: 12%;right: 12%;animation-delay: .45s;}
-        /* 下 */
-        .__loading li:nth-of-type(5) {bottom: 0;left: 50%;margin-left: -3px;animation-delay: .6s;}
-        .__loading li:nth-of-type(6) {bottom: 12%;left: 12%;animation-delay: .7s;}
-        /* 左 */
-        .__loading li:nth-of-type(7) {top: 50%;left: 0;margin-top: -3px;animation-delay: .85s;}
-        .__loading li:nth-of-type(8) {top: 12%;left: 12%;animation-delay: 1s;}
-        /* 文字 */
-        .__loading>p {margin-top: 10px;color: #fff;font-size: 16px;}
-        @keyframes go {from {opacity: 1;}to{opacity: .1;}}
+        /*@keyframes go {from {opacity: 1;}to{opacity: .1;}}*/
     </style>
     <style>
         /* 三 */
@@ -172,19 +153,12 @@
         <div class='load1'></div>
         <p>加载中···</p>
     </div>
-    <!-- 二 -->
-    <div class='__loading'>
-        <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+    <!-- 二-1 -->
+    <div class='__loading2_1' style='width: 30vmin;height: 30vmin;max-height: 120px;max-width: 120px;min-height: 120px;min-width: 120px;position: relative;top: 10px;right: 0;bottom: 0;left: 0;margin: auto;display: flex;flex-flow: column;align-items: center;justify-content: center;border-radius: 6px;background: rgba(0,0,0,.7);z-index: 10000;@keyframes go {from {opacity: 1;}to{opacity: .05;}}'>
+        <ul style='width: 12vmin;height: 12vmin;max-width: 40px;max-height: 40px;min-width: 30px;min-height: 30px;position: relative;list-style: none;'>
+            <!-- <li></li> -->
         </ul>
-        <p>加载中···</p>
+        <p style='margin-top: 10px;color: #fff;font-size: 16px;'>加载中···</p>
     </div>
     <!-- 三 -->
     <div class='loading3'>
@@ -205,6 +179,39 @@
         <p>加载中···</p>
         <button class='btn'>走起</button>
     </div>
+    <script>
+        var style = document.createElement('style');
+        var head = document.querySelector('head');
+        if(document.querySelector('style')){
+            document.querySelector('style').innerHTML += '@keyframes go {from {opacity: 1;}to{opacity: .1;}}';
+        }else{
+            style.innerHTML = '@keyframes go {from {opacity: 1;}to{opacity: .1;}}';
+            head.appendChild(style);
+        }
+        // 二-1
+        var __loading2_1 = document.querySelector('.__loading2_1');
+        var lihtml = '';
+        for(var i=0; i<10; i++){
+            lihtml += '<li></li>';
+        }
+        __loading2_1.querySelector('ul').innerHTML = lihtml;
+        var loadli = __loading2_1.querySelectorAll('li');
+            console.log(loadli);
+        var delay = 1/loadli.length;
+        var deg = 360/loadli.length;
+        var reqaf;
+        var num = 0;
+        loadli.forEach(function(item, index){
+            console.log(item, index);
+            item.setAttribute('style',
+                'width: 4px;height: 12px;position: absolute;border-radius: 10px;background: #eee;transform-origin: center;opacity: 0;animation: go linear 1s infinite;left:50%;top:50%;margin-top:-6px;'+
+                'transform: rotate(' + deg*index + 'deg) translateY(-16px);'+
+                'animation-delay:'+ delay*index +'s;'
+            );
+
+        })
+
+    </script>
     <script>
         // 五 requestAnimationFrame
         var style = document.createElement('style');
