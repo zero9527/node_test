@@ -48,9 +48,6 @@
         }
     </style>
     <style>
-        /*@keyframes go {from {opacity: 1;}to{opacity: .1;}}*/
-    </style>
-    <style>
         /* 三 */
         .loading3 {
             width: 30vmin;
@@ -160,6 +157,39 @@
         </ul>
         <p style='margin-top: 10px;color: #fff;font-size: 16px;'>加载中···</p>
     </div>
+    <script>
+        var style = document.createElement('style');
+        var head = document.querySelector('head');
+        if(document.querySelector('style')){
+            document.querySelector('style').innerHTML += '@keyframes gogo {from {opacity: 1;}to{opacity: .1;}}';
+        }else{
+            style.innerHTML = '@keyframes gogo {from {opacity: 1;}to{opacity: .1;}}';
+            head.appendChild(style);
+        }
+        // 二-1
+        var __loading2_1 = document.querySelector('.__loading2_1');
+        var lihtml = '';
+        for(var i=0; i<10; i++){
+            lihtml += '<li></li>';
+        }
+        __loading2_1.querySelector('ul').innerHTML = lihtml;
+        var loadli = __loading2_1.querySelectorAll('li');
+            console.log(loadli);
+        var delay = 1/loadli.length;
+        var deg = 360/loadli.length;
+        var reqaf;
+        var num = 0;
+        loadli.forEach(function(item, index){
+            // console.log(item, index);
+            item.setAttribute('style',
+                'width: 4px;height: 12px;position: absolute;border-radius: 10px;background: #fff;transform-origin: center;opacity: 0;animation: gogo linear 1s infinite;left:50%;top:50%;margin-top:-6px;'+
+                'transform: rotate(' + deg*index + 'deg) translateY(-16px);'+
+                'animation-delay:'+ delay*index +'s;'
+            );
+
+        })
+
+    </script>
     <!-- 三 -->
     <div class='loading3'>
         <div class='load3'></div>
@@ -179,38 +209,66 @@
         <p>加载中···</p>
         <button class='btn'>走起</button>
     </div>
+    <!-- 六 -->
+    <style>
+        .load6 {
+            width: 30vmin;
+            height: 30vmin;
+            max-width: 120px;
+            max-height: 120px;
+            min-width: 120px;min-height: 120px;
+            position: relative;
+            /*position: fixed;*/
+            /*top: -60px;*/
+            right: 0;
+            left: 0;
+            /*bottom: 0;*/
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            box-sizing: content-box;
+            z-index: 10000;
+        }
+        .load6>span {
+            width: 20px;
+            height: 20px;
+            display: block;
+            margin: 6px;
+            border-radius: 50%;
+            border: 2px solid #999;
+            border-right: 2px solid #eee;
+            background: greenyellow;
+            transition: .3s ease;
+            animation: runrun 1s linear infinite;
+        }
+        .load6>span:nth-of-type(1) {
+            animation-delay: .3s;
+        }
+        .load6>span:nth-of-type(2) {
+            animation-delay: .6s;
+        }
+        .load6>span:nth-of-type(3) {
+            animation-delay: .9s;
+        }
+        @keyframes runrun {
+            from {transform: translateY(20%);}
+            to {transform: translateY(-10%);}
+        }
+    </style>
+    <div class='load6'>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
     <script>
-        var style = document.createElement('style');
-        var head = document.querySelector('head');
-        if(document.querySelector('style')){
-            document.querySelector('style').innerHTML += '@keyframes go {from {opacity: 1;}to{opacity: .1;}}';
-        }else{
-            style.innerHTML = '@keyframes go {from {opacity: 1;}to{opacity: .1;}}';
-            head.appendChild(style);
-        }
-        // 二-1
-        var __loading2_1 = document.querySelector('.__loading2_1');
-        var lihtml = '';
-        for(var i=0; i<10; i++){
-            lihtml += '<li></li>';
-        }
-        __loading2_1.querySelector('ul').innerHTML = lihtml;
-        var loadli = __loading2_1.querySelectorAll('li');
-            console.log(loadli);
-        var delay = 1/loadli.length;
-        var deg = 360/loadli.length;
-        var reqaf;
-        var num = 0;
-        loadli.forEach(function(item, index){
-            console.log(item, index);
-            item.setAttribute('style',
-                'width: 4px;height: 12px;position: absolute;border-radius: 10px;background: #eee;transform-origin: center;opacity: 0;animation: go linear 1s infinite;left:50%;top:50%;margin-top:-6px;'+
-                'transform: rotate(' + deg*index + 'deg) translateY(-16px);'+
-                'animation-delay:'+ delay*index +'s;'
-            );
-
-        })
-
+        // 六
+        var load6 = document.querySelector('.load6');
+        var span6 = load6.querySelectorAll('span');
+        span6.forEach(function(item, index){
+            item;
+        });
     </script>
     <script>
         // 五 requestAnimationFrame
