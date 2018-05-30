@@ -94,8 +94,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-app.listen(8080, function(){
-	console.log('服务器已开启：localhost:8080')
+app.listen(8181, function(){
+	console.log('服务器已开启：localhost:8181')
 })
 
 module.exports = app;
