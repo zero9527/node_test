@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width,initial-scale=1.0,user-scalable=no'>
+    <link rel="stylesheet" href="/resource/stylesheets/common.css">
+    <title>transform练习</title>
+    <style>
+        body {
+            font-size: 1rem;
+        }
+        .divpar {
+            perspective: 10px;
+            perspective-origin: 80% 80%;
+            transform-style: preserve-3d;
+        }
+        .div {
+            width: 200px;
+            height: 200px;
+            margin: 50px;
+            background: #eee;
+        }
+        .div1 {
+            transform: rotateZ(45deg) translateZ(-3px);
+        }
+        .div2 {
+            transform: rotateZ(45deg) translateZ(-3px);
+        }
+        .div3 {
+            transform: rotateZ(45deg) translateZ(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class='divpar'>
+        <div class='div1 div'></div>
+        <div class='div2 div'></div>
+        <div class='div3 div'></div>
+    </div>
+</body>
+</html>
