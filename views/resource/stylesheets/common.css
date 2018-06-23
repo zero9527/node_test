@@ -26,80 +26,23 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 
 body {
 	width: 100vw;
-	height: 100vh;
+	min-height: 100vh;
 	padding-top: 12vmin;
 	min-height: 500px;
 	font-size: .7rem;
 	background: #edeef2;
 	overflow-x: hidden;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 /* 导航栏--开始 */
-#navbar {
-	width: 100vw;
-	height: 12vmin;
-	display: block;
-	position: fixed;
-	top: 0;
-	line-height: 12vmin;
-	border-bottom: 1px solid #eee;
-    color: #000;
-    background: #fff;
-    -webkit-transition: .2s linear;
-    transition: .2s linear;
-    z-index: 999;
-}
-
-#navbar::after {
-	content: '';
-	display: block;
-	visibility: hidden;
-	clear: both;
-	zoom: 1;
-}
-#navbar>h2,
-#navbar>a,
-#navbar>span {
-	height: 100%;
-	display: inline-block;
-	position: relative;
-	top: -1px;
-	margin: 0;
-	padding: 0;
-	text-align: center;
-	float: left;
-}
-#navbar>h2 {
-	width: 50%;
-	margin: 0;
-	font-weight: 400;
-	font-size: .8rem;
-}
-#navbar>span,
-#navbar>a {
-	width: 25%;
-	color: #000;
-}
-#navbar>span{
-	font-size: 1.2rem;
-}
-#navbar>span:active::after,
-#navbar>a:active::after {
-	content: '';
-	width: 12vmin;
-	height: 12vmin;
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 50%;
-	margin-left: -6vmin;
-	border-radius: 50%;
-	background: rgba(0,0,0,.05);
-}
-#navbar>span:active::after {
-	left: 40%;
-}
+#navbar {width: 100vw;height: 12vmin;display: block;position: fixed;top: 0;line-height: 12vmin;border-bottom: 1px solid #eee;color: #000;background: #fff;-webkit-transition: .2s linear;transition: .2s linear;z-index: 999;}
+.backleft::before {content:'';width: 8px;height: 8px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto;border:2px solid transparent;border-top-color:#333;border-left-color:#333;transform: rotateZ(-45deg);}
+#navbar::after {content: '';display: block;visibility: hidden;clear: both;zoom: 1;}
+#navbar>h2,#navbar>a,#navbar>span {height: 100%;display: inline-block;position: relative;top: -1px;margin: 0;padding: 0;text-align: center;float: left;}
+#navbar>h2 {width: 50%;margin: 0;font-weight: 400;font-size: .8rem;white-space:nowrap;overflow:hidden;}
+#navbar>span,#navbar>a {width: 25%;color: #000;font-size: .8rem;}
+#navbar>span:active::after,#navbar>a:active::after {content: '';width: 12vmin;height: 12vmin;display: block;position: absolute;top: 0;right:0;bottom:0;left: 0;margin:auto;border-radius: 50%;background: rgba(0,0,0,.05);}
 body .nav-hide {
 	-webkit-transition: .3s linear;
 	transition: .3s linear;

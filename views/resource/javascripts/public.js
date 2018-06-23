@@ -47,8 +47,7 @@
     var navbar = document.createElement('div');
     var fresh = document.createElement('div');  // 下拉刷新
     navbar.setAttribute('id', 'navbar');
-    navbar.setAttribute('class','am-cf');
-    navbar.innerHTML = '<span class="iconfont icon-fanhui1" onclick="history.go(-1)">&emsp;</span>'+
+    navbar.innerHTML = '<span class="backleft" onclick="history.go(-1)">&emsp;</span>'+
         '<h2>title</h2>'+
         '<a class="back2home">首页</a>';
     var fc = document.body.firstChild;
@@ -71,14 +70,6 @@
 
     // 设置首页链接
     var homebtn = document.getElementsByClassName('back2home');
-    // var href = location.href;
-    // var homeurl, homeindex;
-    // if(href.indexOf('Home') > -1){
-    //     homeindex = href.indexOf('Home') + 4;
-    // }else if(href.indexOf('Coms') > -1){
-    //     homeindex = href.indexOf('Coms') + 4;
-    // }
-    // homeurl = href.substring(0, homeindex);
     if(location.href.indexOf('Home') > -1){
         homebtn[0].setAttribute('href', getURL('Home', 'Index/index'));
     }else if(location.href.indexOf('Coms') > -1){
@@ -147,6 +138,13 @@ document.addEventListener('DOMContentLoaded', function(){
         text: '水电费水电费水电费刚发的电饭锅电饭锅地方更符合规范化规范化',
         btnleft: '后退',
         btnright: '继续'
+    }, function(res){
+        console.log('res: ',res);
+        if(res){
+            // 确定
+        }else{
+            // 取消
+        }
     });
 */
 function confirmFn(option, callback) {
@@ -175,7 +173,7 @@ function confirmFn(option, callback) {
     // 左键（取消或其他）
     btnleft.onclick = function () {
         console.log('取消');
-        callback({res: 'cancel'});
+        callback(false);
         setTimeout(function(){
             el.style.display = 'none';
             el.parentNode.style.display = 'none';
@@ -184,7 +182,7 @@ function confirmFn(option, callback) {
     // 右键（确定或其他）
     btnright.onclick = function () {
         console.log('确定');
-        callback({res: 'ok'});
+        callback(true);
         setTimeout(function(){
             el.style.display = 'none';
             el.parentNode.style.display = 'none';

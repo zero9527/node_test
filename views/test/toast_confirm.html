@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	<title>toast_confirm提示和确认取消函数封装</title>
+	<link rel="stylesheet" href="/resource/stylesheets/common.css">
 	<style>
 		* {
 			padding: 0;
@@ -88,6 +89,11 @@
 				btnright: '继续'
 			}, function(res){
 				console.log('res: ',res);
+				if(res){
+					// 确定
+				}else{
+					// 取消
+				}
 			});
 		}
 		window.onload = function(){
