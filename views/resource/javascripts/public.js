@@ -81,6 +81,179 @@
     }
 }()
 
+/**
+ * 确认框 confirmFn()
+ * [object] option: 传入参数
+ * [string] option.text: 提示文本
+ * [string] option.btnleft: 左键文字（默认取消）
+ * [string] option.btnright: 右键文字（默认确定）
+ * 用法：
+ *  confirmFn({
+        text: '水电费水电费水电费刚发的电饭锅电饭锅地方更符合规范化规范化',
+        btnleft: '后退',
+        btnright: '继续'
+    });
+*/
+function confirmFn(option, callback) {
+    option.btnleft = option.btnleft || '取消';		//左键文字（默认取消）
+    option.btnright = option.btnright || '确定';	//右键文字（默认确定）
+    var el = document.querySelector('#_notice_');	// 元素
+    var btnleft = el.querySelector('.btnleft');		// 左键
+    var btnright = el.querySelector('.btnright');	// 右键
+    var content = el.querySelector('._content_');	// 内容
+
+    content.innerHTML = option.text;		// 提示文本
+    btnleft.innerHTML = option.btnleft;
+    btnright.innerHTML = option.btnright;
+    el.parentNode.style.display = 'block';	// 蒙层
+    el.setAttribute('style',
+        'display:block;opacity:0;transform:scale(1.4);'
+    );
+    // 显示
+    setTimeout(function () {
+        el.style.opacity = '1';
+        el.style.transform = 'scale(1)';
+    }, 0)
+
+    // 左键（取消或其他）
+    btnleft.onclick = function () {
+        console.log('取消');
+        setTimeout(function(){
+            el.style.display = 'none';
+            el.parentNode.style.display = 'none';
+        },100)
+    }
+    // 右键（确定或其他）
+    btnright.onclick = function () {
+        console.log('确定');
+        setTimeout(function(){
+            el.style.display = 'none';
+            el.parentNode.style.display = 'none';
+        },100)
+    }
+
+}
+
+
+document.addEventListener('DOMContentLoaded', function(){
+    var style = document.createElement('style');
+    var noticediv = document.createElement('div');	// confirmFn
+    var toastdiv = document.createElement('ul');	// toastFn
+    
+    style.innerHTML = `/* 确认取消提示框 */
+        #_noticePar {width: 100vw;height: 100vh;display: none;position: fixed;top: 0;left: 0;background: rgba(0, 0, 0, .2);z-index: 99999;}
+        #_notice_ {width: 80vw;max-width: 300px;display: none;position: absolute;padding-top: 6px;top: 30vh;left: 0;right: 0;margin: 0 auto;border-radius: 6px;background: #fff;box-shadow: 0 0px 10px rgba(120, 120, 120, .1),0 2px 10px rgba(120, 120, 120, .1);transition: .3s ease-out;overflow: hidden;}
+        #_notice_ ._title_ {text-align: center;font-size: 1.2em;color: #333;}
+        #_notice_ ._content_ {padding: 16px 10px;text-align: center;color: #666;}
+        #_notice_ ul {border-top: 1px solid #ccc;}
+        #_notice_ ul::after {content: '';clear: both;display: block;visibility: visible;zoom: 1;}
+        #_notice_ ul>li {width: 50%;position: relative;padding: 10px 0;text-align: center;}
+        #_notice_ ul>li:active {background: #f1f1f1;}
+        #_notice_ ul>.btnleft {float: left;color: #ff5722;}
+        #_notice_ ul>.btnright {float: right;color: #2196F3;border-left: 1px solid #ccc;}
+
+        /* toast提示框 */
+        #_toast_ {width: 100%;position: fixed;z-index:9999;}
+        #_toast_>li {width: max-content;max-width: 220px;position: fixed;padding: 6px 12px;left: 50%;transform: translateX(-50%);border-radius: 4px;text-align: center;color: #fff;background: rgba(60,60,60,.7);box-shadow: 0 0 10px rgba(120,120,120,.4);transition: .4s ease-in;}
+        #_toast_>._toast_top {top: 0;margin-top: -50%;}
+        #_toast_>._toast_middle {top: 40%;display: none;opacity: 0;}
+        #_toast_>._toast_bottom {bottom: 0;margin-bottom: -50%;}`;
+
+    noticediv.setAttribute('id', '_noticePar');
+    noticediv.innerHTML = '<div id="_notice_">'+
+        '<p class="_title_">标题</p>'+
+        '<div class="_content_">这是提示信息</div>'+
+        '<ul>'+
+            '<li class="btnleft">取消</li>'+
+            '<li class="btnright">确定</li>'+
+        '</ul>'+
+    '</div>';
+
+    toastdiv.setAttribute('id', '_toast_');
+    toastdiv.innerHTML = '<li class="_toast_top">'+
+            '<p class="_toast_text">这是top提示文字</p>'+
+        '</li>'+
+        '<li class="_toast_middle">'+
+            '<p class="_toast_text">这是middle提示文字</p>'+
+            '</li>'+
+        '<li class="_toast_bottom">'+
+            '<p class="_toast_text">这是bottom提示文字</p>'+
+        '</li>';
+    
+    document.body.appendChild(noticediv);
+    document.body.appendChild(toastdiv);
+    document.body.appendChild(style);
+})
+/**
+ * 提示函数: toastFn
+ * @params [object]	option: {配置参数}
+ * @params [string] option.pos: {位置： top, middle, bottom}
+ * @params [string] option.type: {类型： warn, error, yes}
+ * 用法：
+ * toastFn({
+        text: '电饭锅有点问题',
+        pos: 'top',
+        type: 'warn'
+    })
+*/
+function toastFn(option){
+    option.pos = option.pos || 'top';		// top, middle, bottom
+    option.type = option.type || 'yes';		// warn, error, yes
+    option.time = option.time || '2000';	// 消失时间
+    console.log('option: ',option);
+    var _toast_ = document.querySelector('#_toast_');
+    var el = _toast_.querySelector('._toast_'+option.pos);	// 元素
+    var bgList = {warn: '#ff9800', error: 'red', yes: '#4caf50'};
+    
+    // 提示文字
+    el.querySelector('._toast_text').innerText = option.text;
+    switch (option.pos) {
+        case 'top':	// 顶部
+            setTimeout(function(){
+                el.setAttribute('style',
+                    'margin-top:10vh;background:'+bgList[option.type]
+                );
+            },0)
+            if(window.toastint1){
+                clearTimeout(window.toastint1);
+            }
+            window.toastint1 = setTimeout(function(){
+                el.style.marginTop = '-50%';
+            },option.time)
+            break;
+        case 'middle':	// 中间
+            el.style.display = 'block';
+            setTimeout(function(){
+                el.style.opacity = '1';
+                el.style.background = bgList[option.type];
+            },0);
+                        
+            if(window.toastint2){
+                clearTimeout(window.toastint2);
+            }
+            window.toastint2 = setTimeout(function(){
+                el.style.opacity = '0';
+                setTimeout(function(){
+                    el.style.display = 'none';
+                },0)
+            },option.time)
+            break;
+        case 'bottom':	// 底部
+            setTimeout(function(){
+                el.setAttribute('style',
+                    'margin-bottom:10vh;background:'+bgList[option.type]
+                );
+            },0)
+                    
+            if(window.toastint3){
+                clearTimeout(window.toastint3);
+            }
+            window.toastint3 = setTimeout(function(){
+                el.style.marginBottom = '-50%';
+            },option.time)
+            break;
+    }
+}
 
 /**
  * 获取网址（解决在js文件中无法使用thinkPHP的大U方法的问题）
@@ -230,7 +403,48 @@ var getLocalTime = function (_time) {
     // console.log('year + month + day + hour + minute: ', normal);
     return normal;
 }
-
+/**
+ * [numFomat 数字格式化（金额，手机号码）]
+ * @param {string/number} num [金额或手机号码]
+ * @param {string} type [money: 金额，phone: 手机号码]
+ * @param {string} sep [分隔符]
+ * @return {string} [转换后的数值]
+ * 用法：  
+ *      console.log(numFomat(12111212, 'money', ','));
+        console.log(numFomat(13112324678, 'phone', ' '));
+ */
+function numFomat(num, type, sep) {
+    var dot;
+    num += '';
+    if(num.indexOf('.') > 0){
+        // 带小数（金额）
+        dot = num.substr(num.indexOf('.'));
+        num = num.substr(0, num.indexOf('.'));
+    }
+    console.log('num: ',num);
+    switch (type) {
+        case 'money':
+        // 价格格式化
+        num = num.replace(/(\d)(?=(?:\d{3})+$)/g,'$1' + sep);
+        if(dot){
+            num += dot;
+        }
+        break;
+        case 'phone':
+        console.log('num.length: ',num.length);
+        // 手机号码
+        if(num.length != 11){
+            return '手机号不是11位'
+        }
+        num = num.replace(/^(\d{3})(\d{4})(\d{4})/,'$1' + sep + '$2' + sep + '$3');
+        break;
+        default: 
+        num = num;
+        break;
+    }
+    return num
+}
+   
 /**
  * 仿JQ的fade方法显示、隐藏函数
  * @param {对象} obj.elem 作用的元素
@@ -272,149 +486,8 @@ var fadeFn = function(obj){
     go2Top.setAttribute('ontouchstart', 'goTop()');
     go2Top.innerHTML = '<i class="iconfont icon-xiangshang1"></i>';
 
-    // 生成提示框元素
-    var notice = document.createElement('div');
-    notice.setAttribute('id', 'noticeDiv');
-    notice.innerHTML = '<span></span>';
-
-    // 生成确认取消框元素
-    var confirm = document.createElement('div');
-    // 遮罩层
-    confirm.setAttribute('id','confirmPar');
-    var contain = '<div id="confirmDiv">'+
-        '<div>'+
-            '<p><i class="am-icon-question-circle-o"></i>&nbsp;'+
-            '<span class="text" style="color:#0d94f3;"></span>&nbsp;</p>'+
-        '</div>'+
-        '<div id="confirmdiv3">'+
-            '<span id="confirmfalse" >取消</span>'+
-            '<span id="confirmtrue" >确定</span>'+
-        '</div>'+
-    '</div>';
-    confirm.innerHTML = contain;
-
-    document.body.appendChild(confirm);
-    document.body.appendChild(notice);
     document.body.appendChild(go2Top);
 }()
-
-/**
- * 提示框函数 noticeFn()
- * @param {字符串} obj.text 提示的文字内容
- * @param {字符串} obj.fcolor 提示的文字颜色
- * @param {字符串} obj.bgcolor 提示框背景颜色
- * @param {字符串} obj.time 提示框消失的时间
- */
-var noticeint;
-var noticeFn = function(obj){
-    // {text:'哈哈很少见哈' + $(this)[0].innerText,fcolor:'',bgcolor:'',time:''}
-    /*
-        用法：
-        noticeFn({text:'哈哈很少见哈' + $(this)[0].innerText});
-     */
-    //设置字体颜色
-    obj.fcolor = obj.fcolor || '#fff';
-    //设置背景颜色
-    obj.bgcolor = obj.bgcolor || 'rgba(70,70,70,.9)';
-    // 消失时间
-    obj.time = obj.time || 1000;
-    // console.log(obj.time);
-    var notice = document.getElementById('noticeDiv');
-    var noticeSpan = notice.getElementsByTagName('span')[0];
-    
-    // 防止多次点击, 弹框跳动
-    if(noticeSpan.innerHTML){
-        notice.style.transform = 'scale(1.2)';
-        notice.style.transform = 'scale(1)';
-        
-        // 防止多次点击, 弹框跳动
-        clearTimeout(noticeint);
-        noticeSpan.innerHTML = obj.text;
-        // 自动消失
-        noticeint = setTimeout(function(){
-            notice.style.opacity = '.5';
-            notice.style.transform = 'scale(1.1)';
-            setTimeout(function(){
-                notice.style.transform = 'scale(0)';
-                noticeSpan.innerHTML = '';
-            },100);
-        },obj.time);
-        return
-    }
-    noticeSpan.innerHTML = obj.text;
-    noticeSpan.style.color = obj.fcolor;
-    noticeSpan.style.background = obj.bgcolor;
-
-    notice.setAttribute('style',
-        'display:block;opacity:0;transform:scale(1.1);'
-    );
-    setTimeout(function(){
-        notice.setAttribute('style',
-            'opacity:1;transition: .3s ease;transform:scale(1);'
-        );
-    },0)
-    // 自动消失
-    noticeint = setTimeout(function(){
-        notice.style.opacity = '.5';
-        notice.style.transform = 'scale(1.1)';
-        setTimeout(function(){
-            notice.style.transform = 'scale(0)';
-            noticeSpan.innerHTML = '';
-        },100);
-    },obj.time);
-}
-
-/**
- * 确定/取消函数 confirmFn()
- * @param {字符串} text 提示的内容
- * @param {callback} function 回调函数
- */
-var confirmFn = function(text, callback){
-    /**
-     * 用法：
-     * confirmFn('哈哈', function(res){
-            if(res){
-                console.log('确定');
-            }else{
-                console.log('取消');
-            }
-        })
-     */
-    document.body.style.overflow = 'hidden';
-    var confirm = document.querySelector('#confirmDiv');
-   
-    confirm.parentNode.setAttribute('style',
-        'display:block;transform:scale(1.1);'
-    );
-    setTimeout(function(){
-        confirm.parentNode.setAttribute('style',
-            'display:block;opacity:1;transition: .3s ease;transform:scale(1);'
-        );
-    },0)
-    confirm.querySelector('.text').innerHTML = text;
-    // 确定，取消按钮
-    var confirmtrue = document.querySelector('#confirmtrue');
-    var confirmfalse = document.querySelector('#confirmfalse');
-
-    // 点击确定
-    confirmtrue.onclick = function(){
-        callback(true);
-        document.body.style.overflow = 'auto';
-        //移除元素
-        setTimeout(function(){
-            confirm.parentNode.style.display = 'none';
-        }, 30);
-    }
-    // 点击取消
-    confirmfalse.onclick = function(){
-        callback(false);
-        document.body.style.overflow = 'auto';
-        //移除元素
-        setTimeout(function(){
-            confirm.parentNode.style.display = 'none';
-        }, 30);
-    }
-}
 
 /**
  * 顶部导航栏上滑消失，下滑出现
