@@ -85,7 +85,8 @@
 	<script>
 		function confirm() {
 			confirmFn({
-				text: '水电费水电费水电费刚发的电饭锅电饭锅地方更符合规范化规范化',
+				title: '发的电饭锅电饭锅',
+				text: '水电费水电费水豆腐干豆腐积分乐观的看法鸡鸣狗盗反过来说的拉动苏东坡推荐的上来发鬼地方电费刚地方更符合规范化规范化',
 				btnleft: '后退',
 				btnright: '继续'
 			}, function(res){
@@ -99,16 +100,10 @@
 		}
 		function confirm1() {
 			confirmFn({
-				text: '水电费水电费水电费刚发的电饭锅电饭锅地方更符合规范化规范化',
-				known: true,
+				title: '更符合规范化规范化',
+				text: '水电费水电费水电费刚发的电饭锅电饭锅地方',
+				onebtn: true,	// 单按钮
 				btnright: '知道了'
-			}, function(res){
-				console.log('res: ',res);
-				if(res){
-					// 确定
-				}else{
-					// 取消
-				}
 			});
 		}
 		window.onload = function(){

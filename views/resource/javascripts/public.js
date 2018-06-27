@@ -85,8 +85,8 @@ document.addEventListener('DOMContentLoaded', function(){
     style.innerHTML = `/* 确认取消提示框 */
         #_noticePar {width: 100vw;height: 100vh;display: none;position: fixed;top: 0;left: 0;background: rgba(0, 0, 0, .2);z-index: 99999;}
         #_notice_ {width: 80vw;max-width: 300px;display: none;position: absolute;top: 30vh;left: 0;right: 0;margin: 0 auto;opacity:0;border-radius: 6px;background: #fff;box-shadow: 0 0px 10px rgba(120, 120, 120, .1),0 2px 10px rgba(120, 120, 120, .1);transition: .3s ease-out;overflow: hidden;}
-        #_notice_ ._title_ {text-align: center;font-size: 1.2em;color: #333;line-height: 2;background: #f6f6f6;}
-        #_notice_ ._content_ {padding: 20px 10px;text-align: center;color: #666;background:#fafafa;}
+        #_notice_ ._title_ {padding: 14px 10px 10px;text-align: center;font-size: 20px;color: #333;line-height: 2;background: #fafafa;}
+        #_notice_ ._content_ {padding: 0 20% 10px;text-align: center;color: #666;background:#fafafa;font-size: 14px;}
         #_notice_ ul::after {content: '';clear: both;display: block;visibility: visible;zoom: 1;}
         #_notice_ ul>li {width: 50%;position: relative;padding: 10px 5%;text-align: center;}
         #_notice_ ul>li:active>p, #_notice_ ul>li:hover>p {cursor: pointer;box-shadow: 1px 2px 16px rgba(0,0,0,.2) inset;}
@@ -132,12 +132,12 @@ document.addEventListener('DOMContentLoaded', function(){
  * [string] option.text: 提示文本
  * [string] option.btnleft: 左键文字（默认取消）
  * [string] option.btnright: 右键文字（默认确定）
- * [string] option.known: 单按钮（知道了等等,true启用）（默认右键）
+ * [string] option.onebtn: 单按钮（知道了等等,true启用）（默认右键内容）
  * 用法：
  *  confirmFn({
-        text: '水电费水电费水电费刚发的电饭锅电饭锅地方更符合规范化规范化',
+        title: '发的电饭锅电饭锅',
+        text: '水电费水电费水电费刚地方更符合规范化规范化',
         btnleft: '后退',
-        known: true,
         btnright: '继续'
     }, function(res){
         console.log('res: ',res);
@@ -147,24 +147,33 @@ document.addEventListener('DOMContentLoaded', function(){
             // 取消
         }
     });
+    // 单按钮
+    confirmFn({
+        title: '更符合规范化规范化',
+        text: '水电费水电费水电费刚发的电饭锅电饭锅地方',
+        onebtn: true,	// 单按钮
+        btnright: '知道了'
+    });
 */
 function confirmFn(option, callback) {
     option.btnleft = option.btnleft || '取消';		//左键文字（默认取消）
     option.btnright = option.btnright || '确定';	//右键文字（默认确定）
     var el = document.querySelector('#_notice_');	// 元素
+    var title = el.querySelector('._title_');
     var btnleft = el.querySelector('.btnleft>p');	// 左键
     var btnright = el.querySelector('.btnright>p');	// 右键
     var content = el.querySelector('._content_');	// 内容
 
     console.log('confirm_option: ',option);
-    if(option.known){   // 知道了， 单按钮
+    if(option.onebtn){   // 知道了， 单按钮
         btnleft.style.display = 'none';
         btnright.style.transform = 'translateX(-60%)';
     }else{
         btnleft.style.display = 'block';
         btnright.style.transform = '';
     }
-    content.innerHTML = option.text;		// 提示文本
+    title.innerHTML = option.title;         // 提示文本
+    content.innerHTML = option.text;		// 提示描述
     btnleft.innerHTML = option.btnleft;
     btnright.innerHTML = option.btnright;
     el.parentNode.style.display = 'block';	// 蒙层
@@ -182,7 +191,7 @@ function confirmFn(option, callback) {
     // 左键（取消或其他）
     btnleft.onclick = function () {
         console.log('取消');
-        callback(false);
+        if(callback) callback(false);
         setTimeout(function(){
             el.style.display = 'none';
             el.style.opacity = '0';
@@ -192,7 +201,7 @@ function confirmFn(option, callback) {
     // 右键（确定或其他）
     btnright.onclick = function () {
         console.log('确定');
-        callback(true);
+        if(callback) callback(true);
         setTimeout(function(){
             el.style.display = 'none';
             el.style.opacity = '0';
