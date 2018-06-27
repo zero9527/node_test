@@ -23,7 +23,21 @@ input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
 input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
     color: rgba(128,128,128);
 }
-
+/* 滚动条 */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-corner, ::-webkit-scrollbar-track {
+    background-color: #e2e2e2;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 0;
+    background-color: rgba(0,0,0,.3);
+}
+::-webkit-scrollbar-corner, ::-webkit-scrollbar-track {
+    background-color: #e2e2e2;
+}
 body {
 	width: 100vw;
 	min-height: 100vh;
@@ -39,7 +53,7 @@ body {
 #navbar {width: 100vw;height: 12vmin;display: block;position: fixed;top: 0;line-height: 12vmin;border-bottom: 1px solid #eee;color: #000;background: #fff;-webkit-transition: .2s linear;transition: .2s linear;z-index: 999;}
 .backleft::before {content:'';width: 8px;height: 8px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto;border:2px solid transparent;border-top-color:#333;border-left-color:#333;transform: rotateZ(-45deg);}
 #navbar::after {content: '';display: block;visibility: hidden;clear: both;zoom: 1;}
-#navbar>h2,#navbar>a,#navbar>span {height: 100%;display: inline-block;position: relative;top: -1px;margin: 0;padding: 0;text-align: center;float: left;}
+#navbar>h2,#navbar>a,#navbar>span {height: 100%;display: block;position: relative;top: -1px;margin: 0;padding: 0;text-align: center;float: left;}
 #navbar>h2 {width: 50%;margin: 0;font-weight: 400;font-size: .8rem;white-space:nowrap;overflow:hidden;}
 #navbar>span,#navbar>a {width: 25%;color: #000;font-size: .8rem;}
 #navbar>span:active::after,#navbar>a:active::after {content: '';width: 12vmin;height: 12vmin;display: block;position: absolute;top: 0;right:0;bottom:0;left: 0;margin:auto;border-radius: 50%;background: rgba(0,0,0,.05);}
