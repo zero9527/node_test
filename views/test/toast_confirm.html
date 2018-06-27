@@ -54,6 +54,7 @@
 <body>
 	<div id='div'></div>
 	<button class='notice' onclick='confirm()'>弹框</button>
+	<button class='notice' onclick='confirm1()'>弹框(知道了，单按钮)</button>
 	<button onclick='toast()'>提示</button>
 	<!-- notice -->
 	<!-- <div id="_noticePar">
@@ -87,6 +88,20 @@
 				text: '水电费水电费水电费刚发的电饭锅电饭锅地方更符合规范化规范化',
 				btnleft: '后退',
 				btnright: '继续'
+			}, function(res){
+				console.log('res: ',res);
+				if(res){
+					// 确定
+				}else{
+					// 取消
+				}
+			});
+		}
+		function confirm1() {
+			confirmFn({
+				text: '水电费水电费水电费刚发的电饭锅电饭锅地方更符合规范化规范化',
+				known: true,
+				btnright: '知道了'
 			}, function(res){
 				console.log('res: ',res);
 				if(res){

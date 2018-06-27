@@ -84,20 +84,19 @@ document.addEventListener('DOMContentLoaded', function(){
     
     style.innerHTML = `/* 确认取消提示框 */
         #_noticePar {width: 100vw;height: 100vh;display: none;position: fixed;top: 0;left: 0;background: rgba(0, 0, 0, .2);z-index: 99999;}
-        #_notice_ {width: 80vw;max-width: 300px;display: none;position: absolute;padding-top: 6px;top: 30vh;left: 0;right: 0;margin: 0 auto;border-radius: 6px;background: #fff;box-shadow: 0 0px 10px rgba(120, 120, 120, .1),0 2px 10px rgba(120, 120, 120, .1);transition: .3s ease-out;overflow: hidden;}
-        #_notice_ ._title_ {text-align: center;font-size: 1.2em;color: #333;}
-        #_notice_ ._content_ {padding: 16px 10px;text-align: center;color: #666;}
-        #_notice_ ul {border-top: 1px solid #ccc;}
+        #_notice_ {width: 80vw;max-width: 300px;display: none;position: absolute;top: 30vh;left: 0;right: 0;margin: 0 auto;opacity:0;border-radius: 6px;background: #fff;box-shadow: 0 0px 10px rgba(120, 120, 120, .1),0 2px 10px rgba(120, 120, 120, .1);transition: .3s ease-out;overflow: hidden;}
+        #_notice_ ._title_ {text-align: center;font-size: 1.2em;color: #333;line-height: 2;background: #f6f6f6;}
+        #_notice_ ._content_ {padding: 20px 10px;text-align: center;color: #666;background:#fafafa;}
         #_notice_ ul::after {content: '';clear: both;display: block;visibility: visible;zoom: 1;}
-        #_notice_ ul>li {width: 50%;position: relative;padding: 10px 0;text-align: center;}
-        #_notice_ ul>li:active {background: #f1f1f1;}
-        #_notice_ ul>li:hover {cursor: pointer;background: #f1f1f1;}
+        #_notice_ ul>li {width: 50%;position: relative;padding: 10px 5%;text-align: center;}
+        #_notice_ ul>li:active>p, #_notice_ ul>li:hover>p {cursor: pointer;box-shadow: 1px 2px 16px rgba(0,0,0,.2) inset;}
         #_notice_ ul>.btnleft {float: left;color: #ff5722;}
-        #_notice_ ul>.btnright {float: right;color: #2196F3;border-left: 1px solid #ccc;}
-
+        #_notice_ ul>.btnright {float: right;color: #2196F3;}
+        #_notice_ ul>li>p {position:relative;line-height:2;color:#fff;border-radius:30px;background:#0d94f3;box-shadow: 1px 2px 16px rgba(0,0,0,.2);}
+        #_notice_ ul>.btnleft>p {background: #ff5722;}
         /* toast提示框 */
         #_toast_ {width: 100%;position: fixed;z-index:9999;}
-        #_toast_>li {width: max-content;max-width: 220px;position: fixed;padding: 6px 12px;left: 50%;transform: translateX(-50%);border-radius: 4px;text-align: center;color: #fff;background: rgba(60,60,60,.7);box-shadow: 0 0 10px rgba(120,120,120,.4);transition: .4s ease-in;}
+        #_toast_>li {width: max-content;max-width: 220px;position: fixed;padding: 6px 12px;left: 50%;transform: translateX(-50%);border-radius: 4px;text-align: center;color: #fff;background: rgba(60,60,60,.7);box-shadow: 0 0 10px rgba(120,120,120,.4);transition: .4s ease;}
         #_toast_>._toast_top {top: 0;margin-top: -50%;}
         #_toast_>._toast_middle {top: 40%;display: none;opacity: 0;}
         #_toast_>._toast_bottom {bottom: 0;margin-bottom: -50%;}`;
@@ -107,8 +106,8 @@ document.addEventListener('DOMContentLoaded', function(){
         '<p class="_title_">提(＝。＝)示</p>'+
         '<div class="_content_">这是提示信息</div>'+
         '<ul>'+
-            '<li class="btnleft">取消</li>'+
-            '<li class="btnright">确定</li>'+
+            '<li class="btnleft"><p>取消</p></li>'+
+            '<li class="btnright"><p>确定</p></li>'+
         '</ul>'+
     '</div>';
 
@@ -133,10 +132,12 @@ document.addEventListener('DOMContentLoaded', function(){
  * [string] option.text: 提示文本
  * [string] option.btnleft: 左键文字（默认取消）
  * [string] option.btnright: 右键文字（默认确定）
+ * [string] option.known: 单按钮（知道了等等,true启用）（默认右键）
  * 用法：
  *  confirmFn({
         text: '水电费水电费水电费刚发的电饭锅电饭锅地方更符合规范化规范化',
         btnleft: '后退',
+        known: true,
         btnright: '继续'
     }, function(res){
         console.log('res: ',res);
@@ -151,23 +152,31 @@ function confirmFn(option, callback) {
     option.btnleft = option.btnleft || '取消';		//左键文字（默认取消）
     option.btnright = option.btnright || '确定';	//右键文字（默认确定）
     var el = document.querySelector('#_notice_');	// 元素
-    var btnleft = el.querySelector('.btnleft');		// 左键
-    var btnright = el.querySelector('.btnright');	// 右键
+    var btnleft = el.querySelector('.btnleft>p');	// 左键
+    var btnright = el.querySelector('.btnright>p');	// 右键
     var content = el.querySelector('._content_');	// 内容
 
+    console.log('confirm_option: ',option);
+    if(option.known){   // 知道了， 单按钮
+        btnleft.style.display = 'none';
+        btnright.style.transform = 'translateX(-60%)';
+    }else{
+        btnleft.style.display = 'block';
+        btnright.style.transform = '';
+    }
     content.innerHTML = option.text;		// 提示文本
     btnleft.innerHTML = option.btnleft;
     btnright.innerHTML = option.btnright;
     el.parentNode.style.display = 'block';	// 蒙层
     el.setAttribute('style',
-        'display:block;opacity:0;transform:scale(1.4);'
+        'display:block;transform:scale(1.4);'
     );
     var int;
     clearTimeout(int);
     // 显示
     int = setTimeout(function () {
-        el.style.opacity = '1';
         el.style.transform = 'scale(1)';
+        el.style.opacity = '1';
     }, 150)
 
     // 左键（取消或其他）
@@ -176,6 +185,7 @@ function confirmFn(option, callback) {
         callback(false);
         setTimeout(function(){
             el.style.display = 'none';
+            el.style.opacity = '0';
             el.parentNode.style.display = 'none';
         },100)
     }
@@ -185,6 +195,7 @@ function confirmFn(option, callback) {
         callback(true);
         setTimeout(function(){
             el.style.display = 'none';
+            el.style.opacity = '0';
             el.parentNode.style.display = 'none';
         },100)
     }
