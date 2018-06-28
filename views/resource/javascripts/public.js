@@ -226,12 +226,12 @@ function confirmFn(option, callback) {
 */
 function toastFn(option){
     option.pos = option.pos || 'top';		// top, middle, bottom
-    option.type = option.type || 'yes';		// warn, error, yes
+    option.type = option.type || 'normal';		// warn, error, yes
     option.time = option.time || '2000';	// 消失时间
     console.log('option: ',option);
     var _toast_ = document.querySelector('#_toast_');
     var el = _toast_.querySelector('._toast_'+option.pos);	// 元素
-    var bgList = {warn: '#ff9800', error: 'red', yes: '#4caf50'};
+    var bgList = {warn: '#ff9800', error: 'red', yes: '#4caf50', normal: 'rgba(50,50,50,.7)'};
     
     // 提示文字
     el.querySelector('._toast_text').innerText = option.text;
