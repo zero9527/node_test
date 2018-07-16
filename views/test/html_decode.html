@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>html转义标签解码</title>
+    <style>
+        .li {
+            height: 80px;
+            position: fixed;
+            top: 200px;
+            overflow-y: scroll;
+            background: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class='div'></div>
+    <div class='aa'></div>
+    <ul>
+        <li class='li'>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+            <p>的发放购房</p>
+        </li>
+    </ul>
+    <script>
+        var div = document.querySelector('.div');
+        var aa = document.querySelector('.aa');
+        var str = `&lt;p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: "&gt;
+                * 双层防烫保温设计，健康安全
+            &lt;/p&gt;
+            &lt;p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: "&gt;
+                * 不锈钢壶身，饮水更卫生
+            &lt;/p&gt;
+            &lt;p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: "&gt;
+                * 全自动功能，水开保温
+            &lt;/p&gt;
+            &lt;p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: "&gt;
+                * 水开自动断电
+            &lt;/p&gt;
+            &lt;p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: "&gt;
+                * 新型外观设计，适合家庭、办公室及酒店使用
+            &lt;/p&gt;
+            &lt;p&gt;
+                &lt;br/&gt;
+            &lt;/p&gt;`;
+        var aastr = `<div class="div"><p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: ">
+                * 双层防烫保温设计，健康安全
+            </p>
+            <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: ">
+                * 不锈钢壶身，饮水更卫生
+            </p>
+            <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: ">
+                * 全自动功能，水开保温
+            </p>
+            <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: ">
+                * 水开自动断电
+            </p>
+            <p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; font-size: 13px; color: rgb(89, 89, 89); line-height: 18px; font-family: ">
+                * 新型外观设计，适合家庭、办公室及酒店使用
+            </p>
+            <p>
+                <br>
+            </p></div>`;
+        div.innerHTML = HTMLDecode(str);
+        aa.innerHTML = HTMLDecode(aastr);
+        //HTML反转义
+        function HTMLDecode(text) { 
+            var temp = document.createElement("div"); 
+            temp.innerHTML = text; 
+            var output = temp.innerText || temp.textContent; 
+            temp = null; 
+            return output; 
+        } 
+    </script>
+</body>
+</html>
