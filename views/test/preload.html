@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>预加载函数简单实现</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .content {
+            display: flex;
+            position: relative;
+            flex-wrap: wrap;
+        }
+
+        .item {
+            height: 50vh;
+        }
+
+        .item:nth-of-type(2n) {
+            background: lightblue;
+        }
+    </style>
+</head>
+
+<body>
+    <ul class='content'>
+        <li class='item'>
+            <span>符合规范结符合规范结果返回结果和果返回结果和</span>
+        </li>
+        <li class='item'>
+            <span>符返回结果和果返回结果和</span>
+        </li>
+        <li class='item'>
+            <span>符返回结果和果返回结果和</span>
+        </li>
+        <li class='item'>
+            <span>符返回结果和果返回结果和</span>
+        </li>
+    </ul>
+    <script>
+        var content = document.querySelector('.content');
+        var li = document.createElement('li');
+        li.className = 'item';
+        
+        preloadFn(function(){
+            console.log('1111');
+            for(var i=0; i<6; i++){
+                (function(){
+                    requestAnimationFrame(function(){
+                        var li = document.createElement('li');
+                        li.className = 'item';
+                        li.innerHTML = `<span>符返回结果和果返回结果和${new Date()}</span>`
+                        content.appendChild(li);
+                    })
+                })()
+            }
+        });
+        
+        /**
+         * preloadFn: 预加载函数
+         * @param callback: [function] 回调函数(可以预加载的标志)
+         * 
+         */
+        function preloadFn(callback) {
+            var height, scHeight, scTop;
+            var flag = true;    // 加载标志
+            document.addEventListener('scroll', function(){
+                height = window.innerHeight;
+                // 兼容手机、PC
+                scTop = document.documentElement.scrollTop || document.body.scrollTop;
+                scHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+                // console.group();
+                // // console.log('scTop: %s, height: %s, scHeight: %s',scTop, height, scHeight);
+                // console.log('scHeight - (scTop + height): ',scHeight - (scTop + height));
+                // console.log('height: ',height);
+                // console.groupEnd();
+                if(scHeight - (scTop + height) <= height){
+                    if(flag){
+                        // 只触发一次，直到加载完成
+                        flag = false;
+                        loadFn();
+                    }
+                }
+            });
+            // 加载函数
+            function loadFn(){
+                // 回调函数
+                callback();
+                // 触发标志状态开启
+                flag = true;
+            }
+        }
+    </script>
+</body>
+
+</html>
