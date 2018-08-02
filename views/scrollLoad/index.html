@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>滚动监听</title>
+    <style>
+        ol, li {
+            margin: 0;
+            padding: 0;
+        }
+        .cfix::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .fl {
+            float: left;
+        }
+        .fr {
+            float: right;
+        }
+        .container {
+            position: relative;
+            padding: 20px 10%;
+        }
+        .content {
+            width: 100%;
+            overflow: hidden;
+        }
+        .item {
+            width: 100%;
+            padding: 30vh 0;
+            margin: 10px 0;
+        }
+        .item>img {
+            width: 100%;
+            height: auto;
+            min-height: 60px;
+            display: inline-block;
+            background: #f1f1f1 url('img/load02.gif') no-repeat;
+            background-size: 20px 20px;
+            background-position: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <h3>根据滚动条加载图片</h3>
+        <ol class='content'>
+            <li class='item'>
+                <img data-src="img/1.png" alt="">
+            </li>
+            <li class='item'>
+                <img data-src="img/2.png" alt="">
+            </li>
+            <li class='item'>
+                <img data-src="img/3.png" alt="">
+            </li>
+            <li class='item'>
+                <img data-src="img/4.png" alt="">
+            </li>
+            <li class='item'>
+                <img data-src="img/5.png" alt="">
+            </li>
+        </ol>
+    </div>
+    <script>
+        var navli = document.querySelectorAll('.nav>li');
+        scrollListenr();
+        // 滚动监听
+        function scrollListenr(){
+            var cHeight = window.innerHeight;
+            document.addEventListener('scroll', fn);
+            function fn(){
+                var img = document.querySelectorAll('img[data-src]');
+                var scTop = document.documentElement.scrollTop || document.body.scrollTop;
+                var scHeight = document.body.scrollHeight;
+                // console.log('img: ',img);
+                if(!img.length){
+                    document.removeEventListener('scroll', fn);
+                    return
+                }
+                for(var i=0;i<img.length; i++){
+                    // 预加载
+                    var offsetTop = img[i].parentNode.offsetTop;
+                    // console.group();
+                    // console.log('cHeight+scTop = ',cHeight + scTop);
+                    // console.log('offsetTop: ',i,offsetTop);
+                    // console.groupEnd();
+                    if(offsetTop - scTop <= cHeight/2){
+                        // console.log('img[i]: ',img[i]);
+                        (function(img){
+                            // 每次加载完一张图片就不再遍历
+                            img.setAttribute('src', img.getAttribute('data-src'));
+                            setTimeout(function(){
+                                img.removeAttribute('data-src');
+                            },200);
+                        })(img[i])
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
