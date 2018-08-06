@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>继承方法(es5)</title>
+</head>
+<body>
+    <script>
+        /**
+         * 继承练习(es5)
+        */
+        function Animal(){
+            this.name = '动物';
+            this.live = true;
+        }
+        // 原型链
+        Animal.prototype = {
+            constructor: Animal,
+            init: function(){
+                console.log('animal2333');
+            }
+        }
+
+        function monkey(){
+            // 切换上下文，复制父类的方法
+            Animal.apply(this);
+            this.type = '金丝猴';
+        }
+
+        // 寄生组合方法
+        function extend(par, son){
+            function Super(){};
+            Super.prototype = par.prototype;
+            son.prototype = new Super();
+            return son;
+        }
+
+        // 实例化
+        var anmon = new monkey();
+        // 继承
+        extend(Animal, anmon);
+        anmon.name = '动物2'
+        console.log('Animal: ',Animal);
+        /*
+            ƒ Animal(){
+                this.name = '动物';
+                this.live = true;
+            }
+        */
+        console.log('anmon: ',anmon);
+        /*
+            monkey {name: "动物2", live: true, type: "金丝猴", prototype: Super}
+            live: true
+            name:"动物2"
+            prototype:Super
+            __proto__:
+            constructor :ƒ Animal()
+            init:ƒ ()
+            __proto__:Object
+            type:"金丝猴"
+            __proto__:Object
+        */
+        anmon.prototype.init();
+
+    </script>
+</body>
+</html>

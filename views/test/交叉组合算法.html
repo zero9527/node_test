@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>交叉组合算法</title>
+</head>
+<body>
+    <script>
+        /**
+         * 交叉组合算法练习
+        */ 
+        function arrayCross(arr, callback){
+            console.log('arr: ',arr);
+            if(arr.length <= 1) return arr;
+            var tempArr = [];   // 存放组合的数组
+            var _arr = arr[0];  // 每次都是两个数组之间的组合
+            // 防止改变原数组
+            crossFn([].concat(arr), _arr);
+            // 组合函数
+            function crossFn(param, _arr){
+                var arr0 = _arr;
+                param.splice(0,1);  // 每次只对两个数组进行组合
+                console.group();
+                console.log('组合的两组数：',arr.length-param.length);
+                console.log('arr0: ', arr0);
+                console.log('param[0]: ',param[0]);
+                console.groupEnd();
+                tempArr = [];   // 清空数组，不能用length = 0;的方式清空，
+                for(var i=0; i<arr0.length; i++){
+                    for(var j=0; j<param[0].length; j++){
+                        tempArr.push(arr0[i] + '_' + param[0][j]);
+                    }
+                }
+                // console.log('tempArr: ',tempArr);
+                if(param.length > 1){
+                    crossFn(param, tempArr);
+                }else{
+                    // 回调
+                    callback(tempArr);
+                }
+            }
+        }
+
+        var arr2 = [[1,2,3],[4,5,6]];
+        var arr3 = [[1,2,3],[4,5],[6,7,8]];
+        var arr4 = [[1,2,3],[4,5],[6,7,8],[9,10,11,12]];
+        arrayCross(arr4, function(res){
+            console.log('res: ',res);
+        });
+    </script>
+</body>
+</html>

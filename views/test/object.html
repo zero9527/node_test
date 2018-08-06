@@ -73,5 +73,30 @@
 		var son = deepCopy(child, parent);
 		son.c.push('abc');
 	</script>
+	<script>
+
+		/**
+		* 对象深度克隆简单实现
+		*/
+		function deepClone(obj){
+			var newObj = typeof obj === 'object' ? {} : [];
+			for(var i in obj){
+				var temp = typeof obj[i] === 'object' ? deepClone(obj[i]) : obj[i];
+				newObj[i] = temp;
+			}
+			return newObj;
+		}
+		var obj = {
+			name: 'aa',
+			data: [
+				{id: 1, value: '11'},
+				{id: 2, value: '22'},
+				{id: 3, value: '33'},
+			]
+		}
+		var temp = deepClone(obj);
+		// console.log('temp: ',temp);
+
+	</script>
 </body>
 </html>

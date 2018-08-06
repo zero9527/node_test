@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ajax_promise</title>
+</head>
+<body>
+    <h4>Promise封装原生ajax</h4>
+    <script>
+        /**
+         * 原生ajax的Promise封装
+        */
+        function ajax(option){
+            return new Promise((resolve, reject) => {
+                var xhr = new XMLHttpRequest();
+                xhr.open(option.type, option.url);
+                xhr.send(null);
+                xhr.onreadystatechange = function(){
+                    // xhr.readyState == 4：此时请求完成
+                    if(xhr.readyState == 4 && xhr.status == 200){
+                        var json = JSON.parse(xhr.responseText);
+                        resolve(json);
+                    }else if(xhr.readyState == 4 && xhr.status != 200){
+                        reject('error');
+                    }
+                }
+            })
+        }
+        // 获取本地json
+        ajax({
+            type: 'get',
+            url: './aa.json',
+        }).then(res => {
+            console.log('res: ',res);
+        }).catch(err => {
+            console.log('err: ',err);
+        })
+    </script>
+</body>
+</html>
